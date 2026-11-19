@@ -111,7 +111,18 @@ const STR = {
     fileInvalid: 'That link does not look right — paste a full link starting with https:// (or leave the field empty).',
     reqNoteTitle: 'What will you give in return?', reqNoteSub: 'This is an exchange — tell the poster what you can give back. They will see it before accepting.',
     reqNotePh: 'e.g. I will give my Data Mining handwritten notes', reqSendBtn: 'Send Request',
-    pointsStat: 'Points', guest: 'Guest', profileNav: 'Profile', sidePointsHint: 'Earn by posting & exchanging', featuredTag: 'Featured', pinBtn: 'Pin (20 pts)', ptsPin: 'Post pinned at the top for 3 days!',
+    pointsStat: 'Points', guest: 'Guest', profileNav: 'Profile', sidePointsHint: 'Earn by posting & exchanging',
+    navCommunity: 'Community', navMessages: 'Messages', messageBtn: 'Message', msgLogin: 'Please log in first to send a message.',
+    communityTitle: 'Community', communitySub: 'A public wall for all EXCHORA students — ask, share and discuss together.',
+    communityPh: 'Share something with all students...', communityPostBtn: 'Post', communityEmpty: 'No posts yet — be the first to say hello!',
+    messagesTitle: 'Messages', messagesSub: 'Private chats with other students — only you two can see them.',
+    chatPick: 'Pick a conversation', chatPh: 'Write a message...', chatSend: 'Send', chatEmpty: 'No conversations yet. Press the 💬 button on any post to start one.',
+    pointsPanelTitle: 'My Points', rewardsWaiting: 'Rewards waiting to claim', claimBtn: 'Claim', claimAllBtn: 'Claim all', historyTitle: 'History',
+    noRewards: 'No rewards waiting. Complete an exchange, receive a 5-star rating or have your file unlocked to earn one!', noHistory: 'No points activity yet.',
+    pointsGuide: 'Welcome: 50 free. Post: +5 instantly. Rewards from exchanges (+10), 5-star ratings (+5) and file unlocks (+15) wait here — claim them when you want. Spending is your choice too: unlocking a file costs 15, pinning a post costs 20, and the site always asks before spending.',
+    myPostsTitle: 'My Posts', myRatingsTitle: 'Ratings I received', noMyPosts: 'You have not posted anything yet.', noRatingsYet: 'No ratings yet.',
+    rsPost: 'Shared a post', rsExchange: 'Completed an exchange', rsUnlock: 'Unlocked a file', rsUnlockIncome: 'Your file was unlocked', rsRating5: 'Got a 5-star rating', rsPin: 'Pinned a post',
+    confirmUnlock: 'Unlock this file for 15 points?', confirmPin: 'Pin this post for 20 points? It stays Featured for 3 days.', claimedToast: 'Points claimed to your balance!', pointsLoginHint: 'Log in to see your points', haveShort: 'Have', wantShort: 'Want', featuredTag: 'Featured', pinBtn: 'Pin (20 pts)', ptsPin: 'Post pinned at the top for 3 days!',
     ptsNeed: 'Not enough points — earn points by posting and completing exchanges.', unlockBtn: 'Unlock file — 15 points',
     balanceLabel: 'Your points', ptsUnlocked: 'File unlocked! 15 points used.',
     requestsReceived: 'Requests for your posts', requestsSentTitle: 'Requests you sent',
@@ -192,7 +203,18 @@ const STR = {
     fileInvalid: 'Link-টা ঠিক মনে হচ্ছে না — https:// দিয়ে শুরু পুরো link দাও (অথবা ঘরটা খালি রাখো)।',
     reqNoteTitle: 'বদলে তুমি কী দেবে?', reqNoteSub: 'এটা একটা exchange — পোস্টদাতাকে বলো বদলে তুমি কী দিতে পারবে। Accept করার আগেই সে এটা দেখতে পাবে।',
     reqNotePh: 'যেমন: আমি আমার Data Mining হাতে লেখা নোট দেবো', reqSendBtn: 'রিকোয়েস্ট পাঠাও',
-    pointsStat: 'পয়েন্ট', guest: 'অতিথি', profileNav: 'প্রোফাইল', sidePointsHint: 'পোস্ট আর exchange করে earn করো', featuredTag: 'ফিচার্ড', pinBtn: 'পিন করো (20 pts)', ptsPin: 'পোস্ট 3 দিনের জন্য সবার উপরে পিন হয়েছে!',
+    pointsStat: 'পয়েন্ট', guest: 'অতিথি', profileNav: 'প্রোফাইল', sidePointsHint: 'পোস্ট আর exchange করে earn করো',
+    navCommunity: 'কমিউনিটি', navMessages: 'মেসেজ', messageBtn: 'মেসেজ', msgLogin: 'মেসেজ পাঠাতে আগে লগ ইন করো।',
+    communityTitle: 'কমিউনিটি', communitySub: 'সব EXCHORA শিক্ষার্থীর জন্য public wall — জিজ্ঞেস করো, শেয়ার করো, আলোচনা করো।',
+    communityPh: 'সব শিক্ষার্থীর সাথে কিছু শেয়ার করো...', communityPostBtn: 'পোস্ট', communityEmpty: 'এখনো কোনো পোস্ট নেই — প্রথমে hello বলো!',
+    messagesTitle: 'মেসেজ', messagesSub: 'অন্য শিক্ষার্থীদের সাথে private chat — শুধু তোমরা দুজনই দেখতে পাবে।',
+    chatPick: 'একটা conversation বেছে নাও', chatPh: 'মেসেজ লেখো...', chatSend: 'পাঠাও', chatEmpty: 'এখনো কোনো conversation নেই। যেকোনো পোস্টে 💬 button চেপে শুরু করো।',
+    pointsPanelTitle: 'আমার পয়েন্ট', rewardsWaiting: 'Claim করার মতো reward', claimBtn: 'Claim', claimAllBtn: 'সব Claim করো', historyTitle: 'হিস্ট্রি',
+    noRewards: 'কোনো reward অপেক্ষা করছে না। Exchange complete করো, 5-star rating পাও বা তোমার ফাইল unlock হলেই reward আসবে!', noHistory: 'এখনো কোনো পয়েন্ট activity নেই।',
+    pointsGuide: 'Welcome: 50 ফ্রি। পোস্ট: সাথে সাথে +5। Exchange (+10), 5-star rating (+5) আর ফাইল unlock (+15) থেকে reward এখানে অপেক্ষা করে — যখন চাও Claim করো। খরচও তোমার সিদ্ধান্ত: ফাইল unlock 15, পোস্ট pin 20 — খরচের আগে সাইট সবসময় জিজ্ঞেস করে।',
+    myPostsTitle: 'আমার পোস্ট', myRatingsTitle: 'আমি যেসব rating পেয়েছি', noMyPosts: 'তুমি এখনো কিছু পোস্ট করোনি।', noRatingsYet: 'এখনো কোনো rating নেই।',
+    rsPost: 'পোস্ট শেয়ার করেছো', rsExchange: 'Exchange complete করেছো', rsUnlock: 'ফাইল unlock করেছো', rsUnlockIncome: 'তোমার ফাইল unlock হয়েছে', rsRating5: '5-star rating পেয়েছো', rsPin: 'পোস্ট pin করেছো',
+    confirmUnlock: '15 পয়েন্ট দিয়ে এই ফাইলটা unlock করবে?', confirmPin: '20 পয়েন্ট দিয়ে পোস্টটা pin করবে? 3 দিন Featured থাকবে।', claimedToast: 'পয়েন্ট তোমার balance-এ যোগ হয়েছে!', pointsLoginHint: 'পয়েন্ট দেখতে লগ ইন করো', haveShort: 'আছে', wantShort: 'চাই', featuredTag: 'ফিচার্ড', pinBtn: 'পিন করো (20 pts)', ptsPin: 'পোস্ট 3 দিনের জন্য সবার উপরে পিন হয়েছে!',
     ptsNeed: 'যথেষ্ট পয়েন্ট নেই — পোস্ট করে আর exchange complete করে পয়েন্ট earn করো।', unlockBtn: 'ফাইল unlock করো — 15 পয়েন্ট',
     balanceLabel: 'তোমার পয়েন্ট', ptsUnlocked: 'ফাইল unlock হয়েছে! 15 পয়েন্ট কেটেছে।',
     requestsReceived: 'তোমার পোস্টের রিকোয়েস্ট', requestsSentTitle: 'তোমার পাঠানো রিকোয়েস্ট',
@@ -241,6 +263,14 @@ const POINTS_WELCOME = 50, POINTS_POST = 5, POINTS_EXCHANGE = 10, POINTS_UNLOCK 
 let myPointsSum = 0;
 let myUnlocks = [];
 let pointsUnsub = null, unlocksUnsub = null;
+let communityMsgs = [];
+let communityUnsub = null;
+let chatMsgs = [];
+let chatUnsubs = [];
+let activeChatUid = null, activeChatName = '';
+let myRewards = [];
+let rewardsUnsub = null;
+let myPointsEntries = [];
 let ratingUnsub = null;
 const ADMIN_EMAILS = ['mimpakhi05@gmail.com'];   // declared early: renderAuthArea checks it on the first draw
 let savedIds = JSON.parse(localStorage.getItem('se_saved') || '[]').map(function (x) {
@@ -292,6 +322,7 @@ function buildCard(post, index) {
           heartIcon + (isSaved ? t('saved') : t('interested')) +
         '</button>' +
         requestBtnHTML(post) +
+        (post.owner && post.owner !== myUid() ? '<button class="btn-msg" type="button" data-msg="' + post.owner + '" data-msg-name="' + esc(post.name) + '" title="' + t('messageBtn') + '">💬</button>' : '') +
         ((post.owner || null) !== null && post.owner === myUid()
           ? (isPinned(post)
             ? '<span class="pin-on">📌 ' + t('featuredTag') + '</span>'
@@ -386,6 +417,15 @@ document.addEventListener('click', function (event) {
   if (unlockBtn) { unlockWithPoints(unlockBtn.dataset.unlock); return; }
   const pinBtn = event.target.closest('[data-pin]');
   if (pinBtn) { pinPost(pinBtn.dataset.pin); return; }
+  const msgBtn = event.target.closest('[data-msg]');
+  if (msgBtn) { openChatWith(msgBtn.dataset.msg, msgBtn.dataset.msgName); return; }
+  const convBtn = event.target.closest('[data-conv]');
+  if (convBtn) { openThread(convBtn.dataset.conv, convBtn.dataset.convName); return; }
+  const cdelBtn = event.target.closest('[data-cdel]');
+  if (cdelBtn) { deleteCommunityMsg(cdelBtn.dataset.cdel); return; }
+  const claimBtn = event.target.closest('[data-claim]');
+  if (claimBtn) { claimReward(claimBtn.dataset.claim); return; }
+  if (event.target.closest('[data-claim-all]')) { claimAllRewards(); return; }
 });
 
 // ---------- 8) The form: submitting adds a new post ----------
@@ -486,7 +526,7 @@ function showToast(message) {
 }
 
 // ---------- 11) Views (single-page routing) ----------
-const viewIds = ['view-home', 'view-auth', 'view-profile', 'view-matches', 'view-admin'];
+const viewIds = ['view-home', 'view-auth', 'view-profile', 'view-matches', 'view-admin', 'view-community', 'view-messages'];
 function showView(name) {
   viewIds.forEach(function (id) {
     document.getElementById(id).hidden = id !== 'view-' + name;
@@ -495,6 +535,8 @@ function showView(name) {
   if (name === 'profile') renderProfile();
   if (name === 'matches') renderMatches();
   if (name === 'admin') renderAdmin();
+  if (name === 'community') renderCommunity();
+  if (name === 'messages') { renderInbox(); renderThread(); }
 }
 document.querySelectorAll('.main-nav a[href^="#"], .logo').forEach(function (link) {
   link.addEventListener('click', function () { showView('home'); });
@@ -514,8 +556,12 @@ const sideOverlayEl = document.getElementById('sideOverlay');
 function openSidebar() { sidebarEl.classList.add('open'); sideOverlayEl.hidden = false; }
 function closeSidebar() { sidebarEl.classList.remove('open'); sideOverlayEl.hidden = true; }
 document.getElementById('sideToggle').addEventListener('click', function () {
-  if (sidebarEl.classList.contains('open')) closeSidebar(); else openSidebar();
+  if (window.innerWidth >= 1024) {
+    document.body.classList.toggle('side-hidden');
+    try { localStorage.setItem('ex_side_hidden', document.body.classList.contains('side-hidden') ? '1' : '0'); } catch (e) {}
+  } else if (sidebarEl.classList.contains('open')) closeSidebar(); else openSidebar();
 });
+try { if (localStorage.getItem('ex_side_hidden') === '1') document.body.classList.add('side-hidden'); } catch (e) {}
 sideOverlayEl.addEventListener('click', closeSidebar);
 document.querySelectorAll('[data-side]').forEach(function (btn) {
   btn.addEventListener('click', function () {
@@ -524,6 +570,8 @@ document.querySelectorAll('[data-side]').forEach(function (btn) {
     else if (go === 'post') { showView('home'); setTimeout(function () { document.getElementById('post').scrollIntoView({ behavior: 'smooth' }); }, 60); }
     else if (go === 'my') { showView('home'); setTimeout(function () { document.getElementById('my').scrollIntoView({ behavior: 'smooth' }); }, 60); }
     else if (go === 'matches') showView('matches');
+    else if (go === 'community') showView('community');
+    else if (go === 'messages') showView('messages');
     else if (go === 'profile') showView('profile');
     else if (go === 'admin' && isAdmin()) showView('admin');
     closeSidebar();
@@ -605,7 +653,7 @@ document.getElementById('linkToSignup').addEventListener('click', function (e) {
 document.getElementById('linkToLogin').addEventListener('click', function (e) { e.preventDefault(); showAuth('login'); });
 document.getElementById('btnGoogle').addEventListener('click', function () {
   if (!FB) { showToast(t('googleSoon')); return; }
-  fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function (e) {
+  fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function () { showView('home'); }).catch(function (e) {
     if (e && e.code === 'auth/unauthorized-domain') showToast(t('googleDomainError'));
     else showToast(t('loginError'));
   });
@@ -709,6 +757,8 @@ function renderProfile() {
     chip.textContent = '★ ' + avg.toFixed(1) + ' · ' + num(myRatings.length) + ' ' + t('ratingsWord');
     chip.hidden = false;
   } else chip.hidden = true;
+  renderPointsPanel();
+  renderProfileExtras();
 }
 document.getElementById('btnEditProfile').addEventListener('click', function () {
   const form = document.getElementById('editProfileForm');
@@ -884,6 +934,7 @@ document.addEventListener('click', function (event) {
   if (event.target.closest('.btn-request')) return;         // request button has its own handler
   if (event.target.closest('.btn-del-post')) return;        // delete button has its own handler
   if (event.target.closest('[data-pin]')) return;           // pin button has its own handler
+  if (event.target.closest('[data-msg]')) return;           // message button has its own handler
   const card = event.target.closest('.post-card');
   if (card && card.dataset.id) openDetails(card.dataset.id);
 });
@@ -927,8 +978,8 @@ function requestBtnHTML(post) {
 function subscribeRequests() {
   reqUnsubs.forEach(function (u) { u(); });
   reqUnsubs = [];
-  if (!FB) { requests = loadLocalRequests(); renderRequests(); subscribeRatings(); return; }
-  if (!currentUser) { requests = []; renderRequests(); subscribeRatings(); return; }
+  if (!FB) { requests = loadLocalRequests(); renderRequests(); subscribeRatings(); subscribeMessages(); subscribeRewards(); return; }
+  if (!currentUser) { requests = []; renderRequests(); subscribeRatings(); subscribeMessages(); subscribeRewards(); return; }
   const uid = currentUser.uid;
   let recv = [], sent = [];
   function merge() {
@@ -943,6 +994,8 @@ function subscribeRequests() {
     .onSnapshot(function (s) { sent = s.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); }); merge(); }, function () {}));
   subscribeRatings();
   subscribePoints();
+  subscribeMessages();
+  subscribeRewards();
 }
 function sendRequest(postId) {
   const post = posts.find(function (p) { return p.id === postId; });
@@ -1024,7 +1077,7 @@ function requestAction(act, id) {
     const willComplete = (updates.fromDone && r.toDone) || (updates.toDone && r.fromDone);
     if (FB && willComplete) updates.status = 'completed';
     updateRequest(id, updates);
-    if (willComplete) { addPointsEntry(r.fromUid, POINTS_EXCHANGE, 'exchange'); addPointsEntry(r.toUid, POINTS_EXCHANGE, 'exchange'); }
+    if (willComplete) { addReward(r.fromUid, POINTS_EXCHANGE, 'exchange'); addReward(r.toUid, POINTS_EXCHANGE, 'exchange'); }
   }
 }
 function reqItemHTML(r, mine) {
@@ -1043,6 +1096,9 @@ function reqItemHTML(r, mine) {
       ? '<span class="req-wait">' + t('waitingOther') + '</span>'
       : '<button class="btn btn-small btn-gold" type="button" data-act="done" data-id="' + r.id + '">' + t('confirmDoneBtn') + '</button>';
   }
+  const otherUid = mine ? r.toUid : r.fromUid;
+  const msgLine = (r.status === 'pending' || r.status === 'accepted' || r.status === 'completed')
+    ? '<p style="margin-top:8px"><button class="btn btn-small btn-outline" type="button" data-msg="' + otherUid + '" data-msg-name="' + esc(otherName) + '">💬 ' + t('messageBtn') + '</button></p>' : '';
   const noteLine = r.note ? '<p class="req-offer"><strong>' + t('offerLabel') + ':</strong> ' + esc(r.note) + '</p>' : '';
   const reqPost = posts.find(function (p) { return p.id === r.postId; });
   const fileLine = (mine && (r.status === 'accepted' || r.status === 'completed') && reqPost && reqPost.fileUrl)
@@ -1064,6 +1120,7 @@ function reqItemHTML(r, mine) {
     '<span class="req-status st-' + r.status + '">' + t('status_' + r.status) + '</span></div>' +
     '<p class="req-detail"><span class="ex-label have">' + t('have') + '</span> ' + esc(r.postHave) + ' &nbsp;⇄&nbsp; <span class="ex-label want">' + t('want') + '</span> ' + esc(r.postWant) + '</p>' +
     noteLine +
+    msgLine +
     contactLine +
     fileLine +
     ratingLine +
@@ -1100,6 +1157,173 @@ function deleteOwnPost(id) {
 }
 
 
+
+// ---------- 17.4) Community wall & private messages (Phase J) ----------
+function timeAgo(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  return d.toLocaleDateString() + ' · ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+}
+// --- Community (public wall) ---
+function loadLocalCommunity() { return JSON.parse(localStorage.getItem('ex_community') || '[]'); }
+function subscribeCommunity() {
+  if (communityUnsub) { communityUnsub(); communityUnsub = null; }
+  if (!FB) { communityMsgs = loadLocalCommunity(); renderCommunity(); return; }
+  communityUnsub = fbDb.collection('community').orderBy('ts', 'desc').limit(60).onSnapshot(function (snap) {
+    communityMsgs = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+    renderCommunity();
+  }, function () {});
+}
+function renderCommunity() {
+  const list = document.getElementById('communityList');
+  if (!list) return;
+  if (!communityMsgs.length) { list.innerHTML = '<p class="empty-note">' + t('communityEmpty') + '</p>'; return; }
+  list.innerHTML = communityMsgs.map(function (m) {
+    const mine = !!currentUser && m.fromUid === myUid();
+    return '<div class="comm-item">' +
+      '<span class="mini-avatar">' + (m.fromPhoto ? '<img src="' + esc(m.fromPhoto) + '" alt="">' : esc(initials(m.fromName || '?'))) + '</span>' +
+      '<div class="comm-body"><div class="comm-head"><strong>' + esc(m.fromName) + '</strong><small>' + timeAgo(m.ts) + '</small>' +
+      ((mine || isAdmin()) ? '<button class="comm-del" type="button" data-cdel="' + m.id + '" aria-label="Delete">✕</button>' : '') + '</div>' +
+      '<p>' + esc(m.text) + '</p>' +
+      (!mine && currentUser ? '<button class="btn-msg-link" type="button" data-msg="' + m.fromUid + '" data-msg-name="' + esc(m.fromName) + '">💬 ' + t('messageBtn') + '</button>' : '') +
+      '</div></div>';
+  }).join('');
+}
+document.getElementById('communityForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+  if (!currentUser) { showToast(t('msgLogin')); showAuth('login'); return; }
+  const input = document.getElementById('communityInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const entry = { fromUid: myUid(), fromName: currentUser.name, fromPhoto: currentUser.photo || '', text: text, ts: Date.now() };
+  if (FB) { fbDb.collection('community').add(entry).catch(function () { showToast(t('requestError')); }); }
+  else {
+    const all = loadLocalCommunity();
+    all.unshift(Object.assign({ id: 'c' + Date.now() }, entry));
+    localStorage.setItem('ex_community', JSON.stringify(all));
+    communityMsgs = all;
+    renderCommunity();
+  }
+  input.value = '';
+});
+function deleteCommunityMsg(id) {
+  if (FB) { fbDb.collection('community').doc(id).delete().catch(function () {}); return; }
+  const all = loadLocalCommunity().filter(function (m) { return m.id !== id; });
+  localStorage.setItem('ex_community', JSON.stringify(all));
+  communityMsgs = all;
+  renderCommunity();
+}
+// --- Private messages (1-to-1) ---
+function loadLocalMessages() { return JSON.parse(localStorage.getItem('ex_messages') || '[]'); }
+function subscribeMessages() {
+  chatUnsubs.forEach(function (u) { u(); });
+  chatUnsubs = [];
+  if (!currentUser) { chatMsgs = []; renderInbox(); updateMsgBadge(); return; }
+  if (!FB) {
+    const me = myUid();
+    chatMsgs = loadLocalMessages().filter(function (m) { return m.fromUid === me || m.toUid === me; });
+    renderInbox(); renderThread(); updateMsgBadge();
+    return;
+  }
+  const uid = currentUser.uid;
+  let sent = [], recv = [];
+  function merge() {
+    chatMsgs = sent.concat(recv).sort(function (a, b) { return (a.ts || 0) - (b.ts || 0); });
+    renderInbox(); renderThread(); updateMsgBadge();
+  }
+  chatUnsubs.push(fbDb.collection('messages').where('fromUid', '==', uid).onSnapshot(function (snap) { sent = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); }); merge(); }, function () {}));
+  chatUnsubs.push(fbDb.collection('messages').where('toUid', '==', uid).onSnapshot(function (snap) { recv = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); }); merge(); }, function () {}));
+}
+function updateMsgBadge() {
+  const badge = document.getElementById('msgBadge');
+  if (!badge) return;
+  const n = currentUser ? chatMsgs.filter(function (m) { return m.toUid === myUid() && !m.read; }).length : 0;
+  badge.hidden = n === 0;
+  badge.textContent = num(n);
+}
+function conversations() {
+  const map = {};
+  chatMsgs.forEach(function (m) {
+    const me = myUid();
+    const other = m.fromUid === me ? m.toUid : m.fromUid;
+    if (!map[other]) map[other] = { uid: other, name: m.fromUid === me ? m.toName : m.fromName, photo: m.fromUid === me ? m.toPhoto : m.fromPhoto, last: m, unread: 0 };
+    if ((m.ts || 0) >= (map[other].last.ts || 0)) map[other].last = m;
+    if (m.toUid === me && !m.read) map[other].unread++;
+  });
+  return Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) { return (b.last.ts || 0) - (a.last.ts || 0); });
+}
+function renderInbox() {
+  const el = document.getElementById('convList');
+  if (!el) return;
+  if (!currentUser) { el.innerHTML = '<p class="empty-note">' + t('msgLogin') + '</p>'; return; }
+  const convs = conversations();
+  if (!convs.length) { el.innerHTML = '<p class="empty-note">' + t('chatEmpty') + '</p>'; return; }
+  el.innerHTML = convs.map(function (c) {
+    return '<button type="button" class="conv-item' + (c.uid === activeChatUid ? ' active' : '') + '" data-conv="' + c.uid + '" data-conv-name="' + esc(c.name) + '">' +
+      '<span class="mini-avatar">' + (c.photo ? '<img src="' + esc(c.photo) + '" alt="">' : esc(initials(c.name || '?'))) + '</span>' +
+      '<span class="conv-text"><strong>' + esc(c.name) + '</strong><small>' + esc(c.last.text) + '</small></span>' +
+      (c.unread ? '<span class="count-badge">' + num(c.unread) + '</span>' : '') + '</button>';
+  }).join('');
+}
+function renderThread() {
+  const box = document.getElementById('chatMsgs');
+  const head = document.getElementById('chatHead');
+  const form = document.getElementById('chatForm');
+  if (!box || !head || !form) return;
+  if (!activeChatUid || !currentUser) { head.textContent = t('chatPick'); form.hidden = true; box.innerHTML = ''; return; }
+  head.textContent = activeChatName;
+  form.hidden = false;
+  const me = myUid();
+  const msgs = chatMsgs.filter(function (m) { return (m.fromUid === me && m.toUid === activeChatUid) || (m.fromUid === activeChatUid && m.toUid === me); });
+  box.innerHTML = msgs.map(function (m) {
+    return '<div class="chat-msg ' + (m.fromUid === me ? 'mine' : 'theirs') + '"><p>' + esc(m.text) + '</p></div>';
+  }).join('');
+  box.scrollTop = box.scrollHeight;
+}
+function openThread(uid, name) {
+  if (!currentUser) return;
+  activeChatUid = uid;
+  if (name) activeChatName = name;
+  renderInbox(); renderThread();
+  const me = myUid();
+  let changed = false;
+  chatMsgs.forEach(function (m) {
+    if (m.fromUid === uid && m.toUid === me && !m.read) {
+      m.read = true; changed = true;
+      if (FB) fbDb.collection('messages').doc(m.id).update({ read: true }).catch(function () {});
+    }
+  });
+  if (!FB && changed) {
+    const all = loadLocalMessages();
+    all.forEach(function (m) { if (m.fromUid === uid && m.toUid === me) m.read = true; });
+    localStorage.setItem('ex_messages', JSON.stringify(all));
+  }
+  if (changed) { renderInbox(); updateMsgBadge(); }
+}
+function openChatWith(uid, name) {
+  if (!currentUser) { showToast(t('msgLogin')); showAuth('login'); return; }
+  if (!uid || uid === myUid()) return;
+  activeChatUid = uid; activeChatName = name || '';
+  showView('messages');
+  openThread(uid, name);
+}
+document.getElementById('chatForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+  if (!currentUser || !activeChatUid) return;
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const entry = { fromUid: myUid(), fromName: currentUser.name, fromPhoto: currentUser.photo || '', toUid: activeChatUid, toName: activeChatName, text: text, ts: Date.now(), read: false };
+  if (FB) { fbDb.collection('messages').add(entry).catch(function () { showToast(t('requestError')); }); }
+  else {
+    const all = loadLocalMessages();
+    all.push(Object.assign({ id: 'm' + Date.now() }, entry));
+    localStorage.setItem('ex_messages', JSON.stringify(all));
+    subscribeMessages();
+  }
+  input.value = '';
+});
+
 // ---------- 17.5) Points & file unlocks (Phase H) ----------
 // Balance = 50 welcome points + the sum of the user's ledger entries.
 // The ledger lives in a 'points' collection so one user can credit another
@@ -1119,7 +1343,7 @@ function refreshMyPoints() {
   const hp = document.getElementById('headPoints');
   if (hp) hp.textContent = '⭐ ' + num(myBalance());
   const sp = document.getElementById('sidePoints');
-  if (sp) sp.textContent = num(myBalance());
+  if (sp) sp.textContent = currentUser ? num(myBalance()) : '—';
 }
 function addPointsEntry(uid, amount, reason) {
   const entry = { uid: uid, amount: amount, reason: reason || '', by: myUid(), ts: Date.now() };
@@ -1137,7 +1361,9 @@ function subscribePoints() {
   if (!FB || !currentUser) { refreshMyPoints(); return; }
   pointsUnsub = fbDb.collection('points').where('uid', '==', myUid()).onSnapshot(function (snap) {
     myPointsSum = snap.docs.reduce(function (sum, d) { return sum + (d.data().amount || 0); }, 0);
+    myPointsEntries = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
     refreshMyPoints();
+    renderPointsPanel();
   }, function () {});
   unlocksUnsub = fbDb.collection('unlocks').where('uid', '==', myUid()).onSnapshot(function (snap) {
     myUnlocks = snap.docs.map(function (d) { return d.data().postId; });
@@ -1149,8 +1375,9 @@ function unlockWithPoints(postId) {
   const post = posts.find(function (x) { return x.id === postId; });
   if (!post || !currentUser || !post.fileUrl || canViewFile(post)) return;
   if (myBalance() < POINTS_UNLOCK) { showToast(t('ptsNeed')); return; }
+  if (!confirm(t('confirmUnlock'))) return;
   addPointsEntry(myUid(), -POINTS_UNLOCK, 'unlock');
-  addPointsEntry(post.owner, POINTS_UNLOCK, 'unlock-income');
+  addReward(post.owner, POINTS_UNLOCK, 'unlock-income');
   const rec = { uid: myUid(), postId: postId, ts: Date.now() };
   if (FB) fbDb.collection('unlocks').add(rec).catch(function () {});
   else { const all = loadLocalUnlocks(); all.push(rec); localStorage.setItem('ex_unlocks', JSON.stringify(all)); }
@@ -1163,12 +1390,97 @@ function pinPost(postId) {
   const post = posts.find(function (x) { return x.id === postId; });
   if (!post || !currentUser || post.owner !== myUid() || isPinned(post)) return;
   if (myBalance() < POINTS_PIN) { showToast(t('ptsNeed')); return; }
+  if (!confirm(t('confirmPin'))) return;
   addPointsEntry(myUid(), -POINTS_PIN, 'pin');
   const until = Date.now() + 3 * 24 * 60 * 60 * 1000;
   if (FB) fbDb.collection('posts').doc(postId).update({ pinnedUntil: until }).catch(function () {});
   post.pinnedUntil = until;
   applyFilters(); renderMyExchanges();
   showToast(t('ptsPin'));
+}
+
+
+// ---------- 17.6) Claimable rewards (Phase K): passive earnings wait in the
+// profile until the user chooses to claim them. Spending asks first. ----------
+function loadLocalRewards() { return JSON.parse(localStorage.getItem('ex_rewards') || '[]'); }
+function addReward(uid, amount, reason) {
+  if (!uid || !amount) return;
+  const entry = { uid: uid, amount: amount, reason: reason || '', by: myUid(), ts: Date.now(), claimed: false };
+  if (FB) { fbDb.collection('rewards').add(entry).catch(function () {}); return; }
+  const all = loadLocalRewards();
+  all.push(Object.assign({ id: 'rw' + Date.now() + Math.floor(Math.random() * 9999) }, entry));
+  localStorage.setItem('ex_rewards', JSON.stringify(all));
+  if (uid === myUid()) { myRewards = all.filter(function (r) { return r.uid === uid; }); renderPointsPanel(); }
+}
+function subscribeRewards() {
+  if (rewardsUnsub) { rewardsUnsub(); rewardsUnsub = null; }
+  if (!currentUser) { myRewards = []; renderPointsPanel(); return; }
+  if (!FB) { const me = myUid(); myRewards = loadLocalRewards().filter(function (r) { return r.uid === me; }); renderPointsPanel(); return; }
+  rewardsUnsub = fbDb.collection('rewards').where('uid', '==', currentUser.uid).onSnapshot(function (snap) {
+    myRewards = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+    renderPointsPanel();
+  }, function () {});
+}
+function pendingRewards() { return myRewards.filter(function (r) { return !r.claimed; }); }
+function claimReward(id) {
+  const r = myRewards.find(function (x) { return x.id === id; });
+  if (!r || r.claimed || !currentUser) return;
+  r.claimed = true;
+  if (FB) {
+    fbDb.collection('rewards').doc(id).update({ claimed: true }).catch(function () {});
+    fbDb.collection('points').add({ uid: myUid(), amount: r.amount, reason: r.reason, by: myUid(), ts: Date.now() })
+      .then(function () { showToast(t('claimedToast')); }).catch(function () {});
+  } else {
+    const all = loadLocalRewards();
+    const found = all.find(function (x) { return x.id === id; });
+    if (found) found.claimed = true;
+    localStorage.setItem('ex_rewards', JSON.stringify(all));
+    const pts = loadLocalPoints();
+    pts.push({ uid: myUid(), amount: r.amount, reason: r.reason, by: myUid(), ts: Date.now() });
+    localStorage.setItem('ex_points', JSON.stringify(pts));
+    refreshMyPoints();
+    showToast(t('claimedToast'));
+  }
+  renderPointsPanel();
+}
+function claimAllRewards() { pendingRewards().slice().forEach(function (r) { claimReward(r.id); }); }
+const REASON_KEYS = { 'post': 'rsPost', 'exchange': 'rsExchange', 'unlock': 'rsUnlock', 'unlock-income': 'rsUnlockIncome', 'rating5': 'rsRating5', 'pin': 'rsPin' };
+function reasonLabel(reason) { return t(REASON_KEYS[reason] || 'rsPost'); }
+function renderPointsPanel() {
+  const box = document.getElementById('rewardsBox');
+  const hist = document.getElementById('pointsHistory');
+  if (!box || !hist) return;
+  if (!currentUser) { box.innerHTML = ''; hist.innerHTML = ''; return; }
+  const pend = pendingRewards();
+  if (!pend.length) box.innerHTML = '<p class="empty-note">' + t('noRewards') + '</p>';
+  else {
+    const total = pend.reduce(function (sum, r) { return sum + r.amount; }, 0);
+    box.innerHTML = '<p class="rewards-total">' + t('rewardsWaiting') + ': <strong>+' + num(total) + '</strong><button class="btn btn-gold btn-small" type="button" data-claim-all>' + t('claimAllBtn') + '</button></p>' +
+      pend.map(function (r) {
+        return '<div class="reward-row"><span>🎁 ' + reasonLabel(r.reason) + '</span><strong>+' + num(r.amount) + '</strong><button class="btn btn-small btn-primary" type="button" data-claim="' + r.id + '">' + t('claimBtn') + '</button></div>';
+      }).join('');
+  }
+  const entries = (FB ? myPointsEntries : loadLocalPoints().filter(function (e) { return e.uid === myUid(); }))
+    .slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); }).slice(0, 10);
+  hist.innerHTML = entries.length ? entries.map(function (e) {
+    return '<div class="hist-row"><span>' + reasonLabel(e.reason) + '</span><strong class="' + (e.amount >= 0 ? 'plus' : 'minus') + '">' + (e.amount >= 0 ? '+' : '') + num(e.amount) + '</strong><small>' + timeAgo(e.ts) + '</small></div>';
+  }).join('') : '<p class="empty-note">' + t('noHistory') + '</p>';
+}
+function renderProfileExtras() {
+  const mp = document.getElementById('pfMyPosts');
+  if (mp) {
+    const mine = posts.filter(function (x) { return x.owner && x.owner === myUid(); });
+    mp.innerHTML = mine.length ? mine.map(function (x) {
+      return '<div class="pf-post-row"><span class="type-badge ' + (typeClass[x.type] || '') + '">' + (typeIcon[x.type] || '📚') + ' ' + t('type_' + x.type) + '</span><div><strong>' + esc(x.subject) + '</strong><small>' + t('haveShort') + ': ' + esc(x.have) + ' · ' + t('wantShort') + ': ' + esc(x.want) + '</small></div>' + (isPinned(x) ? '<span class="featured-badge">' + t('featuredTag') + '</span>' : '') + '</div>';
+    }).join('') : '<p class="empty-note">' + t('noMyPosts') + '</p>';
+  }
+  const pr = document.getElementById('pfRatings');
+  if (pr) {
+    const mine = ratings.filter(function (x) { return x.toUid === myUid(); }).slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); }).slice(0, 5);
+    pr.innerHTML = mine.length ? mine.map(function (x) {
+      return '<div class="pf-rate-row"><span>' + starsText(x.stars) + '</span><small>' + esc(x.fromName || '') + (x.postTitle ? ' · ' + esc(x.postTitle) : '') + '</small></div>';
+    }).join('') : '<p class="empty-note">' + t('noRatingsYet') + '</p>';
+  }
 }
 
 // ---------- 18) Ratings & reputation (Phase E) ----------
@@ -1198,14 +1510,14 @@ function rateUser(requestId, stars) {
   const other = r.fromUid === me ? r.toUid : r.fromUid;
   const entry = { requestId: requestId, fromUid: me, toUid: other, stars: stars, ts: Date.now() };
   if (FB) {
-    fbDb.collection('ratings').add(entry).then(function () { if (stars === 5) addPointsEntry(other, POINTS_RATING5, 'rating5'); showToast(t('ratedToast')); })
+    fbDb.collection('ratings').add(entry).then(function () { if (stars === 5) addReward(other, POINTS_RATING5, 'rating5'); showToast(t('ratedToast')); })
       .catch(function () { showToast(t('requestError')); });
     return;
   }
   const all = loadLocalRatings();
   all.push(Object.assign({ id: 'rt' + Date.now() }, entry));
   localStorage.setItem('ex_ratings', JSON.stringify(all));
-  if (stars === 5) addPointsEntry(other, POINTS_RATING5, 'rating5');
+  if (stars === 5) addReward(other, POINTS_RATING5, 'rating5');
   ratings = all;
   renderRequests();
   applyFilters();
@@ -1430,9 +1742,15 @@ const BOT_TOPICS = [
   { k: ['file attach', 'file kivabe', 'pdf kivabe dibo', 'link kivabe', 'drive link', 'file link', 'file dite', 'pdf dite', 'attach', 'ফাইল দেবো', 'লিংক', 'file upload', 'notes er link'],
     en: 'To attach a file to your post: upload the notes to your own Google Drive, set sharing to "Anyone with the link", then paste the link in the "File / Drive link" field of the post form. Everyone can see that your post has a file — but the link itself opens only for a student whose exchange request you accept. Fair exchange first — or unlock it instantly with 15 points!',
     bn: 'পোস্টে ফাইল যোগ করতে: নোটগুলো নিজের Google Drive-এ upload করে sharing "Anyone with the link" করে দাও, তারপর post form-এর "File / Drive link" ঘরে link-টা বসাও। সবাই দেখতে পাবে তোমার পোস্টে ফাইল আছে — কিন্তু link-টা খুলবে শুধু তার জন্য যার exchange request তুমি Accept করবে। আগে fair exchange!' },
+  { k: ['community', 'কমিউনিটি', 'group', 'গ্রুপ', 'forum', 'discussion', 'wall', 'public group', 'sobar sathe'],
+    en: 'The Community page is a public wall for all EXCHORA students: open Community from the sidebar, write your message and press Post — everyone can read and reply there. From any community post you can also start a private chat with its writer.',
+    bn: 'Community page হলো সব EXCHORA শিক্ষার্থীর জন্য public wall: sidebar থেকে Community খোলো, মেসেজ লিখে Post চাপো — সবাই পড়তে ও reply দিতে পারবে। Community-র যেকোনো পোস্ট থেকে লেখকের সাথে private chat-ও শুরু করা যায়।' },
+  { k: ['message', 'মেসেজ', 'chat', 'চ্যাট', 'dm', 'inbox', 'kotha bolbo', 'jogajog', 'communicate', 'kotha bola', 'message pathabo', 'msg'],
+    en: 'To talk to a student privately, press the 💬 button on their post or next to an exchange request — or open Messages from the sidebar. Chats are private between you two. Tip: after a request is accepted, WhatsApp numbers are shared too.',
+    bn: 'কোনো শিক্ষার্থীর সাথে privately কথা বলতে তার পোস্টে বা exchange request-এর পাশে 💬 button চাপো — অথবা sidebar থেকে Messages খোলো। Chat শুধু তোমাদের দুজনের মধ্যেই থাকে। Tip: request accept হলে WhatsApp number-ও শেয়ার হয়।' },
   { k: ['point', 'points', 'পয়েন্ট', 'point kivabe', 'points kivabe', 'earn point', 'point pabo'],
-    en: 'Points: you start with 50 free points. Earn more: +5 for every post, +10 when an exchange completes, +15 when someone unlocks your file with points, and +5 when you receive a 5-star rating. Spend points to unlock a file instantly (15 points) or pin your post at the top for 3 days (20 points). Exchanges themselves are always free.',
-    bn: 'পয়েন্ট: শুরুতে 50 পয়েন্ট ফ্রি। আরও earn করো: প্রতিটা পোস্টে +5, exchange complete হলে +10, কেউ তোমার ফাইল পয়েন্ট দিয়ে unlock করলে +15, আর 5-star rating পেলে +5। পয়েন্ট খরচ করে ফাইল সাথে সাথে unlock করা যায় (15 পয়েন্ট) বা নিজের পোস্ট 3 দিনের জন্য সবার উপরে pin করা যায় (20 পয়েন্ট)। Exchange সবসময়ই ফ্রি।' },
+    en: 'Points: you start with 50 free points, and posting gives +5 instantly. Rewards — +10 when an exchange completes, +15 when someone unlocks your file, +5 for a 5-star rating — wait in your Profile under My Points: claim them whenever you want, they are never forced. Spending is your choice too: unlock a file for 15 or pin your post for 20 (3 days at the top), and the site always asks before spending. Exchanges themselves are always free.',
+    bn: 'পয়েন্ট: শুরুতে 50 ফ্রি, পোস্ট করলেই সাথে সাথে +5। Reward — exchange complete হলে +10, কেউ তোমার ফাইল unlock করলে +15, 5-star rating পেলে +5 — তোমার Profile-এর My Points-এ অপেক্ষা করে: যখন চাও Claim করো, জোর করে কিছুই হয় না। খরচও তোমার সিদ্ধান্ত: ফাইল unlock 15 বা পোস্ট pin 20 (3 দিন সবার উপরে) — খরচের আগে সাইট সবসময় জিজ্ঞেস করে। Exchange সবসময়ই ফ্রি।' },
   { k: ['match', 'ম্যাচ', 'matching'], fn: 'matches' }
 ];
 BOT_TOPICS.forEach(function (t) { t.nk = t.k.map(function (key) { return botNorm(key); }); });
@@ -1491,8 +1809,12 @@ function botReply(rawQ) {
     '<button type="button" class="bot-post" data-bot-q="how to post">How to post</button><br>' +
     '<button type="button" class="bot-post" data-bot-q="how exchange works">How exchanges work</button><br>' +
     '<button type="button" class="bot-post" data-bot-q="find my matches">Find my matches</button><br>' +
+    '<button type="button" class="bot-post" data-bot-q="community">Community</button><br>' +
+    '<button type="button" class="bot-post" data-bot-q="how to message someone">How to message someone</button><br>' +
     '<button type="button" class="bot-post" data-bot-q="is it free">Is it free?</button>';
 }
+
+subscribeCommunity();
 
 // ---------- 16) Firebase wiring: live posts + auth state ----------
 if (FB) {
@@ -1537,6 +1859,7 @@ if (FB) {
       currentUser = Object.assign({ uid: user.uid, email: user.email }, data);
       renderAuthArea();
       subscribeRequests();
+      if (!document.getElementById('view-auth').hidden) showView('home');
       if (!document.getElementById('view-profile').hidden) renderProfile();
     }).catch(function () {
       // The profile document could not be loaded (network hiccup): still sign
@@ -1544,6 +1867,7 @@ if (FB) {
       currentUser = { uid: user.uid, email: user.email, name: user.displayName || (user.email || 'Student').split('@')[0], university: '', department: 'CSE', semester: '11', bio: '', contact: '', since: new Date().getFullYear(), photo: user.photoURL || '' };
       renderAuthArea();
       subscribeRequests();
+      if (!document.getElementById('view-auth').hidden) showView('home');
     });
   });
 }

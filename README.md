@@ -23,6 +23,9 @@ so both sides benefit.
 - **StudyBot** — a built-in rule-based guide that explains how everything works, answers common questions, finds posts and checks your matches (English & বাংলা)
 - **Admin dashboard** — the site owner can view platform stats and moderate posts
 - **Sidebar navigation** — fixed sidebar on desktop, slide-in drawer on mobile, with your profile and live points balance
+- **Community wall** — a public space where all students post and discuss together
+- **Private messages** — 1-to-1 chats with any student, with unread badges
+- **Claimable rewards** — points from exchanges, ratings and file unlocks wait in your profile until you claim them; spending always asks first
 - **Bilingual UI** — full English / বাংলা toggle, plus dark & light mode
 
 ## Points system

@@ -399,13 +399,15 @@ html[data-theme="dark"] .pin-on{color:#e9bc4a}
 .sidebar{position:fixed;top:0;left:0;bottom:0;width:254px;background:var(--card);border-right:1px solid var(--line);z-index:75;padding:22px 16px;overflow-y:auto;transform:translateX(-105%);transition:transform .3s ease;display:flex;flex-direction:column;gap:16px}
 .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.35)}
 .side-overlay{position:fixed;inset:0;background:rgba(6,12,28,.5);z-index:74}
-.side-brand{font-size:20px;font-weight:800;letter-spacing:.5px;color:var(--text)}
+.side-brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;letter-spacing:.5px;color:var(--text)}
+.side-brand .logo-badge{width:36px;height:36px;flex:none}
+.side-brand .logo-badge svg{width:100%;height:100%;display:block}
 .side-brand strong{color:#d4a017}
 .side-user{display:flex;gap:10px;align-items:center}
 .side-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#2b4acb,#0b1b3a);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;overflow:hidden;flex:none}
 .side-avatar img{width:100%;height:100%;object-fit:cover}
 .side-user-text strong{display:block;font-size:15px;color:var(--text)}
-.side-user-text small{color:var(--muted);font-size:12px;word-break:break-all}
+.side-user-text small{color:var(--muted);font-size:11.5px;display:block;max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .side-points{background:rgba(212,160,23,.12);border:1px dashed rgba(212,160,23,.5);border-radius:14px;padding:10px 12px;color:var(--text);font-size:14px;display:flex;flex-direction:column;gap:2px}
 .side-points small{color:var(--muted);font-size:12px}
 .side-nav{display:flex;flex-direction:column;gap:6px}
@@ -419,3 +421,76 @@ html[data-theme="dark"] .pin-on{color:#e9bc4a}
   .sidebar{transform:none}
   .side-overlay{display:none!important}
 }
+
+/* ===== Phase J: profile stats fix + community + messages ===== */
+.profile-card .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.profile-card .stat{min-width:0;padding:12px 6px}
+@media (max-width:560px){ .profile-card .stats{grid-template-columns:repeat(2,1fr)} }
+.btn-msg{background:none;border:1.5px solid var(--line);border-radius:999px;width:34px;height:34px;font-size:15px;cursor:pointer}
+.btn-msg:hover{border-color:#d4a017;background:rgba(212,160,23,.12)}
+.community-form{display:flex;gap:10px;align-items:flex-start;margin-bottom:20px}
+.community-form textarea{flex:1;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--text);font:inherit;font-size:14.5px;resize:vertical}
+.community-form textarea:focus{outline:none;border-color:var(--teal)}
+.community-list{display:flex;flex-direction:column;gap:12px}
+.comm-item{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.comm-body{flex:1;min-width:0}
+.comm-head{display:flex;align-items:center;gap:8px}
+.comm-head small{color:var(--muted);font-size:12px}
+.comm-del{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px}
+.comm-body p{margin-top:4px;font-size:14.5px;white-space:pre-wrap;word-break:break-word}
+.btn-msg-link{background:none;border:none;color:#9a7408;font-weight:600;font-size:13px;cursor:pointer;padding:4px 0 0}
+html[data-theme="dark"] .btn-msg-link{color:#e9bc4a}
+.empty-note{color:var(--muted);font-size:14px;padding:14px 4px}
+.chat-layout{display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start}
+.conv-list{display:flex;flex-direction:column;gap:8px}
+.conv-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;cursor:pointer;font:inherit;text-align:left;color:var(--text);width:100%}
+.conv-item.active{border-color:#d4a017}
+.conv-text{flex:1;min-width:0;display:flex;flex-direction:column}
+.conv-text strong{font-size:14px}
+.conv-text small{color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-box{background:var(--card);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;overflow:hidden}
+.chat-head{padding:13px 16px;font-weight:700;border-bottom:1px solid var(--line);color:var(--text)}
+.chat-msgs{padding:16px;display:flex;flex-direction:column;gap:8px;min-height:260px;max-height:420px;overflow-y:auto}
+.chat-msg{max-width:75%;padding:9px 13px;border-radius:16px;font-size:14.5px}
+.chat-msg p{white-space:pre-wrap;word-break:break-word}
+.chat-msg.theirs{background:var(--bg);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px;color:var(--text)}
+.chat-msg.mine{background:linear-gradient(135deg,#2b4acb,#1e3a8a);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-form{display:flex;gap:10px;padding:12px;border-top:1px solid var(--line)}
+.chat-form input{flex:1;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);font:inherit;font-size:14px}
+.chat-form input:focus{outline:none;border-color:var(--teal)}
+@media (max-width:760px){ .chat-layout{grid-template-columns:1fr} .conv-list{max-height:190px;overflow-y:auto} }
+
+/* ===== Phase K: header declutter, sidebar collapse, profile sections ===== */
+.theme-toggle,.lang-toggle,.user-chip,.main-nav .btn{flex:none}
+.profile-sections{max-width:720px;margin:22px auto 0;display:flex;flex-direction:column;gap:18px;text-align:left}
+.psec{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:22px 24px}
+.psec h3{font-size:18px;margin-bottom:12px;color:var(--text)}
+.psec h4{font-size:14px;margin:16px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.reward-row,.hist-row,.pf-post-row,.pf-rate-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.reward-row span,.hist-row span{flex:1;font-size:14px;color:var(--text)}
+.reward-row strong{color:#9a7408}
+html[data-theme="dark"] .reward-row strong{color:#e9bc4a}
+.rewards-total{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--text);margin-bottom:6px}
+.rewards-total strong{color:#9a7408;font-size:18px}
+html[data-theme="dark"] .rewards-total strong{color:#e9bc4a}
+.hist-row strong.plus{color:#1d9e62}
+.hist-row strong.minus{color:#d9534f}
+.hist-row small{color:var(--muted);font-size:12px}
+.points-guide{margin-top:14px;font-size:13px;color:var(--muted);line-height:1.55}
+.pf-post-row>div{flex:1;min-width:0}
+.pf-post-row strong{display:block;font-size:14.5px;color:var(--text)}
+.pf-post-row small{color:var(--muted);font-size:12.5px}
+.pf-rate-row span{font-size:13px}
+.pf-rate-row small{color:var(--muted);font-size:12.5px}
+@media (min-width:1024px){
+  .main-nav a[href="#browse"],.main-nav a[href="#post"],.main-nav a[href="#my"],#navMatches,#navAdmin{display:none}
+  body.side-hidden{padding-left:0}
+  body.side-hidden .sidebar{transform:translateX(-105%)}
+  .side-toggle{display:block}
+}
+
+/* ===== Card footer structure fix: owner row, then a full-width actions row
+   (the Request Exchange button never wraps or squeezes again) ===== */
+.card-bottom{flex-direction:column;align-items:stretch;gap:10px}
+.card-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;width:100%}
+.btn-request,.btn-interested{white-space:nowrap}
