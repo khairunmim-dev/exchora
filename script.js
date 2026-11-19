@@ -111,7 +111,7 @@ const STR = {
     fileInvalid: 'That link does not look right — paste a full link starting with https:// (or leave the field empty).',
     reqNoteTitle: 'What will you give in return?', reqNoteSub: 'This is an exchange — tell the poster what you can give back. They will see it before accepting.',
     reqNotePh: 'e.g. I will give my Data Mining handwritten notes', reqSendBtn: 'Send Request',
-    pointsStat: 'Points', featuredTag: 'Featured', pinBtn: 'Pin (20 pts)', ptsPin: 'Post pinned at the top for 3 days!',
+    pointsStat: 'Points', guest: 'Guest', profileNav: 'Profile', sidePointsHint: 'Earn by posting & exchanging', featuredTag: 'Featured', pinBtn: 'Pin (20 pts)', ptsPin: 'Post pinned at the top for 3 days!',
     ptsNeed: 'Not enough points — earn points by posting and completing exchanges.', unlockBtn: 'Unlock file — 15 points',
     balanceLabel: 'Your points', ptsUnlocked: 'File unlocked! 15 points used.',
     requestsReceived: 'Requests for your posts', requestsSentTitle: 'Requests you sent',
@@ -192,7 +192,7 @@ const STR = {
     fileInvalid: 'Link-টা ঠিক মনে হচ্ছে না — https:// দিয়ে শুরু পুরো link দাও (অথবা ঘরটা খালি রাখো)।',
     reqNoteTitle: 'বদলে তুমি কী দেবে?', reqNoteSub: 'এটা একটা exchange — পোস্টদাতাকে বলো বদলে তুমি কী দিতে পারবে। Accept করার আগেই সে এটা দেখতে পাবে।',
     reqNotePh: 'যেমন: আমি আমার Data Mining হাতে লেখা নোট দেবো', reqSendBtn: 'রিকোয়েস্ট পাঠাও',
-    pointsStat: 'পয়েন্ট', featuredTag: 'ফিচার্ড', pinBtn: 'পিন করো (20 pts)', ptsPin: 'পোস্ট 3 দিনের জন্য সবার উপরে পিন হয়েছে!',
+    pointsStat: 'পয়েন্ট', guest: 'অতিথি', profileNav: 'প্রোফাইল', sidePointsHint: 'পোস্ট আর exchange করে earn করো', featuredTag: 'ফিচার্ড', pinBtn: 'পিন করো (20 pts)', ptsPin: 'পোস্ট 3 দিনের জন্য সবার উপরে পিন হয়েছে!',
     ptsNeed: 'যথেষ্ট পয়েন্ট নেই — পোস্ট করে আর exchange complete করে পয়েন্ট earn করো।', unlockBtn: 'ফাইল unlock করো — 15 পয়েন্ট',
     balanceLabel: 'তোমার পয়েন্ট', ptsUnlocked: 'ফাইল unlock হয়েছে! 15 পয়েন্ট কেটেছে।',
     requestsReceived: 'তোমার পোস্টের রিকোয়েস্ট', requestsSentTitle: 'তোমার পাঠানো রিকোয়েস্ট',
@@ -508,6 +508,32 @@ document.getElementById('navAdmin').addEventListener('click', function (event) {
   if (isAdmin()) showView('admin');
 });
 
+// ---------- Sidebar (Phase I): fixed on desktop, drawer on mobile ----------
+const sidebarEl = document.getElementById('sidebar');
+const sideOverlayEl = document.getElementById('sideOverlay');
+function openSidebar() { sidebarEl.classList.add('open'); sideOverlayEl.hidden = false; }
+function closeSidebar() { sidebarEl.classList.remove('open'); sideOverlayEl.hidden = true; }
+document.getElementById('sideToggle').addEventListener('click', function () {
+  if (sidebarEl.classList.contains('open')) closeSidebar(); else openSidebar();
+});
+sideOverlayEl.addEventListener('click', closeSidebar);
+document.querySelectorAll('[data-side]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    const go = btn.dataset.side;
+    if (go === 'home') showView('home');
+    else if (go === 'post') { showView('home'); setTimeout(function () { document.getElementById('post').scrollIntoView({ behavior: 'smooth' }); }, 60); }
+    else if (go === 'my') { showView('home'); setTimeout(function () { document.getElementById('my').scrollIntoView({ behavior: 'smooth' }); }, 60); }
+    else if (go === 'matches') showView('matches');
+    else if (go === 'profile') showView('profile');
+    else if (go === 'admin' && isAdmin()) showView('admin');
+    closeSidebar();
+  });
+});
+document.getElementById('sideLogout').addEventListener('click', function () {
+  closeSidebar();
+  document.getElementById('btnLogout').click();
+});
+
 // ---------- 12) Demo accounts (front-end only — Firebase replaces this in Phase C) ----------
 // NOTE: passwords are never stored in plain text here, but this local demo
 // is NOT real security. Phase C moves accounts to Firebase Authentication.
@@ -547,6 +573,14 @@ function renderAuthArea() {
     if (nameField && !nameField.value) nameField.value = currentUser.name;
   }
   document.getElementById('navAdmin').hidden = !isAdmin();
+  const sName = document.getElementById('sideName');
+  if (sName) {
+    sName.textContent = loggedIn ? currentUser.name : t('guest');
+    document.getElementById('sideEmail').textContent = loggedIn ? (currentUser.email || '') : '';
+    setAvatar(document.getElementById('sideAvatar'), loggedIn ? currentUser.name : '?', loggedIn ? currentUser.photo : '');
+    document.getElementById('sideAdmin').hidden = !isAdmin();
+    document.getElementById('sideLogout').hidden = !loggedIn;
+  }
   applyFilters();      // card buttons (Request / own post) depend on who is signed in
   renderRequests();
 }
@@ -658,6 +692,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
 // ---------- 13) Profile ----------
 function renderProfile() {
   if (!currentUser) { showAuth('login'); return; }
+  refreshMyPoints();
   setAvatar(document.getElementById('pfAvatar'), currentUser.name, currentUser.photo);
   document.getElementById('pfName').textContent = currentUser.name;
   document.getElementById('pfMeta').textContent = currentUser.university + ' · ' + currentUser.department;
@@ -1073,14 +1108,18 @@ function myBalance() { return POINTS_WELCOME + myPointsSum; }
 function loadLocalPoints() { return JSON.parse(localStorage.getItem('ex_points') || '[]'); }
 function loadLocalUnlocks() { return JSON.parse(localStorage.getItem('ex_unlocks') || '[]'); }
 function refreshMyPoints() {
-  if (!currentUser) { myPointsSum = 0; myUnlocks = []; return; }
-  if (!FB) {
+  if (!currentUser) { myPointsSum = 0; myUnlocks = []; }
+  else if (!FB) {
     const me = myUid();
     myPointsSum = loadLocalPoints().filter(function (e) { return e.uid === me; }).reduce(function (sum, e) { return sum + e.amount; }, 0);
     myUnlocks = loadLocalUnlocks().filter(function (u) { return u.uid === me; }).map(function (u) { return u.postId; });
   }
   const el = document.getElementById('pfPoints');
   if (el) el.textContent = num(myBalance());
+  const hp = document.getElementById('headPoints');
+  if (hp) hp.textContent = '⭐ ' + num(myBalance());
+  const sp = document.getElementById('sidePoints');
+  if (sp) sp.textContent = num(myBalance());
 }
 function addPointsEntry(uid, amount, reason) {
   const entry = { uid: uid, amount: amount, reason: reason || '', by: myUid(), ts: Date.now() };
@@ -1499,6 +1538,12 @@ if (FB) {
       renderAuthArea();
       subscribeRequests();
       if (!document.getElementById('view-profile').hidden) renderProfile();
+    }).catch(function () {
+      // The profile document could not be loaded (network hiccup): still sign
+      // the user in with the basic auth info so the page updates right away.
+      currentUser = { uid: user.uid, email: user.email, name: user.displayName || (user.email || 'Student').split('@')[0], university: '', department: 'CSE', semester: '11', bio: '', contact: '', since: new Date().getFullYear(), photo: user.photoURL || '' };
+      renderAuthArea();
+      subscribeRequests();
     });
   });
 }

@@ -22,6 +22,7 @@ so both sides benefit.
 - **Ratings & reputation** — after a completed exchange, both sides rate each other (1–5★); average ratings show on post cards and profiles
 - **StudyBot** — a built-in rule-based guide that explains how everything works, answers common questions, finds posts and checks your matches (English & বাংলা)
 - **Admin dashboard** — the site owner can view platform stats and moderate posts
+- **Sidebar navigation** — fixed sidebar on desktop, slide-in drawer on mobile, with your profile and live points balance
 - **Bilingual UI** — full English / বাংলা toggle, plus dark & light mode
 
 ## Points system
