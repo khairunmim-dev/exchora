@@ -346,6 +346,8 @@ document.addEventListener('click', function (event) {
   if (rateBtn) { rateUser(rateBtn.dataset.id, Number(rateBtn.dataset.rate)); return; }
   const botPost = event.target.closest('[data-bot-post]');
   if (botPost) { openDetails(botPost.dataset.botPost); return; }
+  const botQ = event.target.closest('#botMsgs [data-bot-q]');
+  if (botQ) { botAsk(botQ.dataset.botQ); return; }
   const admDel = event.target.closest('[data-admin-del]');
   if (admDel) { adminDeletePost(admDel.dataset.adminDel); return; }
   const delPost = event.target.closest('[data-del-post]');
@@ -1082,104 +1084,210 @@ function botAsk(text) {
   botAdd(esc(text), 'me');
   setTimeout(function () { botAdd(botReply(text.toLowerCase()), 'bot'); }, 250);
 }
-function botReply(q) {
-  const has = function () { return Array.prototype.some.call(arguments, function (w) { return q.indexOf(w) !== -1; }); };
-  if (/^(hi|hello|hey|hola|সালাম|আসসালাম|হ্যালো|হাই)\b/.test(q) || q === 'hi' || q === 'hello')
+// ---------- 20b) StudyBot knowledge base — trained with scored topic matching ----------
+// Normalises a question (or a key) so English, Bangla and Banglish spellings meet:
+// lowercases, drops punctuation, folds common Banglish variants and plural endings.
+function botNorm(s) {
+  let x = s.toLowerCase().replace(/[^\p{L}\p{N}\s]+/gu, ' ').replace(/\s+/g, ' ').trim();
+  const phraseFolds = [['ki vabe', 'kivabe'], ['ki kore', 'kivabe'], ['kemon kore', 'kivabe'], ['sing up', 'sign up'], ['log in', 'login'], ['log out', 'logout']];
+  phraseFolds.forEach(function (f) { x = x.split(f[0]).join(f[1]); });
+  const wordFolds = { kibhabe: 'kivabe', kemne: 'kivabe', vule: 'bhule', exchnage: 'exchange', exchage: 'exchange', reqest: 'request', rqst: 'request', pasword: 'password', passward: 'password', acount: 'account', profle: 'profile', lagin: 'login', ase: 'ache', dhonnobad: 'thank', shukria: 'thank', thanku: 'thank', hye: 'hoye' };
+  const toks = x.split(' ').map(function (w) {
+    if (wordFolds[w]) w = wordFolds[w];
+    if (w.length > 3 && w.charAt(w.length - 1) === 's' && w.charAt(w.length - 2) !== 's') w = w.slice(0, -1);
+    return w;
+  });
+  return ' ' + toks.join(' ') + ' ';
+}
+const BOT_TOPICS = [
+  { k: ['who are you', 'your name', 'tumi ke', 'তুমি কে', 'তোমার নাম', 'are you ai', 'real ai', 'tumi ki ai', 'tumi ki robot', 'robot', 'chatbot', 'who is this'],
+    en: 'I am StudyBot, a rule-based guide built into EXCHORA. I am not a real AI — I answer from topics the site taught me: posting, exchanges, matches, ratings, privacy and more. For anything else, the site owner can help.',
+    bn: 'আমি StudyBot, EXCHORA-র ভিতরে বানানো একটা নিয়ম-ভিত্তিক গাইড। আমি আসল AI না — সাইট আমাকে যা শিখিয়েছে (পোস্ট, এক্সচেঞ্জ, ম্যাচ, রেটিং, গোপনীয়তা ইত্যাদি) শুধু সেগুলোর উত্তর দিই। এর বাইরের কিছুতে সাইটের মালিক সাহায্য করতে পারবে।' },
+  { k: ['who made', 'who built', 'who created', 'owner ke', 'owner', 'ke banai', 'কে বানিয়েছে', 'কে তৈরি', 'creator', 'developer ke', 'admin ke', 'malik ke', 'কার সাইট', 'ke baniyeche', 'baniyeche', 'ke toiri koreche'],
+    en: 'EXCHORA was built by Khairun Nessa Mim, a CSE student at Southeast University, as a learning project to help students share study materials.',
+    bn: 'EXCHORA বানিয়েছে Khairun Nessa Mim, Southeast University-এর CSE ছাত্রী — ছাত্রদের পড়ার জিনিস ভাগ করে নিতে সাহায্য করার জন্য একটা শেখার প্রজেক্ট হিসেবে।' },
+  { k: ['what is exchora', 'exchora ki', 'exchora কী', 'about exchora', 'ki eta', 'কী এটা', 'eta ki site', 'site ta ki', 'website ta ki', 'exchora mane ki', 'exchora সম্পর্কে'],
+    en: 'EXCHORA is a website where students exchange notes, books, slides and question banks. You post what you HAVE and what you WANT, and the site matches you with other students.',
+    bn: 'EXCHORA হলো এমন একটা ওয়েবসাইট যেখানে ছাত্রছাত্রীরা নোট, বই, স্লাইড আর প্রশ্নব্যাংক বিনিময় করে। তুমি পোস্ট করো তোমার কাছে যা আছে (HAVE) আর যা চাই (WANT) — সাইট তোমাকে মিলিয়ে দেয় অন্য ছাত্রদের সাথে।' },
+  { k: ['how does exchora work', 'how it works', 'how does it work', 'kivabe kaj kore', 'কীভাবে কাজ করে', 'kaj kore kivabe', 'kivabe chole', 'system ta ki'],
+    en: 'In short: 1) Students post what they HAVE and WANT. 2) The site matches HAVE⇄WANT pairs. 3) You send an exchange request. 4) After the poster accepts, both sides see each other\'s contact. 5) Exchange, confirm, and rate each other. There is also a "How EXCHORA Works" section on the home page with the full picture.',
+    bn: 'সংক্ষেপে: ১) ছাত্ররা পোস্ট করে তাদের HAVE আর WANT। ২) সাইট HAVE⇄WANT জোড়া মিলিয়ে দেয়। ৩) তুমি এক্সচেঞ্জ রিকোয়েস্ট পাঠাও। ৪) পোস্টদাতা Accept করলে দুজনে দুজনের contact দেখতে পাও। ৫) এক্সচেঞ্জ শেষে confirm করে একে অপরকে রেট করো। হোম পেজে "How EXCHORA Works" অংশে পুরো ছবিটা আছে।' },
+  { k: ['new user', 'ami notun', 'notun user', 'kotha theke shuru', 'shuru korbo', 'getting started', 'first time', 'কীভাবে শুরু', 'শুরু করব', 'begin'],
+    en: 'Welcome! Quick start: 1) Sign Up (top right) with email or Google. 2) Complete your profile and save your WhatsApp number in Edit Profile. 3) Post what you HAVE and WANT from "Post an Exchange". 4) Browse or check Matches, send a request, and exchange after it is accepted.',
+    bn: 'স্বাগতম! দ্রুত শুরু: ১) উপরে ডানদিকে Sign Up করো ইমেইল বা Google দিয়ে। ২) Profile ঠিক করে Edit Profile-এ WhatsApp নম্বর সেভ করো। ৩) "Post an Exchange" থেকে তোমার HAVE আর WANT পোস্ট করো। ৪) Browse বা Matches দেখে রিকোয়েস্ট পাঠাও, Accept হলে এক্সচেঞ্জ করো।' },
+  { k: ['free', 'taka', 'টাকা', 'cost', 'price', 'fee', 'charge', 'pay', 'khoroch', 'খরচ', 'poisha', 'পয়সা', 'dam koto'],
+    en: 'EXCHORA is completely free. Students exchange study materials with each other — knowledge for knowledge, no money involved.',
+    bn: 'EXCHORA সম্পূর্ণ ফ্রি। ছাত্রছাত্রীরা নিজেদের মধ্যে পড়ার জিনিস বিনিময় করে — জ্ঞানের বদলে জ্ঞান, কোনো টাকাপয়সা নেই।' },
+  { k: ['kinte chai', 'sell', 'বিক্রি', 'বেচতে', 'buy', 'purchase', 'বই কিনব', 'কিনতে চাই', 'sell korte'],
+    en: 'EXCHORA is for exchanging, not buying or selling. You swap study materials with other students — your notes for their book, and so on. No money changes hands.',
+    bn: 'EXCHORA কেনা-বেচার জন্য না, বিনিময়ের জন্য। তুমি অন্য ছাত্রদের সাথে পড়ার জিনিস বদলাও — তোমার নোটের বদলে ওদের বই, এভাবে। কোনো টাকাপয়সার লেনদেন নেই।' },
+  { k: ['sign up', 'signup', 'login', 'account khul', 'account open', 'account তৈরি', 'খুলব', 'খুলতে চাই', 'register', 'account kivabe', 'dhukbo', 'ঢুকব', 'account'],
+    en: 'Use the "Sign Up" button (top right) with your email and a password, or continue with Google in one click. After that, complete your profile from the Profile page.',
+    bn: '"Sign Up" বাটনে (উপরে ডানদিকে) ইমেইল আর পাসওয়ার্ড দিয়ে অ্যাকাউন্ট খোলো, অথবা Google দিয়ে এক ক্লিকে ঢোকো। তারপর Profile পেজ থেকে তোমার তথ্য ঠিক করে নাও।' },
+  { k: ['logout', 'sign out', 'ber hobo', 'বের হব', 'logout kivabe'],
+    en: 'Tap the "Log Out" button at the top right (next to your name). Your posts and exchanges stay saved — just log back in any time.',
+    bn: 'উপরে ডানদিকে তোমার নামের পাশের "Log Out" বাটন চাপো। তোমার পোস্ট আর এক্সচেঞ্জ সেভ-ই থাকবে — যেকোনো সময় আবার লগ ইন করলেই হবে।' },
+  { k: ['forgot', 'password bhule', 'পাসওয়ার্ড ভুলে', 'reset password', 'bhule gechi', 'ভুলে গেছি', 'password mone nai', 'password hariye', 'password reset', 'পাসওয়ার্ড'],
+    en: 'If you signed up with Google, just use "Continue with Google" — no password needed. For email accounts, an in-site password reset is not available yet; contact the site owner and she can help you recover access.',
+    bn: 'Google দিয়ে সাইন আপ করে থাকলে শুধু "Continue with Google" চাপলেই হবে — পাসওয়ার্ড লাগে না। ইমেইল অ্যাকাউন্টের জন্য সাইটের ভিতরে পাসওয়ার্ড reset এখনো নেই; সাইটের মালিকের সাথে যোগাযোগ করো, সে অ্যাক্সেস ফিরে পেতে সাহায্য করতে পারবে।' },
+  { k: ['login hocche na', 'login hoy na', 'login problem', 'login error', 'google login', 'unauthorized', 'login korte parchi na', 'dhukte parchi na', 'লগইন হচ্ছে না', 'সাইন ইন হচ্ছে না'],
+    en: 'Login trouble? Try these: 1) Check your internet and try again. 2) Refresh the page (Ctrl+F5). 3) If you are opening the site from your own computer files, use the live link or localhost — Google sign-in is blocked on 127.0.0.1 addresses. 4) Still stuck? Log out of other Google accounts in the browser, or tell the site owner.',
+    bn: 'লগইনে সমস্যা? এগুলো দেখো: ১) ইন্টারনেট check করে আবার চেষ্টা করো। ২) Ctrl+F5 দিয়ে পেজ refresh করো। ৩) নিজের কম্পিউটার থেকে খুললে live link বা localhost ব্যবহার করো — 127.0.0.1 ঠিকানায় Google সাইন-ইন বন্ধ থাকে। ৪) তাও হলে browser-এর অন্য Google অ্যাকাউন্ট থেকে log out করে দেখো, বা সাইটের মালিককে বলো।' },
+  { k: ['how to post', 'post kivabe', 'post korbo', 'post debo', 'post dite', 'পোস্ট দেবো', 'পোস্ট কীভাবে', 'পোস্ট দিতে', 'post create', 'add post', 'post korar niyom', 'post'],
+    en: 'To post: 1) Log in first. 2) Go to "Post an Exchange". 3) Fill in your subject, what you HAVE and what you WANT. 4) Press "Post My Exchange" — your post appears at the top of Browse.',
+    bn: 'পোস্ট দিতে: ১) আগে লগ ইন করো। ২) "Post an Exchange"-এ যাও। ৩) বিষয়, তোমার কাছে যা আছে (HAVE) আর যা চাই (WANT) লেখো। ৪) "Post My Exchange" চাপো — তোমার পোস্ট Browse-এর উপরে চলে আসবে।' },
+  { k: ['what can i post', 'ki ki post', 'ki post kora jay', 'পোস্ট করা যায়', 'ki ki deya jay', 'ki ki type', 'কী পোস্ট', 'material'],
+    en: 'You can post any study material: Notes, Books, Slides, Question Banks, Lab Reports, Tutorials — or anything else study-related under "Other". Post what you HAVE, and write what you WANT in return.',
+    bn: 'তুমি যেকোনো পড়ার জিনিস পোস্ট করতে পারো: Notes, Books, Slides, Question Banks, Lab Reports, Tutorials — অথবা পড়া-সংক্রান্ত অন্য কিছু "Other" হিসেবে। তোমার কাছে যা আছে (HAVE) পোস্ট করো, আর বদলে যা চাও (WANT) লিখে দাও।' },
+  { k: ['tips', 'tip', 'good post', 'ভালো পোস্ট', 'valovabe post', 'beshi exchange', 'attractive post'],
+    en: 'Tips for a post that gets exchanges: 1) Write the exact subject name. 2) Be specific in HAVE ("complete handwritten notes, chapters 1–5") instead of just "notes". 3) Pick the right semester and type. 4) One material per post — separate posts match better.',
+    bn: 'বেশি এক্সচেঞ্জ পাওয়া পোস্টের tips: ১) বিষয়ের ঠিক নামটা লেখো। ২) HAVE-তে নির্দিষ্ট করে লেখো ("সম্পূর্ণ হাতে লেখা নোট, অধ্যায় ১–৫") — শুধু "notes" না। ৩) ঠিক semester আর type বেছে নাও। ৪) এক পোস্টে একটা জিনিসই — আলাদা পোস্টে ম্যাচ ভালো হয়।' },
+  { k: ['delete', 'edit', 'মুছে', 'ডিলিট', 'এডিট', 'change my post', 'post change', 'post delete', 'post edit', 'vul diyechi', 'ভুল দিয়েছি', 'semester vul', 'semester change', 'post sorabo', 'remove post', 'post remove'],
+    en: 'You can delete your own post any time: find it in Browse and press the Delete button on its card. Editing a post is not available yet — if you made a mistake (wrong semester, typo), delete it and post again with the corrected text; it takes a minute.',
+    bn: 'নিজের পোস্ট যেকোনো সময় মুছতে পারো: Browse-এ পোস্টটা খুঁজে কার্ডের Delete বাটন চাপো। পোস্ট এডিট করার সুবিধা এখনো নেই — ভুল হলে (ভুল semester, বানান ভুল) মুছে ফেলে ঠিক লেখা দিয়ে আবার পোস্ট করো, এক মিনিটের কাজ।' },
+  { k: ['koyta post', 'koyta', 'how many post', 'ekadhik post', 'multiple post', 'duita post', 'duplicate', 'একাধিক পোস্ট', 'কয়টা পোস্ট', 'korte parbo koyta'],
+    en: 'There is no limit — you can make as many posts as you have materials. Just keep one material per post, so matching and searching work better.',
+    bn: 'কোনো limit নেই — তোমার কাছে যত জিনিস আছে তত পোস্ট করতে পারো। শুধু এক পোস্টে একটা জিনিসই রাখো, তাহলে ম্যাচিং আর সার্চ ভালো কাজ করে।' },
+  { k: ['post kew dekhe na', 'no response', 'response pai na', 'amar post dekha jay na', 'post show hoy na', 'কেউ দেখে না', 'রেসপন্স পাই না', 'response kore na'],
+    en: 'If your post gets no response yet: 1) Use specific words in HAVE and WANT (exact subject name, chapter numbers) — vague posts match less. 2) Check it appears at the top of Browse after posting. 3) Share the site link with classmates and juniors — new students join through sharing. 4) Give it a little time; exchanges pick up near exams.',
+    bn: 'তোমার পোস্টে এখনো response না এলে: ১) HAVE আর WANT-এ নির্দিষ্ট শব্দ ব্যবহার করো (বিষয়ের ঠিক নাম, অধ্যায়ের নম্বর) — অস্পষ্ট পোস্ট কম ম্যাচ পায়। ২) পোস্ট করার পর Browse-এর উপরে আছে কিনা দেখো। ৩) বন্ধু আর জুনিয়রদের সাইটের link পাঠাও — শেয়ারিং থেকেই নতুন ছাত্র আসে। ৪) একটু সময় দাও; পরীক্ষার আগে এক্সচেঞ্জ বাড়ে।' },
+  { k: ['search', 'filter', 'খুঁজব', 'খুঁজতে', 'search kivabe', 'filter kivabe', 'semester filter', 'type filter', 'khujbo'],
+    en: 'In Browse you can: type in the search box to find by subject or keyword, pick a semester from the dropdown, and tap a type chip (Notes, Books, Slides…) to filter. Everything updates instantly as you type.',
+    bn: 'Browse-এ তুমি পারো: সার্চ বক্সে লিখে বিষয় বা শব্দ দিয়ে খুঁজতে, dropdown থেকে semester বেছে নিতে, আর type chip (Notes, Books, Slides…) চেপে filter করতে। লেখার সাথে সাথেই ফলাফল বদলে যায়।' },
+  { k: ['interested', 'saved', 'save kore', 'সেভ', 'heart', 'bookmark', 'interested mane ki', 'সেভ করা'],
+    en: 'The "Interested" heart button saves a post for later — saved posts collect in My Exchanges so you can find them again quickly. It does not notify the poster; for that, use "Request Exchange".',
+    bn: '"Interested" হার্ট বাটন পোস্টটা পরে দেখার জন্য সেভ করে রাখে — সেভ করা পোস্টগুলো My Exchanges-এ জমা হয়, যাতে সহজে আবার খুঁজে পাও। এতে পোস্টদাতা কোনো খবর পায় না; তার জন্য "Request Exchange" ব্যবহার করো।' },
+  { k: ['my exchanges', 'amar exchange', 'আমার এক্সচেঞ্জ', 'my exchange ki', 'exchange list', 'saved kothay', 'আমার পোস্টগুলো'],
+    en: 'My Exchanges is your personal corner: it shows the posts you saved with Interested, the requests you sent, the requests you received, and your completed exchanges. Open it from the top menu.',
+    bn: 'My Exchanges হলো তোমার নিজের জায়গা: এখানে থাকে Interested দিয়ে সেভ করা পোস্ট, তোমার পাঠানো রিকোয়েস্ট, তোমার কাছে আসা রিকোয়েস্ট, আর সম্পন্ন এক্সচেঞ্জ। উপরের মেনু থেকে খোলো।' },
+  { k: ['request', 'exchange kivabe', 'how exchange', 'request pathabo', 'request kivabe', 'এক্সচেঞ্জ রিকোয়েস্ট', 'রিকোয়েস্ট', 'exchange korte chai', 'exchange korbo', 'nite chai', 'নিতে চাই'],
+    en: 'How exchanges work: 1) Find a post you like and press "Request Exchange" (your WhatsApp number must be saved in Edit Profile). 2) The poster Accepts or Rejects it in My Exchanges. 3) Only after Accept can both of you see each other\'s contact numbers. 4) Meet on campus or share files, then both press "Confirm exchanged" — done!',
+    bn: 'এক্সচেঞ্জ যেভাবে কাজ করে: ১) পছন্দের পোস্টে "Request Exchange" চাপো (আগে Edit Profile-এ WhatsApp নম্বর সেভ থাকতে হবে)। ২) পোস্টদাতা My Exchanges থেকে Accept বা Reject করবে। ৩) শুধু Accept-এর পরেই দুজনে দুজনের contact নম্বর দেখতে পাবে। ৪) ক্যাম্পাসে দেখা করে বা ফাইল পাঠিয়ে এক্সচেঞ্জ শেষে দুজনেই "Confirm exchanged" চাপো — হয়ে গেল!' },
+  { k: ['accept', 'reject', 'request asche', 'request এসেছে', 'accept kivabe', 'reject kivabe', 'request accept', 'request reject', 'accept korbo'],
+    en: 'When someone requests your post, it appears in My Exchanges under "Requests for you". Press Accept to share contact numbers with them, or Reject if you cannot exchange. After Accept, arrange the swap and both press "Confirm exchanged" when done.',
+    bn: 'কেউ তোমার পোস্টে রিকোয়েস্ট পাঠালে সেটা My Exchanges-এর "Requests for you"-তে আসে। Accept চাপলে দুজনের contact নম্বর শেয়ার হয়, এক্সচেঞ্জ সম্ভব না হলে Reject করো। Accept-এর পর দেখা/ফাইল ঠিক করে দুজনেই "Confirm exchanged" চাপো।' },
+  { k: ['cancel', 'বাতিল', 'batil', 'cancel kivabe', 'request cancel', 'cancel a request', 'cancel request', 'cancel my request', 'batil korbo'],
+    en: 'To cancel a request you sent: open My Exchanges, find it under "Requests you sent" and press Cancel (works while it is still Pending). If it was already accepted, talk to the other student through the contact number shown there.',
+    bn: 'তোমার পাঠানো রিকোয়েস্ট বাতিল করতে: My Exchanges খোলো, "Requests you sent"-এর নিচে রিকোয়েস্টটা খুঁজে Cancel চাপো (Pending থাকা অবস্থায় কাজ করে)। Accept হয়ে গেলে ওখানে দেখানো contact নম্বরে অন্য ছাত্রের সাথে কথা বলে নাও।' },
+  { k: ['reply nai', 'response nai', 'pending', 'request pathaisi', 'accept kore na', 'অপেক্ষা', 'reply ashe na', 'request diyechi', 'request pathiyechi'],
+    en: 'A request stays Pending until the poster responds — they may be busy or offline. Make sure your WhatsApp number is saved in Edit Profile so they can reach you after accepting. If it takes too long, you can cancel from My Exchanges and request a similar post instead.',
+    bn: 'রিকোয়েস্ট Pending থাকে যতক্ষণ পোস্টদাতা সাড়া না দেয় — সে ব্যস্ত বা offline থাকতে পারে। Edit Profile-এ তোমার WhatsApp নম্বর সেভ আছে কিনা দেখো, যাতে Accept-এর পর সে যোগাযোগ করতে পারে। বেশি দেরি হলে My Exchanges থেকে cancel করে একই ধরনের অন্য পোস্টে রিকোয়েস্ট করতে পারো।' },
+  { k: ['confirm', 'completed', 'complete kivabe', 'exchange shesh', 'এক্সচেঞ্জ শেষ', 'confirm exchanged', 'সম্পন্ন', 'done kivabe'],
+    en: 'After you actually exchange (meet or share files), both sides open My Exchanges and press "Confirm exchanged" on that request. When both have confirmed, it becomes Completed — and then you can rate each other with stars.',
+    bn: 'আসল এক্সচেঞ্জ হয়ে গেলে (দেখা করে বা ফাইল পাঠিয়ে) দুই পক্ষই My Exchanges খুলে ওই রিকোয়েস্টে "Confirm exchanged" চাপো। দুজনে confirm করলে সেটা Completed হয় — তারপর একে অপরকে স্টার রেটিং দেওয়া যায়।' },
+  { k: ['number pabo', 'number kivabe pabo', 'or number', 'onar number', 'contact pabo', 'নম্বর পাবো', 'নম্বর কীভাবে পাবো', 'jogajog korbo'],
+    en: 'You get the other student\'s number through the exchange flow: send a Request Exchange on their post, and if they Accept, their WhatsApp number appears in My Exchanges on that request. Numbers are never shown publicly.',
+    bn: 'অন্য ছাত্রের নম্বর পাবে এক্সচেঞ্জ ধাপে: তার পোস্টে Request Exchange পাঠাও, সে Accept করলে তার WhatsApp নম্বর My Exchanges-এ ওই রিকোয়েস্টে দেখা যাবে। নম্বর কখনোই সবার সামনে দেখায় না।' },
+  { k: ['number change', 'number vul', 'whatsapp number vul', 'নম্বর বদল', 'নম্বর ভুল', 'wrong number', 'number update'],
+    en: 'To fix or change your WhatsApp number: open Profile → Edit Profile, correct the number in the contact field and press Save. The new number is used for your next exchange requests.',
+    bn: 'WhatsApp নম্বর ঠিক করতে বা বদলাতে: Profile → Edit Profile খোলো, contact ঘরে ঠিক নম্বর লিখে Save চাপো। পরের রিকোয়েস্টগুলোতে নতুন নম্বরটাই যাবে।' },
+  { k: ['whatsapp number keno', 'number keno lage', 'number lagbe keno', 'কেন নম্বর', 'নম্বর কেন লাগে', 'number keno'],
+    en: 'Your WhatsApp number is needed so the other student can contact you after an exchange request is accepted. It stays private — it is shown only to that one student, only after Accept, never publicly.',
+    bn: 'WhatsApp নম্বর লাগে যাতে এক্সচেঞ্জ রিকোয়েস্ট Accept হওয়ার পর অন্য ছাত্র তোমার সাথে যোগাযোগ করতে পারে। এটা গোপন থাকে — শুধু ওই একজন ছাত্রই দেখতে পায়, শুধু Accept-এর পর, কখনোই সবার সামনে নয়।' },
+  { k: ['contact', 'number', 'নম্বর', 'whatsapp', 'phone', 'mobile', 'number dekhabe', 'number public', 'number safe', 'যোগাযোগের নম্বর'],
+    en: 'Contact numbers stay private. Your WhatsApp number (saved in Edit Profile) is shown to the other side ONLY after an exchange request is accepted — never publicly.',
+    bn: 'Contact নম্বর গোপন থাকে। তোমার WhatsApp নম্বর (Edit Profile-এ সেভ করা) অপর পক্ষ দেখতে পায় শুধু এক্সচেঞ্জ রিকোয়েস্ট Accept হওয়ার পর — কখনোই সবার সামনে নয়।' },
+  { k: ['rating', 'rate', 'রেটিং', 'রেট', 'star', 'স্টার', 'rating kivabe', 'rate korbo', 'star debo'],
+    en: 'Ratings build trust: after an exchange is marked Completed, both sides can give each other 1–5 stars from My Exchanges. Your average star shows on your post cards and profile, so others can see you are a reliable exchanger.',
+    bn: 'রেটিং আস্থা তৈরি করে: এক্সচেঞ্জ Completed হলে দুই পক্ষই My Exchanges থেকে একে অপরকে ১–৫ স্টার দিতে পারে। তোমার গড় স্টার তোমার পোস্ট কার্ড আর প্রোফাইলে দেখায় — অন্যরা বুঝতে পারে তুমি নির্ভরযোগ্য।' },
+  { k: ['edit profile', 'profile edit', 'profile change', 'profile update', 'প্রোফাইল এডিট', 'profile thik', 'bio change', 'name change', 'university change', 'profile সাজাবো'],
+    en: 'To edit your profile: open your Profile page (your name/photo at the top right) and press "Edit Profile". There you can change your name, university, department, semester and bio, save your WhatsApp number for exchanges, and upload a profile photo. Press Save when done.',
+    bn: 'প্রোফাইল এডিট করতে: Profile পেজ খোলো (উপরে ডানদিকে তোমার নাম/ছবি) আর "Edit Profile" চাপো। ওখানে নাম, বিশ্ববিদ্যালয়, department, semester আর bio বদলাতে পারবে, এক্সচেঞ্জের জন্য WhatsApp নম্বর সেভ করতে পারবে, আর প্রোফাইল ছবি আপলোড করতে পারবে। শেষে Save চাপো।' },
+  { k: ['photo', 'picture', 'ছবি', 'image', 'profile photo', 'profile pic', 'ছবি দেবো', 'photo upload', 'photo change'],
+    en: 'To add a profile photo: open Profile → Edit Profile → "Upload photo", choose a picture and Save. If you signed in with Google, your Google photo is used automatically.',
+    bn: 'প্রোফাইল ছবি দিতে: Profile → Edit Profile → "Upload photo" থেকে ছবি বেছে Save করো। Google দিয়ে লগ ইন করলে তোমার Google-এর ছবিটা নিজে থেকেই বসে যায়।' },
+  { k: ['dark', 'light mode', 'ডার্ক', 'language', 'bangla', 'বাংলা', 'english', 'ভাষা', 'lang', 'dark mode', 'theme', 'mode change'],
+    en: 'Tap the moon/sun button at the top right to switch between dark and light mode. Tap the "বাংলা / EN" button in the menu to switch the whole site between Bangla and English. Both choices are remembered for your next visit.',
+    bn: 'উপরে ডানদিকের চাঁদ/সূর্য বাটনে চাপ দিলে dark আর light mode বদলায়। মেনুর "বাংলা / EN" বাটনে পুরো সাইট বাংলা আর English-এর মধ্যে বদলায়। দুটো পছন্দই মনে থাকে, পরের বারও একই থাকবে।' },
+  { k: ['app', 'android', 'ios', 'অ্যাপ', 'play store', 'mobile app', 'app ache', 'download'],
+    en: 'There is no separate mobile app — EXCHORA is a website that works fully in your phone\'s browser, and it is free. You can add it to your home screen from the browser menu for app-like access.',
+    bn: 'আলাদা মোবাইল অ্যাপ নেই — EXCHORA একটা ওয়েবসাইট, ফোনের browser-এই পুরোপুরি চলে, আর ফ্রি। চাইলে browser menu থেকে home screen-এ যোগ করে অ্যাপের মতো ব্যবহার করতে পারো।' },
+  { k: ['safe', 'trust', 'নিরাপদ', 'বিশ্বাস', 'fraud', 'প্রতারণা', 'scam', 'নিরাপত্তা', 'data safe', 'info safe'],
+    en: 'EXCHORA is built for safety: your contact number is never public — it is shared only after you accept a request (or yours is accepted). Star ratings show who is reliable, and meeting on campus for physical exchanges is a good idea.',
+    bn: 'EXCHORA নিরাপত্তার কথা ভেবেই বানানো: তোমার contact নম্বর কখনোই সবার সামনে যায় না — শুধু রিকোয়েস্ট Accept হওয়ার পর শেয়ার হয়। স্টার রেটিং দেখে নির্ভরযোগ্য মানুষ চেনা যায়, আর সরাসরি জিনিস নিতে ক্যাম্পাসে দেখা করাই ভালো।' },
+  { k: ['online exchange', 'pdf pathabo', 'pdf', 'pathabo', 'file pathabo', 'campus', 'dekha', 'delivery', 'online e exchange', 'share file', 'পিডিএফ', 'বাসায়'],
+    en: 'Both ways work: for books and printed notes, meet on campus and hand them over. For slides, PDFs and soft copies, after the request is accepted and you have each other\'s number, you can simply share the files online — whatever suits both of you.',
+    bn: 'দুটোই চলে: বই আর ছাপানো নোটের জন্য ক্যাম্পাসে দেখা করে হাতে হাতে দাও। স্লাইড, PDF আর soft copy-র জন্য রিকোয়েস্ট Accept হয়ে নম্বর পাওয়ার পর online-এই ফাইল পাঠিয়ে দিতে পারো — যেটা দুজনের সুবিধা হয়।' },
+  { k: ['delete account', 'account delete', 'account muchbo', 'account বন্ধ', 'close account', 'অ্যাকাউন্ট ডিলিট', 'account remove'],
+    en: 'There is no in-site account delete option yet. You can delete all your own posts any time from their cards. For full account removal, contact the site owner (Khairun Nessa Mim) and she will remove it for you.',
+    bn: 'সাইটের ভিতরে অ্যাকাউন্ট delete করার option এখনো নেই। তবে নিজের সব পোস্ট যেকোনো সময় কার্ড থেকে মুছে ফেলতে পারো। পুরো অ্যাকাউন্ট সরাতে সাইটের মালিকের (Khairun Nessa Mim) সাথে যোগাযোগ করো, সে সরিয়ে দেবে।' },
+  { k: ['notification', 'নোটিফিকেশন', 'janabo kivabe', 'kivabe janbo', 'খবর পাবো', 'alert'],
+    en: 'EXCHORA has no push notifications yet. To see new requests, open My Exchanges — the menu also shows a count badge for your saved items. Checking in once a day keeps you updated.',
+    bn: 'EXCHORA-তে এখনো push notification নেই। নতুন রিকোয়েস্ট দেখতে My Exchanges খোলো — মেনুতে সেভ করা আইটেমের count badge-ও দেখায়। দিনে একবার check করলেই update থাকবে।' },
+  { k: ['problem', 'report', 'সমস্যা', 'kaj kore na', 'কাজ করে না', 'error', 'bug', 'kaj hocche na', 'problem hocche'],
+    en: 'Sorry something is not working. Quick checks: 1) Refresh with Ctrl+F5. 2) If you are testing locally, open the site as localhost (not 127.0.0.1). 3) Try logging out and back in. Still stuck? Tell the site owner (Khairun Nessa Mim) what you clicked and what happened — a screenshot helps a lot.',
+    bn: 'কিছু কাজ না করলে দুঃখিত। দ্রুত check করো: ১) Ctrl+F5 দিয়ে refresh। ২) নিজের কম্পিউটারে test করলে localhost দিয়ে খোলো (127.0.0.1 না)। ৩) Log out করে আবার log in করে দেখো। তাও হলে সাইটের মালিককে (Khairun Nessa Mim) বলো কী click করেছিলে আর কী হলো — screenshot দিলে অনেক সুবিধা হয়।' },
+  { k: ['contact owner', 'owner er sathe', 'manusher help', 'admin er sathe', 'owner ke bolbo', 'help chai', 'সাহায্য চাই', 'যোগাযোগ'],
+    en: 'The site owner is Khairun Nessa Mim (CSE, Southeast University). For anything the bot cannot answer — account problems, a bad experience, suggestions — reach her through the contact options on her portfolio site: khairunmim-dev.github.io.',
+    bn: 'সাইটের মালিক Khairun Nessa Mim (CSE, Southeast University)। Bot যেটা পারল না — অ্যাকাউন্টের সমস্যা, খারাপ অভিজ্ঞতা, পরামর্শ — তার portfolio সাইটের contact থেকে যোগাযোগ করো: khairunmim-dev.github.io।' },
+  { k: ['kemon acho', 'কেমন আছো', 'how are you', 'joke', 'মজা', 'tumi ki paro', 'ki ki paro', 'ki korte paro', 'help me', 'সাহায্য করো', 'ki help'],
+    en: 'I am doing well, thanks! I can help with: posting, exchanges and requests, matches, ratings, profile and photos, privacy, dark mode and language, finding posts ("find" + subject) — and more. What would you like to know?',
+    bn: 'ভালো আছি, ধন্যবাদ! আমি সাহায্য করতে পারি: পোস্ট, এক্সচেঞ্জ আর রিকোয়েস্ট, ম্যাচ, রেটিং, প্রোফাইল আর ছবি, গোপনীয়তা, dark mode আর ভাষা, পোস্ট খোঁজা ("find" + বিষয়) — আরও অনেক কিছুতে। কোনটা জানতে চাও?' },
+  { k: ['thank', 'ধন্যবাদ', 'thanks'],
+    en: 'You are welcome! Anything else about EXCHORA?',
+    bn: 'স্বাগতম! EXCHORA নিয়ে আর কিছু জানতে চাও?' },
+  { k: ['bye', 'বিদায়', 'allah hafez', 'আল্লাহ হাফেজ', 'goodbye'],
+    en: 'Goodbye! Happy studying — come back whenever you need an exchange. 📚',
+    bn: 'বিদায়! ভালো পড়াশোনা হোক — এক্সচেঞ্জ লাগলেই আবার এসো। 📚' },
+  { k: ['match', 'ম্যাচ', 'matching'], fn: 'matches' }
+];
+BOT_TOPICS.forEach(function (t) { t.nk = t.k.map(function (key) { return botNorm(key); }); });
+function botFindAnswer(q, toks) {
+  const stop = ['find', 'search', 'khuj', 'khujo', 'ache', 'post', 'the', 'for', 'and', 'kono', 'ekta', 'mane', 'kivabe', 'আছে', 'খুঁজ', 'খুজ', 'amar', 'kina', 'karo', 'kache', 'আমার', 'কারো', 'kase'];
+  const words = toks.filter(function (w) { return w.length >= 3 && stop.indexOf(w) === -1; });
+  if (!words.length) return null;
+  let key = null, found = [];
+  for (let i = 0; i < words.length; i++) {
+    const hits = posts.filter(function (p) { return (p.subject + ' ' + p.have + ' ' + p.want).toLowerCase().indexOf(words[i]) !== -1; });
+    if (hits.length) { key = words[i]; found = hits.slice(0, 3); break; }
+  }
+  if (!key) key = words[0];
+  if (!found.length) return botText('I could not find any post about "' + esc(key) + '" yet. You could be the first to post a WANT for it!', '"' + esc(key) + '" নিয়ে এখনো কোনো পোস্ট পাইনি। তুমিই প্রথম এটা WANT হিসেবে পোস্ট করতে পারো!');
+  return botText('I found these posts — tap one to view it:', 'এই পোস্টগুলো পেয়েছি — দেখতে যেকোনো একটায় চাপ দাও:') + '<br>' +
+    found.map(function (p) { return '<button type="button" class="bot-post" data-bot-post="' + p.id + '">' + esc(p.subject) + ' — ' + esc(p.name) + '</button>'; }).join('<br>');
+}
+function botReply(rawQ) {
+  const raw = rawQ.trim();
+  if (/^(hi|hello|hey|hola|salam|assalamu alaikum|আসসালাম|আসসালামু আলাইকুম|হ্যালো|হাই|good morning|good afternoon|good evening)\b/.test(raw) || raw === 'hi' || raw === 'hello')
     return botText('Hello! Ask me how to post, how exchanges work, whether EXCHORA is free — or type "find" + a subject, like "find algorithm".',
                    'হ্যালো! আমাকে জিজ্ঞেস করো কীভাবে পোস্ট দিতে হয়, এক্সচেঞ্জ কীভাবে কাজ করে, EXCHORA ফ্রি কিনা — অথবা "find" লিখে বিষয় লেখো, যেমন "find algorithm"।');
-  if (has('who are you', 'tumi ke', 'তুমি কে', 'তোমার নাম', 'your name', 'are you ai', 'real ai', 'tumi ki ai'))
-    return botText('I am StudyBot, a rule-based guide built into EXCHORA. I am not a real AI — I answer from topics the site taught me: posting, exchanges, matches, ratings, privacy and more. For anything else, the site owner can help.',
-                   'আমি StudyBot, EXCHORA-র ভিতরে বানানো একটা নিয়ম-ভিত্তিক গাইড। আমি আসল AI না — সাইট আমাকে যা শিখিয়েছে (পোস্ট, এক্সচেঞ্জ, ম্যাচ, রেটিং, গোপনীয়তা ইত্যাদি) শুধু সেগুলোর উত্তর দিই। এর বাইরের কিছুতে সাইটের মালিক সাহায্য করতে পারবে।');
-  if (has('cancel', 'বাতিল', 'batil'))
-    return botText('To cancel a request you sent: open My Exchanges, find it under "Requests you sent" and press Cancel (works while it is still Pending). If it was already accepted, talk to the other student through the contact number shown there.',
-                   'তোমার পাঠানো রিকোয়েস্ট বাতিল করতে: My Exchanges খোলো, "Requests you sent"-এর নিচে রিকোয়েস্টটা খুঁজে Cancel চাপো (Pending থাকা অবস্থায় কাজ করে)। Accept হয়ে গেলে ওখানে দেখানো contact নম্বরে অন্য ছাত্রের সাথে কথা বলে নাও।');
-  if (has('delete', 'edit', 'মুছে', 'ডিলিট', 'এডিট', 'change my post', 'post change') && !has('profile'))
-    return botText('You can delete your own post any time: find it in Browse and press the Delete button on its card. Editing a post is not available yet — delete it and post again with the corrected text; it takes a minute.',
-                   'নিজের পোস্ট যেকোনো সময় মুছতে পারো: Browse-এ পোস্টটা খুঁজে কার্ডের Delete বাটন চাপো। পোস্ট এডিট করার সুবিধা এখনো নেই — মুছে ফেলে ঠিক লেখা দিয়ে আবার পোস্ট করো, এক মিনিটের কাজ।');
-  if (has('profile') && has('edit', 'change', 'update', 'এডিট', 'পরিবর্তন', 'thik korbo'))
-    return botText('To edit your profile: open your Profile page (your name/photo at the top right) and press "Edit Profile". There you can change your name, university, department, semester and bio, save your WhatsApp number for exchanges, and upload a profile photo. Press Save when done.',
-                   'প্রোফাইল এডিট করতে: Profile পেজ খোলো (উপরে ডানদিকে তোমার নাম/ছবি) আর "Edit Profile" চাপো। ওখানে নাম, বিশ্ববিদ্যালয়, department, semester আর bio বদলাতে পারবে, এক্সচেঞ্জের জন্য WhatsApp নম্বর সেভ করতে পারবে, আর প্রোফাইল ছবি আপলোড করতে পারবে। শেষে Save চাপো।');
-  if (has('ki ki post', 'what can i post', 'ki post kora', 'পোস্ট করা যায়', 'post korte parbo', 'ki ki deya jay'))
-    return botText('You can post any study material: Notes, Books, Slides, Question Banks, Lab Reports, Tutorials — or anything else study-related under "Other". Post what you HAVE, and write what you WANT in return.',
-                   'তুমি যেকোনো পড়ার জিনিস পোস্ট করতে পারো: Notes, Books, Slides, Question Banks, Lab Reports, Tutorials — অথবা পড়া-সংক্রান্ত অন্য কিছু "Other" হিসেবে। তোমার কাছে যা আছে (HAVE) পোস্ট করো, আর বদলে যা চাও (WANT) লিখে দাও।');
-  if (has('how does exchora work', 'how it works', 'kivabe kaj kore', 'কীভাবে কাজ করে', 'kaj kore kivabe'))
-    return botText('In short: 1) Students post what they HAVE and WANT. 2) The site matches HAVE⇄WANT pairs. 3) You send an exchange request. 4) After the poster accepts, both sides see each other\'s contact. 5) Exchange, confirm, and rate each other. There is also a "How EXCHORA Works" section on the home page with the full picture.',
-                   'সংক্ষেপে: ১) ছাত্ররা পোস্ট করে তাদের HAVE আর WANT। ২) সাইট HAVE⇄WANT জোড়া মিলিয়ে দেয়। ৩) তুমি এক্সচেঞ্জ রিকোয়েস্ট পাঠাও। ৪) পোস্টদাতা Accept করলে দুজনে দুজনের contact দেখতে পাও। ৫) এক্সচেঞ্জ শেষে confirm করে একে অপরকে রেট করো। হোম পেজে "How EXCHORA Works" অংশে পুরো ছবিটা আছে।');
-  if (has('free', 'taka', 'টাকা', 'cost', 'price', 'fee', 'charge', 'pay'))
-    return botText('EXCHORA is completely free. Students exchange study materials with each other — knowledge for knowledge, no money involved.',
-                   'EXCHORA সম্পূর্ণ ফ্রি। ছাত্রছাত্রীরা নিজেদের মধ্যে পড়ার জিনিস বিনিময় করে — জ্ঞানের বদলে জ্ঞান, কোনো টাকাপয়সা নেই।');
-  if (has('what is exchora', 'about exchora', 'ki eta', 'কী এটা', 'exchora ki', 'exchora কী'))
-    return botText('EXCHORA is a website where students exchange notes, books, slides and question banks. You post what you HAVE and what you WANT, and the site matches you with other students.',
-                   'EXCHORA হলো এমন একটা ওয়েবসাইট যেখানে ছাত্রছাত্রীরা নোট, বই, স্লাইড আর প্রশ্নব্যাংক বিনিময় করে। তুমি পোস্ট করো তোমার কাছে যা আছে (HAVE) আর যা চাই (WANT) — সাইট তোমাকে মিলিয়ে দেয় অন্য ছাত্রদের সাথে।');
-  if (has('post') && has('how', 'kivabe', 'কীভাবে', 'korbo', 'দেবো', 'debo', 'create', 'add'))
-    return botText('To post: 1) Log in first. 2) Go to "Post an Exchange". 3) Fill in your subject, what you HAVE and what you WANT. 4) Press "Post My Exchange" — your post appears at the top of Browse.',
-                   'পোস্ট দিতে: ১) আগে লগ ইন করো। ২) "Post an Exchange"-এ যাও। ৩) বিষয়, তোমার কাছে যা আছে (HAVE) আর যা চাই (WANT) লেখো। ৪) "Post My Exchange" চাপো — তোমার পোস্ট Browse-এর উপরে চলে আসবে।');
-  if (has('request') || has('exchange work', 'exchange kivabe', 'how exchange', 'accept'))
-    return botText('How exchanges work: 1) Find a post you like and press "Request Exchange" (your WhatsApp number must be saved in Edit Profile). 2) The poster Accepts or Rejects it in My Exchanges. 3) Only after Accept can both of you see each other\'s contact numbers. 4) Meet on campus or share files, then both press "Confirm exchanged" — done!',
-                   'এক্সচেঞ্জ যেভাবে কাজ করে: ১) পছন্দের পোস্টে "Request Exchange" চাপো (আগে Edit Profile-এ WhatsApp নম্বর সেভ থাকতে হবে)। ২) পোস্টদাতা My Exchanges থেকে Accept বা Reject করবে। ৩) শুধু Accept-এর পরেই দুজনে দুজনের contact নম্বর দেখতে পাবে। ৪) ক্যাম্পাসে দেখা করে বা ফাইল পাঠিয়ে এক্সচেঞ্জ শেষে দুজনেই "Confirm exchanged" চাপো — হয়ে গেল!');
-  if (has('sign', 'login', 'log in', 'account', 'খুলব', 'খুলতে'))
-    return botText('Use the "Sign Up" button (top right) with your email and a password, or continue with Google in one click. After that, complete your profile from the Profile page.',
-                   '"Sign Up" বাটনে (উপরে ডানদিকে) ইমেইল আর পাসওয়ার্ড দিয়ে অ্যাকাউন্ট খোলো, অথবা Google দিয়ে এক ক্লিকে ঢোকো। তারপর Profile পেজ থেকে তোমার তথ্য ঠিক করে নাও।');
-  if (has('contact', 'number', 'নম্বর', 'whatsapp', 'phone', 'mobile'))
-    return botText('Contact numbers stay private. Your WhatsApp number (saved in Edit Profile) is shown to the other side ONLY after an exchange request is accepted — never publicly.',
-                   'Contact নম্বর গোপন থাকে। তোমার WhatsApp নম্বর (Edit Profile-এ সেভ করা) অপর পক্ষ দেখতে পায় শুধু এক্সচেঞ্জ রিকোয়েস্ট Accept হওয়ার পর — কখনোই সবার সামনে নয়।');
-  if (has('photo', 'picture', 'ছবি', 'image'))
-    return botText('To add a profile photo: open Profile → Edit Profile → "Upload photo", choose a picture and Save. If you signed in with Google, your Google photo is used automatically.',
-                   'প্রোফাইল ছবি দিতে: Profile → Edit Profile → "Upload photo" থেকে ছবি বেছে Save করো। Google দিয়ে লগ ইন করলে তোমার Google-এর ছবিটা নিজে থেকেই বসে যায়।');
-  if (has('match', 'ম্যাচ')) {
-    if (has('how', 'kivabe', 'কীভাবে', 'hoy', 'হয়', 'kaj kore'))
+  const q = botNorm(rawQ);
+  const toks = q.trim().split(' ');
+  // Score every topic; the most specific (longest matching keys) wins.
+  let best = null, bestScore = 0;
+  BOT_TOPICS.forEach(function (t) {
+    let s = 0;
+    t.nk.forEach(function (nk) { if (q.indexOf(nk) !== -1) s += nk.trim().split(' ').length * 10 + nk.trim().length; });
+    if (s > bestScore) { bestScore = s; best = t; }
+  });
+  // A clear "find X" intent beats weak topic hits.
+  const hasFindVerb = [' find ', ' search ', ' khuj ', ' khujo ', ' খুঁজ ', ' খুজ '].some(function (v) { return q.indexOf(v) !== -1; });
+  const hasAche = q.indexOf(' ache ') !== -1 || q.indexOf(' আছে ') !== -1;
+  if ((hasFindVerb && bestScore < 30) || (hasAche && bestScore < 13)) {
+    const ans = botFindAnswer(q, toks);
+    if (ans) return ans;
+  }
+  if (best && bestScore >= 13) {
+    if (best.fn === 'matches') {
+      const wantsHow = q.indexOf(' kivabe ') !== -1 || q.indexOf(' how ') !== -1 || q.indexOf(' কীভাবে ') !== -1;
+      if (!wantsHow) {
+        if (!currentUser) return botText('Log in first, then I can check your matches — or open the Matches page from the top menu.', 'আগে লগ ইন করো, তারপর আমি তোমার ম্যাচ দেখতে পারব — অথবা উপরের মেনু থেকে Matches পেজ খোলো।');
+        const m = findMatches();
+        if (!m.length) return botText('No matches yet for your posts. Matches appear when another student\'s HAVE fits your WANT (or the other way round). Try posting what you have and want!', 'তোমার পোস্টের জন্য এখনো কোনো ম্যাচ নেই। ম্যাচ আসে যখন অন্য কারো HAVE তোমার WANT-এর সাথে মিলে যায় (বা উল্টোটা)। তোমার যা আছে আর যা চাই তা পোস্ট করে দেখো!');
+        return botText('Good news — I found ' + m.length + ' match(es) for you! Open the Matches page from the top menu to see them.', 'সুখবর — তোমার জন্য ' + m.length + 'টা ম্যাচ পেয়েছি! উপরের মেনু থেকে Matches পেজ খুলে দেখো।');
+      }
       return botText('Matching works like this: the site compares your post\'s HAVE and WANT words with other students\' posts. If your HAVE fits their WANT — or their HAVE fits your WANT — it is a match. Clear, specific words (like "algorithm notes") match better than vague ones.',
                      'ম্যাচ এভাবে হয়: সাইট তোমার পোস্টের HAVE আর WANT-এর শব্দগুলো অন্য ছাত্রদের পোস্টের সাথে মিলিয়ে দেখে। তোমার HAVE যদি ওদের WANT-এর সাথে মিলে — বা ওদের HAVE তোমার WANT-এর সাথে — তাহলেই ম্যাচ। পরিষ্কার, নির্দিষ্ট শব্দ (যেমন "algorithm notes") অস্পষ্ট শব্দের চেয়ে ভালো ম্যাচ পায়।');
-    if (!currentUser) return botText('Log in first, then I can check your matches — or open the Matches page from the top menu.', 'আগে লগ ইন করো, তারপর আমি তোমার ম্যাচ দেখতে পারব — অথবা উপরের মেনু থেকে Matches পেজ খোলো।');
-    const m = findMatches();
-    if (!m.length) return botText('No matches yet for your posts. Matches appear when another student\'s HAVE fits your WANT (or the other way round). Try posting what you have and want!', 'তোমার পোস্টের জন্য এখনো কোনো ম্যাচ নেই। ম্যাচ আসে যখন অন্য কারো HAVE তোমার WANT-এর সাথে মিলে যায় (বা উল্টোটা)। তোমার যা আছে আর যা চাই তা পোস্ট করে দেখো!');
-    return botText('Good news — I found ' + m.length + ' match(es) for you! Open the Matches page from the top menu to see them.', 'সুখবর — তোমার জন্য ' + m.length + 'টা ম্যাচ পেয়েছি! উপরের মেনু থেকে Matches পেজ খুলে দেখো।');
+    }
+    return botText(best.en, best.bn);
   }
-  if ((has('filter') || has('search')) && has('how', 'kivabe', 'কীভাবে', 'use', 'করব'))
-    return botText('In Browse you can: type in the search box to find by subject or keyword, pick a semester from the dropdown, and tap a type chip (Notes, Books, Slides…) to filter. Everything updates instantly as you type.',
-                   'Browse-এ তুমি পারো: সার্চ বক্সে লিখে বিষয় বা শব্দ দিয়ে খুঁজতে, dropdown থেকে semester বেছে নিতে, আর type chip (Notes, Books, Slides…) চেপে filter করতে। লেখার সাথে সাথেই ফলাফল বদলে যায়।');
-  if (has('interested', 'saved', 'save kore', 'সেভ', 'heart'))
-    return botText('The "Interested" heart button saves a post for later — saved posts collect in My Exchanges so you can find them again quickly. It does not notify the poster; for that, use "Request Exchange".',
-                   '"Interested" হার্ট বাটন পোস্টটা পরে দেখার জন্য সেভ করে রাখে — সেভ করা পোস্টগুলো My Exchanges-এ জমা হয়, যাতে সহজে আবার খুঁজে পাও। এতে পোস্টদাতা কোনো খবর পায় না; তার জন্য "Request Exchange" ব্যবহার করো।');
-  if (has('rating', 'rate', 'রেটিং', 'রেট', 'star', 'স্টার'))
-    return botText('Ratings build trust: after an exchange is marked Completed, both sides can give each other 1–5 stars from My Exchanges. Your average star shows on your post cards and profile, so others can see you are a reliable exchanger.',
-                   'রেটিং আস্থা তৈরি করে: এক্সচেঞ্জ Completed হলে দুই পক্ষই My Exchanges থেকে একে অপরকে ১–৫ স্টার দিতে পারে। তোমার গড় স্টার তোমার পোস্ট কার্ড আর প্রোফাইলে দেখায় — অন্যরা বুঝতে পারে তুমি নির্ভরযোগ্য।');
-  if (has('forgot', 'password bhule', 'পাসওয়ার্ড', 'reset password', 'bhule gechi', 'ভুলে গেছি'))
-    return botText('If you signed up with Google, just use "Continue with Google" — no password needed. For email accounts, an in-site password reset is not available yet; contact the site owner and she can help you recover access.',
-                   'Google দিয়ে সাইন আপ করে থাকলে শুধু "Continue with Google" চাপলেই হবে — পাসওয়ার্ড লাগে না। ইমেইল অ্যাকাউন্টের জন্য সাইটের ভিতরে পাসওয়ার্ড reset এখনো নেই; সাইটের মালিকের সাথে যোগাযোগ করো, সে অ্যাক্সেস ফিরে পেতে সাহায্য করতে পারবে।');
-  if (has('dark', 'light mode', 'ডার্ক', 'language', 'bangla', 'বাংলা', 'english', 'ভাষা', 'lang'))
-    return botText('Tap the moon/sun button at the top right to switch between dark and light mode. Tap the "বাংলা / EN" button in the menu to switch the whole site between Bangla and English. Both choices are remembered for your next visit.',
-                   'উপরে ডানদিকের চাঁদ/সূর্য বাটনে চাপ দিলে dark আর light mode বদলায়। মেনুর "বাংলা / EN" বাটনে পুরো সাইট বাংলা আর English-এর মধ্যে বদলায়। দুটো পছন্দই মনে থাকে, পরের বারও একই থাকবে।');
-  if (has('tips', 'tip', 'good post', 'ভালো পোস্ট', 'valovabe post'))
-    return botText('Tips for a post that gets exchanges: 1) Write the exact subject name. 2) Be specific in HAVE ("complete handwritten notes, chapters 1–5") instead of just "notes". 3) Pick the right semester and type. 4) One material per post — separate posts match better.',
-                   'বেশি এক্সচেঞ্জ পাওয়া পোস্টের tips: ১) বিষয়ের ঠিক নামটা লেখো। ২) HAVE-তে নির্দিষ্ট করে লেখো ("সম্পূর্ণ হাতে লেখা নোট, অধ্যায় ১–৫") — শুধু "notes" না। ৩) ঠিক semester আর type বেছে নাও। ৪) এক পোস্টে একটা জিনিসই — আলাদা পোস্টে ম্যাচ ভালো হয়।');
-  if (has('app', 'android', 'ios', 'অ্যাপ', 'play store'))
-    return botText('There is no separate mobile app — EXCHORA is a website that works fully in your phone\'s browser, and it is free. You can add it to your home screen from the browser menu for app-like access.',
-                   'আলাদা মোবাইল অ্যাপ নেই — EXCHORA একটা ওয়েবসাইট, ফোনের browser-এই পুরোপুরি চলে, আর ফ্রি। চাইলে browser menu থেকে home screen-এ যোগ করে অ্যাপের মতো ব্যবহার করতে পারো।');
-  if (has('safe', 'trust', 'নিরাপদ', 'বিশ্বাস', 'fraud', 'প্রতারণা', 'scam'))
-    return botText('EXCHORA is built for safety: your contact number is never public — it is shared only after you accept a request (or yours is accepted). Star ratings show who is reliable, and meeting on campus for physical exchanges is a good idea.',
-                   'EXCHORA নিরাপত্তার কথা ভেবেই বানানো: তোমার contact নম্বর কখনোই সবার সামনে যায় না — শুধু রিকোয়েস্ট Accept হওয়ার পর শেয়ার হয়। স্টার রেটিং দেখে নির্ভরযোগ্য মানুষ চেনা যায়, আর সরাসরি জিনিস নিতে ক্যাম্পাসে দেখা করাই ভালো।');
-  if (has('problem', 'report', 'সমস্যা', 'kaj kore na', 'কাজ করে না', 'error', 'bug'))
-    return botText('Sorry something is not working. Quick checks: 1) Refresh with Ctrl+F5. 2) If you are testing locally, open the site as localhost (not 127.0.0.1). 3) Try logging out and back in. Still stuck? Tell the site owner (Khairun Nessa Mim) what you clicked and what happened — a screenshot helps a lot.',
-                   'কিছু কাজ না করলে দুঃখিত। দ্রুত check করো: ১) Ctrl+F5 দিয়ে refresh। ২) নিজের কম্পিউটারে test করলে localhost দিয়ে খোলো (127.0.0.1 না)। ৩) Log out করে আবার log in করে দেখো। তাও হলে সাইটের মালিককে (Khairun Nessa Mim) বলো কী click করেছিলে আর কী হলো — screenshot দিলে অনেক সুবিধা হয়।');
-  if (has('find', 'search', 'খুঁজ', 'khuj', 'ache', 'আছে')) {
-    const stop = ['find', 'search', 'খুঁজ', 'khuj', 'ache', 'আছে', 'post', 'posts', 'the', 'a', 'for', 'me'];
-    const words = q.split(/[^a-z0-9\u0980-\u09FF+#]+/).filter(function (w) { return w.length >= 3 && stop.indexOf(w) === -1; });
-    const key = words[0];
-    if (!key) return botText('Tell me a subject to find, e.g. "find algorithm".', 'কোন বিষয় খুঁজব বলো, যেমন "find algorithm"।');
-    const found = posts.filter(function (p) { return (p.subject + ' ' + p.have + ' ' + p.want).toLowerCase().indexOf(key) !== -1; }).slice(0, 3);
-    if (!found.length) return botText('I could not find any post about "' + esc(key) + '" yet. You could be the first to post a WANT for it!', '"' + esc(key) + '" নিয়ে এখনো কোনো পোস্ট পাইনি। তুমিই প্রথম এটা WANT হিসেবে পোস্ট করতে পারো!');
-    return botText('I found these posts — tap one to view it:', 'এই পোস্টগুলো পেয়েছি — দেখতে যেকোনো একটায় চাপ দাও:') + '<br>' +
-      found.map(function (p) { return '<button type="button" class="bot-post" data-bot-post="' + p.id + '">' + esc(p.subject) + ' — ' + esc(p.name) + '</button>'; }).join('<br>');
-  }
-  if (has('bye', 'বিদায়', 'allah hafez', 'আল্লাহ হাফেজ', 'goodbye'))
-    return botText('Goodbye! Happy studying — come back whenever you need an exchange. 📚', 'বিদায়! ভালো পড়াশোনা হোক — এক্সচেঞ্জ লাগলেই আবার এসো। 📚');
-  if (has('thank', 'ধন্যবাদ', 'shukriya'))
-    return botText('You are welcome! Anything else about EXCHORA?', 'স্বাগতম! EXCHORA নিয়ে আর কিছু জানতে চাও?');
-  if (has('who made', 'owner', 'ke banai', 'কে বান', 'creator', 'developer'))
-    return botText('EXCHORA was built by Khairun Nessa Mim, a CSE student at Southeast University, as a learning project to help students share study materials.', 'EXCHORA বানিয়েছে Khairun Nessa Mim, Southeast University-এর CSE ছাত্রী — ছাত্রদের পড়ার জিনিস ভাগ করে নিতে সাহায্য করার জন্য একটা শেখার প্রজেক্ট হিসেবে।');
-  return botText('I can help with many things: how to post, what you can post, exchanges & requests, cancelling, deleting your post, matches, search & filters, Interested saves, ratings, contact privacy, profile photos, dark mode & language, forgot password, safety, posting tips — or type "find" + a subject to search posts. What would you like to know?',
-                 'আমি অনেক বিষয়ে সাহায্য করতে পারি: পোস্ট দেওয়া, কী পোস্ট করা যায়, এক্সচেঞ্জ ও রিকোয়েস্ট, বাতিল করা, নিজের পোস্ট মোছা, ম্যাচ, সার্চ ও ফিল্টার, Interested সেভ, রেটিং, contact-এর গোপনীয়তা, প্রোফাইল ছবি, dark mode ও ভাষা, পাসওয়ার্ড ভুলে গেলে, নিরাপত্তা, পোস্টের tips — অথবা পোস্ট খুঁজতে "find" লিখে বিষয় লেখো। কোনটা জানতে চাও?');
+  if (hasFindVerb || hasAche) { const ans2 = botFindAnswer(q, toks); if (ans2) return ans2; }
+  return botText('I can help with many things — tap a topic below, or ask me in your own words (English, বাংলা or Banglish all work):',
+                 'আমি অনেক বিষয়ে সাহায্য করতে পারি — নিচের যেকোনো topic-এ চাপ দাও, বা নিজের ভাষায় জিজ্ঞেস করো (English, বাংলা, Banglish — সবই চলবে):') + '<br>' +
+    '<button type="button" class="bot-post" data-bot-q="how to post">How to post</button><br>' +
+    '<button type="button" class="bot-post" data-bot-q="how exchange works">How exchanges work</button><br>' +
+    '<button type="button" class="bot-post" data-bot-q="find my matches">Find my matches</button><br>' +
+    '<button type="button" class="bot-post" data-bot-q="is it free">Is it free?</button>';
 }
 
 // ---------- 16) Firebase wiring: live posts + auth state ----------
