@@ -494,3 +494,11 @@ html[data-theme="dark"] .rewards-total strong{color:#e9bc4a}
 .card-bottom{flex-direction:column;align-items:stretch;gap:10px}
 .card-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;width:100%}
 .btn-request,.btn-interested{white-space:nowrap}
+
+/* ===== Guest sidebar: no points card for visitors, a login button instead ===== */
+.side-login{display:none;width:100%}
+body.is-guest .side-login{display:block}
+body.is-guest .side-points{display:none}
+
+.about-emoji{font-size:24px;line-height:1}
+.about-by{text-align:center;color:var(--muted);margin-top:20px;font-size:14px}

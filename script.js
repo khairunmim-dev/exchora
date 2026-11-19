@@ -117,6 +117,12 @@ const STR = {
     communityPh: 'Share something with all students...', communityPostBtn: 'Post', communityEmpty: 'No posts yet — be the first to say hello!',
     messagesTitle: 'Messages', messagesSub: 'Private chats with other students — only you two can see them.',
     chatPick: 'Pick a conversation', chatPh: 'Write a message...', chatSend: 'Send', chatEmpty: 'No conversations yet. Press the 💬 button on any post to start one.',
+    navAbout: 'About', aboutTitle: 'About EXCHORA',
+    aboutLead: 'EXCHORA is a student-to-student exchange platform. Instead of buying new materials or letting old ones gather dust, students swap notes, books, slides and question banks directly with each other — and talk, coordinate and build trust inside one community.',
+    ab1T: 'By students, for students', ab1D: 'Built by a CSE student who watched seniors\' materials go to waste while juniors searched everywhere for the very same things.',
+    ab2T: 'Exchange, not buying', ab2D: 'No money changes hands. You give what you have, get what you need — and earn points and ratings that recognise your contribution.',
+    ab3T: 'A real community', ab3D: 'Discuss together on the Community wall, message any student privately, and coordinate your exchange — all inside EXCHORA.',
+    aboutBy: 'Created by Khairun Nessa Mim — BSc in CSE, Southeast University, Dhaka, Bangladesh.',
     pointsPanelTitle: 'My Points', rewardsWaiting: 'Rewards waiting to claim', claimBtn: 'Claim', claimAllBtn: 'Claim all', historyTitle: 'History',
     noRewards: 'No rewards waiting. Complete an exchange, receive a 5-star rating or have your file unlocked to earn one!', noHistory: 'No points activity yet.',
     pointsGuide: 'Welcome: 50 free. Post: +5 instantly. Rewards from exchanges (+10), 5-star ratings (+5) and file unlocks (+15) wait here — claim them when you want. Spending is your choice too: unlocking a file costs 15, pinning a post costs 20, and the site always asks before spending.',
@@ -209,6 +215,12 @@ const STR = {
     communityPh: 'সব শিক্ষার্থীর সাথে কিছু শেয়ার করো...', communityPostBtn: 'পোস্ট', communityEmpty: 'এখনো কোনো পোস্ট নেই — প্রথমে hello বলো!',
     messagesTitle: 'মেসেজ', messagesSub: 'অন্য শিক্ষার্থীদের সাথে private chat — শুধু তোমরা দুজনই দেখতে পাবে।',
     chatPick: 'একটা conversation বেছে নাও', chatPh: 'মেসেজ লেখো...', chatSend: 'পাঠাও', chatEmpty: 'এখনো কোনো conversation নেই। যেকোনো পোস্টে 💬 button চেপে শুরু করো।',
+    navAbout: 'সম্পর্কে', aboutTitle: 'EXCHORA সম্পর্কে',
+    aboutLead: 'EXCHORA হলো student-to-student exchange platform। নতুন material কেনা বা পুরনোগুলো ধুলোয় ফেলে রাখার বদলে শিক্ষার্থীরা নিজেদের মধ্যে notes, বই, slides আর question bank সরাসরি বদলি করে — আর একই community-র ভিতরে কথা বলে, coordinate করে, বিশ্বাস গড়ে।',
+    ab1T: 'শিক্ষার্থীদের দ্বারা, শিক্ষার্থীদের জন্য', ab1D: 'একজন CSE শিক্ষার্থীর বানানো — যে দেখেছে seniors-দের material নষ্ট হয়, অথচ juniors-রা ঠিক ওই জিনিসই খুঁজে বেড়ায়।',
+    ab2T: 'কেনাকাটা না, exchange', ab2D: 'কোনো টাকার লেনদেন নেই। তোমার যা আছে দাও, যা দরকার নাও — সাথে points আর ratings-এ তোমার অবদানের স্বীকৃতি।',
+    ab3T: 'আসল community', ab3D: 'Community wall-এ সবাই মিলে আলোচনা, যেকোনো শিক্ষার্থীকে private message, আর exchange-এর coordination — সবই EXCHORA-র ভিতরে।',
+    aboutBy: 'তৈরি করেছেন Khairun Nessa Mim — BSc in CSE, Southeast University, ঢাকা, বাংলাদেশ।',
     pointsPanelTitle: 'আমার পয়েন্ট', rewardsWaiting: 'Claim করার মতো reward', claimBtn: 'Claim', claimAllBtn: 'সব Claim করো', historyTitle: 'হিস্ট্রি',
     noRewards: 'কোনো reward অপেক্ষা করছে না। Exchange complete করো, 5-star rating পাও বা তোমার ফাইল unlock হলেই reward আসবে!', noHistory: 'এখনো কোনো পয়েন্ট activity নেই।',
     pointsGuide: 'Welcome: 50 ফ্রি। পোস্ট: সাথে সাথে +5। Exchange (+10), 5-star rating (+5) আর ফাইল unlock (+15) থেকে reward এখানে অপেক্ষা করে — যখন চাও Claim করো। খরচও তোমার সিদ্ধান্ত: ফাইল unlock 15, পোস্ট pin 20 — খরচের আগে সাইট সবসময় জিজ্ঞেস করে।',
@@ -572,10 +584,15 @@ document.querySelectorAll('[data-side]').forEach(function (btn) {
     else if (go === 'matches') showView('matches');
     else if (go === 'community') showView('community');
     else if (go === 'messages') showView('messages');
+    else if (go === 'about') { showView('home'); setTimeout(function () { document.getElementById('about').scrollIntoView({ behavior: 'smooth' }); }, 60); }
     else if (go === 'profile') showView('profile');
     else if (go === 'admin' && isAdmin()) showView('admin');
     closeSidebar();
   });
+});
+document.getElementById('sideLogin').addEventListener('click', function () {
+  closeSidebar();
+  document.getElementById('btnShowLogin').click();
 });
 document.getElementById('sideLogout').addEventListener('click', function () {
   closeSidebar();
@@ -612,6 +629,7 @@ function miniAvatar(post) {
 function renderAuthArea() {
   refreshMyPoints();
   const loggedIn = !!currentUser;
+  document.body.classList.toggle('is-guest', !loggedIn);
   authActions.hidden = loggedIn;
   userActions.hidden = !loggedIn;
   if (loggedIn) {

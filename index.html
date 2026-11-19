@@ -58,6 +58,7 @@
       <small id="sideEmail"></small>
     </div>
   </div>
+  <button type="button" id="sideLogin" class="btn btn-gold side-login">Log In / Sign Up</button>
   <div class="side-points">
     <span>⭐ <strong id="sidePoints">50</strong> <span data-i18n="pointsStat">Points</span></span>
     <small data-i18n="sidePointsHint">Earn by posting &amp; exchanging</small>
@@ -69,6 +70,7 @@
     <button type="button" data-side="matches">🔀 <span data-i18n="navMatches">Matches</span></button>
     <button type="button" data-side="community">💬 <span data-i18n="navCommunity">Community</span></button>
     <button type="button" data-side="messages">✉️ <span data-i18n="navMessages">Messages</span> <span class="count-badge" id="msgBadge" hidden>0</span></button>
+    <button type="button" data-side="about">ℹ️ <span data-i18n="navAbout">About</span></button>
     <button type="button" data-side="profile">👤 <span data-i18n="profileNav">Profile</span></button>
     <button type="button" data-side="admin" id="sideAdmin" hidden>🛡️ <span data-i18n="navAdmin">Admin</span></button>
   </nav>
@@ -133,7 +135,33 @@
 <!-- ===== Browse ===== -->
 <main class="container">
 
-  <section id="browse" class="section">
+  <!-- ===== About ===== -->
+<section id="about" class="section about-section">
+  <div class="container">
+    <h2 class="section-title" data-i18n="aboutTitle">About EXCHORA</h2>
+    <p class="section-sub" data-i18n="aboutLead">EXCHORA is a student-to-student exchange platform. Instead of buying new materials or letting old ones gather dust, students swap notes, books, slides and question banks directly with each other — and talk, coordinate and build trust inside one community.</p>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-icon"><span class="about-emoji">🎓</span></div>
+        <h3 data-i18n="ab1T">By students, for students</h3>
+        <p data-i18n="ab1D">Built by a CSE student who watched seniors' materials go to waste while juniors searched everywhere for the very same things.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-icon"><span class="about-emoji">🔁</span></div>
+        <h3 data-i18n="ab2T">Exchange, not buying</h3>
+        <p data-i18n="ab2D">No money changes hands. You give what you have, get what you need — and earn points and ratings that recognise your contribution.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-icon"><span class="about-emoji">💬</span></div>
+        <h3 data-i18n="ab3T">A real community</h3>
+        <p data-i18n="ab3D">Discuss together on the Community wall, message any student privately, and coordinate your exchange — all inside EXCHORA.</p>
+      </div>
+    </div>
+    <p class="about-by" data-i18n="aboutBy">Created by Khairun Nessa Mim — BSc in CSE, Southeast University, Dhaka, Bangladesh.</p>
+  </div>
+</section>
+
+<section id="browse" class="section">
     <h2 class="section-title reveal" data-i18n="browseTitle">Browse Exchange Posts</h2>
 
     <div class="toolbar reveal">
