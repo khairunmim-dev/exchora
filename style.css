@@ -372,3 +372,23 @@ html[data-theme="dark"] .chip.gold{background:#2a2110;color:#e9bc4a}
 .step-card p{font-size:13.5px;color:var(--muted);line-height:1.55}
 @media (max-width:900px){.steps-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:520px){.steps-grid{grid-template-columns:1fr}}
+
+/* ===== Phase G: file links + request note ===== */
+.form-wide{grid-column:1/-1}
+.file-chip{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:rgba(212,160,23,.14);color:#9a7408;border:1px dashed rgba(212,160,23,.55);font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px}
+html[data-theme="dark"] .file-chip{color:#e9bc4a}
+.file-locked{margin-top:14px;font-size:13.5px;color:var(--muted);background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:10px 12px}
+.btn-file{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.req-offer{font-size:13.5px;margin-top:6px;color:var(--text)}
+.req-note-sub{font-size:14px;color:var(--muted);margin-bottom:12px}
+#reqNote{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);font:inherit;font-size:14px;resize:vertical}
+#reqNote:focus{outline:none;border-color:var(--teal)}
+
+/* ===== Phase H: points ===== */
+.featured-badge{background:linear-gradient(135deg,#e9bc4a,#d4a017)!important;color:#0b1b3a!important}
+.btn-pin{background:none;border:1.5px solid rgba(212,160,23,.65);color:#9a7408;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+.btn-pin:hover{background:rgba(212,160,23,.14)}
+html[data-theme="dark"] .btn-pin{color:#e9bc4a}
+.pin-on{font-size:12.5px;font-weight:700;color:#9a7408}
+html[data-theme="dark"] .pin-on{color:#e9bc4a}
+.balance-hint{font-size:13px;color:var(--muted)}

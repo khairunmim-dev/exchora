@@ -13,6 +13,8 @@ EXCHORA is a web platform where students exchange study materials with each othe
 - **Exchange Requests** — request an exchange on any post; the poster accepts or rejects; **contact numbers stay private and are revealed to both sides only after acceptance**; both sides confirm to mark the exchange Completed
 - **Ratings & reputation** — after a completed exchange, both sides rate each other (1–5★); average ratings show on post cards and profiles
 - **StudyBot** — a built-in rule-based guide that explains how everything works, answers common questions, finds posts and checks your matches (English & বাংলা)
+- **File links on posts** — attach a Google Drive link to a post; the link stays hidden until the poster accepts your exchange request (or you unlock it with points)
+- **Points system** — start with 50 free points; earn by posting (+5), completing exchanges (+10), receiving unlocks (+15) and 5-star ratings (+5); spend to unlock files instantly (15) or pin a post for 3 days (20)
 - **Admin dashboard** — the site owner can view platform stats and moderate posts
 - **Bilingual UI** — full English / বাংলা toggle, plus dark & light mode
 

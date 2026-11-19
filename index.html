@@ -167,6 +167,11 @@
           <input type="text" id="fWant" placeholder="e.g. Previous year question bank" data-i18n-ph="fWantPh" required>
         </label>
       </div>
+      <div class="form-row">
+        <label class="form-wide"><span data-i18n="fFile">File / Drive link (optional)</span>
+          <input type="text" id="fFile" placeholder="Google Drive link of your notes — set it to 'Anyone with the link'" data-i18n-ph="fFilePh">
+        </label>
+      </div>
       <button type="submit" class="btn btn-primary btn-submit"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><span data-i18n="postBtn">Post My Exchange</span></button>
       <p class="form-note" data-i18n="formNote">Your post will appear at the top of the list above.</p>
     </form>
@@ -263,6 +268,7 @@
         <div class="stat"><b id="pfPosts">0</b><span data-i18n="myPostsStat">My Posts</span></div>
         <div class="stat"><b id="pfSaved">0</b><span data-i18n="savedStat">Saved</span></div>
         <div class="stat"><b id="pfExch">0</b><span data-i18n="exchangesStat">Exchanges</span></div>
+        <div class="stat"><b id="pfPoints">50</b><span data-i18n="pointsStat">Points</span></div>
       </div>
       <p class="pbio" id="pfBio"></p>
       <button class="btn btn-primary" id="btnEditProfile" type="button" data-i18n="editProfile">Edit Profile</button>
@@ -330,6 +336,19 @@
   <div class="modal">
     <button class="modal-close" id="modalClose" type="button" aria-label="Close">✕</button>
     <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ===== Request modal: what will you give in return? ===== -->
+<div id="reqModal" class="modal-backdrop" hidden>
+  <div class="modal">
+    <button class="modal-close" id="reqModalClose" type="button" aria-label="Close">✕</button>
+    <h3 class="post-subject" data-i18n="reqNoteTitle">What will you give in return?</h3>
+    <p class="req-note-sub" data-i18n="reqNoteSub">This is an exchange — tell the poster what you can give back. They will see it before accepting.</p>
+    <textarea id="reqNote" rows="3" data-i18n-ph="reqNotePh" placeholder="e.g. I will give my Data Mining handwritten notes"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="reqSendBtn" type="button" data-i18n="reqSendBtn">Send Request</button>
+    </div>
   </div>
 </div>
 

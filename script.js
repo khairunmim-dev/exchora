@@ -105,6 +105,15 @@ const STR = {
     sampleRequest: 'This is a sample post — requests work on posts by real users.',
     needContact: 'Add your WhatsApp number in Edit Profile first — it is shared only after a request is accepted.',
     contactLabel: 'WhatsApp number (shared only after a request is accepted)',
+    fFile: 'File / Drive link (optional)', fFilePh: "Google Drive link of your notes — set it to 'Anyone with the link'",
+    fileAttached: 'File attached', viewFile: 'View File', offerLabel: 'In return',
+    fileLocked: 'This post has a file attached. Send a Request Exchange — after the poster accepts, the file link opens for you.',
+    fileInvalid: 'That link does not look right — paste a full link starting with https:// (or leave the field empty).',
+    reqNoteTitle: 'What will you give in return?', reqNoteSub: 'This is an exchange — tell the poster what you can give back. They will see it before accepting.',
+    reqNotePh: 'e.g. I will give my Data Mining handwritten notes', reqSendBtn: 'Send Request',
+    pointsStat: 'Points', featuredTag: 'Featured', pinBtn: 'Pin (20 pts)', ptsPin: 'Post pinned at the top for 3 days!',
+    ptsNeed: 'Not enough points — earn points by posting and completing exchanges.', unlockBtn: 'Unlock file — 15 points',
+    balanceLabel: 'Your points', ptsUnlocked: 'File unlocked! 15 points used.',
     requestsReceived: 'Requests for your posts', requestsSentTitle: 'Requests you sent',
     noRequests: 'No exchange requests yet.',
     status_pending: 'Pending', status_accepted: 'Accepted', status_rejected: 'Rejected',
@@ -177,6 +186,15 @@ const STR = {
     sampleRequest: 'এটা একটা নমুনা পোস্ট — রিকোয়েস্ট কাজ করে আসল ব্যবহারকারীদের পোস্টে।',
     needContact: 'আগে Edit Profile-এ তোমার WhatsApp নম্বর দাও — এটা শেয়ার হয় শুধু রিকোয়েস্ট accept হওয়ার পর।',
     contactLabel: 'WhatsApp নম্বর (শেয়ার হয় শুধু রিকোয়েস্ট accept হওয়ার পর)',
+    fFile: 'ফাইল / Drive link (ঐচ্ছিক)', fFilePh: "তোমার নোটের Google Drive link — 'Anyone with the link' করে দিও",
+    fileAttached: 'ফাইল যুক্ত আছে', viewFile: 'ফাইল দেখো', offerLabel: 'বদলে দেবে',
+    fileLocked: 'এই পোস্টে ফাইল যুক্ত আছে। Request Exchange পাঠাও — পোস্টদাতা Accept করলে ফাইলের link তোমার জন্য খুলবে।',
+    fileInvalid: 'Link-টা ঠিক মনে হচ্ছে না — https:// দিয়ে শুরু পুরো link দাও (অথবা ঘরটা খালি রাখো)।',
+    reqNoteTitle: 'বদলে তুমি কী দেবে?', reqNoteSub: 'এটা একটা exchange — পোস্টদাতাকে বলো বদলে তুমি কী দিতে পারবে। Accept করার আগেই সে এটা দেখতে পাবে।',
+    reqNotePh: 'যেমন: আমি আমার Data Mining হাতে লেখা নোট দেবো', reqSendBtn: 'রিকোয়েস্ট পাঠাও',
+    pointsStat: 'পয়েন্ট', featuredTag: 'ফিচার্ড', pinBtn: 'পিন করো (20 pts)', ptsPin: 'পোস্ট 3 দিনের জন্য সবার উপরে পিন হয়েছে!',
+    ptsNeed: 'যথেষ্ট পয়েন্ট নেই — পোস্ট করে আর exchange complete করে পয়েন্ট earn করো।', unlockBtn: 'ফাইল unlock করো — 15 পয়েন্ট',
+    balanceLabel: 'তোমার পয়েন্ট', ptsUnlocked: 'ফাইল unlock হয়েছে! 15 পয়েন্ট কেটেছে।',
     requestsReceived: 'তোমার পোস্টের রিকোয়েস্ট', requestsSentTitle: 'তোমার পাঠানো রিকোয়েস্ট',
     noRequests: 'এখনো কোনো এক্সচেঞ্জ রিকোয়েস্ট নেই।',
     status_pending: 'অপেক্ষমাণ', status_accepted: 'গৃহীত', status_rejected: 'প্রত্যাখ্যাত',
@@ -218,6 +236,11 @@ let currentUser = null;   // declared early: the first draw already renders requ
 let requests = [];        // Phase D: exchange requests involving the signed-in user
 let reqUnsubs = [];       // live listeners for those requests (Firebase mode)
 let ratings = [];         // Phase E: all ratings (public reputation)
+// Phase H points state (declared early: renderAuthArea touches it during init)
+const POINTS_WELCOME = 50, POINTS_POST = 5, POINTS_EXCHANGE = 10, POINTS_UNLOCK = 15, POINTS_RATING5 = 5, POINTS_PIN = 20;
+let myPointsSum = 0;
+let myUnlocks = [];
+let pointsUnsub = null, unlocksUnsub = null;
 let ratingUnsub = null;
 const ADMIN_EMAILS = ['mimpakhi05@gmail.com'];   // declared early: renderAuthArea checks it on the first draw
 let savedIds = JSON.parse(localStorage.getItem('se_saved') || '[]').map(function (x) {
@@ -251,6 +274,7 @@ function buildCard(post, index) {
   card.style.animationDelay = ((index || 0) % 6) * 70 + 'ms';   // stagger effect
   card.innerHTML =
     '<div class="card-top">' +
+      (isPinned(post) ? '<span class="type-badge featured-badge">📌 ' + t('featuredTag') + '</span>' : '') +
       '<span class="type-badge ' + typeClass[post.type] + '">' + typeIcon[post.type] + t('type_' + post.type) + '</span>' +
       '<span class="sem-chip">' + t('semWord') + ' ' + num(post.semester) + '</span>' +
     '</div>' +
@@ -260,6 +284,7 @@ function buildCard(post, index) {
       '<div class="ex-arrow">' + swapIcon + '</div>' +
       '<p><span class="ex-label want">' + t('want') + '</span> ' + esc(post.want) + '</p>' +
     '</div>' +
+    (post.fileUrl ? '<p class="file-chip">📄 ' + t('fileAttached') + '</p>' : '') +
     '<div class="card-bottom">' +
       '<span class="posted-by">' + miniAvatar(post) + esc(post.name) + ' · CSE' + ratingBadge(post.owner) + '</span>' +
       '<span class="card-actions">' +
@@ -267,6 +292,10 @@ function buildCard(post, index) {
           heartIcon + (isSaved ? t('saved') : t('interested')) +
         '</button>' +
         requestBtnHTML(post) +
+        ((post.owner || null) !== null && post.owner === myUid()
+          ? (isPinned(post)
+            ? '<span class="pin-on">📌 ' + t('featuredTag') + '</span>'
+            : '<button class="btn-pin" type="button" data-pin="' + post.id + '">📌 ' + t('pinBtn') + '</button>') : '') +
         ((post.owner || null) !== null && post.owner === myUid()
           ? '<button class="btn-remove btn-del-post" type="button" data-del-post="' + post.id + '">' + t('adminDelete') + '</button>' : '') +
       '</span>' +
@@ -306,6 +335,7 @@ function applyFilters() {
     const matchesText = q === '' || text.includes(q);
     return matchesType && matchesSem && matchesText;
   });
+  result.sort(function (a, b) { return ((isPinned(b) ? 1 : 0) - (isPinned(a) ? 1 : 0)) || ((b.ts || 0) - (a.ts || 0)); });
   renderPosts(result);
 }
 
@@ -352,6 +382,10 @@ document.addEventListener('click', function (event) {
   if (admDel) { adminDeletePost(admDel.dataset.adminDel); return; }
   const delPost = event.target.closest('[data-del-post]');
   if (delPost) deleteOwnPost(delPost.dataset.delPost);
+  const unlockBtn = event.target.closest('[data-unlock]');
+  if (unlockBtn) { unlockWithPoints(unlockBtn.dataset.unlock); return; }
+  const pinBtn = event.target.closest('[data-pin]');
+  if (pinBtn) { pinPost(pinBtn.dataset.pin); return; }
 });
 
 // ---------- 8) The form: submitting adds a new post ----------
@@ -362,6 +396,8 @@ postForm.addEventListener('submit', function (event) {
 
   if (FB) {                                       // live mode: save to the online database
     if (!currentUser) { showToast(t('loginRequired')); showAuth('login'); return; }
+    const fileUrl = cleanFileUrl(document.getElementById('fFile').value);
+    if (fileUrl === null) { showToast(t('fileInvalid')); return; }
     fbDb.collection('posts').add({
       name: currentUser.name,
       subject: document.getElementById('fSubject').value.trim(),
@@ -370,9 +406,11 @@ postForm.addEventListener('submit', function (event) {
       have: document.getElementById('fHave').value.trim(),
       want: document.getElementById('fWant').value.trim(),
       owner: currentUser.uid,
+      fileUrl: fileUrl,
       photo: currentUser.photo || '',
       ts: Date.now(),
     }).then(function () {
+      addPointsEntry(myUid(), POINTS_POST, 'post');
       postForm.reset();
       showToast(t('postAdded'));
       document.getElementById('browse').scrollIntoView({ behavior: 'smooth' });
@@ -380,6 +418,8 @@ postForm.addEventListener('submit', function (event) {
     return;
   }
 
+  const fileUrl = cleanFileUrl(document.getElementById('fFile').value);
+  if (fileUrl === null) { showToast(t('fileInvalid')); return; }
   const newPost = {
     id: 'p' + Date.now(),                         // unique id from the clock
     name:     document.getElementById('fName').value.trim(),
@@ -390,9 +430,11 @@ postForm.addEventListener('submit', function (event) {
     owner:    currentUser ? currentUser.email : null,
     photo:    currentUser ? (currentUser.photo || '') : '',
     want:     document.getElementById('fWant').value.trim(),
+    fileUrl:  fileUrl,
   };
 
   posts.unshift(newPost);                         // add to the TOP of the array
+  addPointsEntry(myUid(), POINTS_POST, 'post');
   applyFilters();                                 // redraw the grid
   postForm.reset();                               // clear the form fields
   document.getElementById('browse').scrollIntoView({ behavior: 'smooth' });
@@ -494,6 +536,7 @@ function miniAvatar(post) {
   return '<span class="mini-avatar">' + (post.photo ? '<img src="' + esc(post.photo) + '" alt="">' : esc(initials(post.name || '?'))) + '</span>';
 }
 function renderAuthArea() {
+  refreshMyPoints();
   const loggedIn = !!currentUser;
   authActions.hidden = loggedIn;
   userActions.hidden = !loggedIn;
@@ -789,6 +832,7 @@ function openDetails(id) {
       '<p><span class="ex-label want">' + t('want') + '</span> ' + esc(post.want) + '</p>' +
     '</div>' +
     '<p class="posted-by" style="margin-top:14px">' + miniAvatar(post) + t('postedBy') + ': <strong>' + esc(post.name) + '</strong> · CSE</p>' +
+    fileSectionHTML(post) +
     '<div class="modal-actions">' +
       '<button class="btn-interested' + (isSaved ? ' saved' : '') + '" data-id="' + post.id + '">' +
         heartIcon + (isSaved ? t('saved') : t('interested')) + '</button>' +
@@ -804,6 +848,7 @@ document.addEventListener('click', function (event) {
   if (event.target.closest('.btn-interested')) return;      // save button has its own handler
   if (event.target.closest('.btn-request')) return;         // request button has its own handler
   if (event.target.closest('.btn-del-post')) return;        // delete button has its own handler
+  if (event.target.closest('[data-pin]')) return;           // pin button has its own handler
   const card = event.target.closest('.post-card');
   if (card && card.dataset.id) openDetails(card.dataset.id);
 });
@@ -819,6 +864,24 @@ function loadLocalRequests() { return JSON.parse(localStorage.getItem('ex_reques
 function saveLocalRequests(list) { localStorage.setItem('ex_requests', JSON.stringify(list)); }
 function myRequestFor(postId) {
   return requests.find(function (r) { return r.postId === postId && r.fromUid === myUid() && r.status !== 'cancelled' && r.status !== 'rejected'; });
+}
+function cleanFileUrl(v) {
+  const x = String(v || '').trim();
+  if (!x) return '';
+  return /^https?:\/\/\S+$/i.test(x) ? x : null;
+}
+function canViewFile(post) {
+  if (!post || !post.fileUrl) return false;
+  if ((post.owner || null) !== null && post.owner === myUid()) return true;
+  if (myUnlocks.indexOf(post.id) !== -1) return true;
+  return requests.some(function (r) { return r.postId === post.id && r.fromUid === myUid() && (r.status === 'accepted' || r.status === 'completed'); });
+}
+function fileSectionHTML(post) {
+  if (!post.fileUrl) return '';
+  if (canViewFile(post)) return '<div class="modal-actions"><a class="btn btn-gold btn-file" href="' + esc(post.fileUrl) + '" target="_blank" rel="noopener">📄 ' + t('viewFile') + '</a></div>';
+  let html = '<p class="file-locked">🔒 ' + t('fileLocked') + '</p>';
+  if (currentUser && post.owner) html += '<div class="modal-actions"><button class="btn btn-gold" type="button" data-unlock="' + post.id + '">🔓 ' + t('unlockBtn') + '</button><span class="balance-hint">' + t('balanceLabel') + ': <strong>' + myBalance() + '</strong></span></div>';
+  return html;
 }
 function requestBtnHTML(post) {
   if ((post.owner || null) !== null && (post.owner || null) === myUid()) return '';   // own post
@@ -844,6 +907,7 @@ function subscribeRequests() {
   reqUnsubs.push(fbDb.collection('requests').where('fromUid', '==', uid)
     .onSnapshot(function (s) { sent = s.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); }); merge(); }, function () {}));
   subscribeRatings();
+  subscribePoints();
 }
 function sendRequest(postId) {
   const post = posts.find(function (p) { return p.id === postId; });
@@ -853,11 +917,29 @@ function sendRequest(postId) {
   if (post.owner === myUid()) return;
   if (myRequestFor(postId)) return;
   if (!currentUser.contact) { showToast(t('needContact')); showView('profile'); return; }
+  pendingReqPost = postId;
+  document.getElementById('reqNote').value = '';
+  document.getElementById('reqModal').hidden = false;
+}
+let pendingReqPost = null;
+function closeReqModal() { document.getElementById('reqModal').hidden = true; pendingReqPost = null; }
+document.getElementById('reqModalClose').addEventListener('click', closeReqModal);
+document.getElementById('reqModal').addEventListener('click', function (event) { if (event.target === this) closeReqModal(); });
+document.getElementById('reqSendBtn').addEventListener('click', function () {
+  if (!pendingReqPost) return;
+  const postId = pendingReqPost;
+  const note = document.getElementById('reqNote').value.trim();
+  closeReqModal();
+  doSendRequest(postId, note);
+});
+function doSendRequest(postId, note) {
+  const post = posts.find(function (p) { return p.id === postId; });
+  if (!post || !currentUser) return;
   const req = {
     postId: post.id, postSubject: post.subject, postHave: post.have, postWant: post.want,
     fromUid: myUid(), fromName: currentUser.name, fromPhoto: currentUser.photo || '', fromContact: currentUser.contact,
     toUid: post.owner, toName: post.name, toPhoto: post.photo || '', toContact: '',
-    status: 'pending', fromDone: false, toDone: false, ts: Date.now(),
+    status: 'pending', fromDone: false, toDone: false, ts: Date.now(), note: note || '',
   };
   if (FB) {
     fbDb.collection('requests').add(req)
@@ -904,8 +986,10 @@ function requestAction(act, id) {
     const updates = {};
     if (r.fromUid === myUid()) updates.fromDone = true;
     if (r.toUid === myUid()) updates.toDone = true;
-    if (FB && ((updates.fromDone && r.toDone) || (updates.toDone && r.fromDone))) updates.status = 'completed';
+    const willComplete = (updates.fromDone && r.toDone) || (updates.toDone && r.fromDone);
+    if (FB && willComplete) updates.status = 'completed';
     updateRequest(id, updates);
+    if (willComplete) { addPointsEntry(r.fromUid, POINTS_EXCHANGE, 'exchange'); addPointsEntry(r.toUid, POINTS_EXCHANGE, 'exchange'); }
   }
 }
 function reqItemHTML(r, mine) {
@@ -924,6 +1008,10 @@ function reqItemHTML(r, mine) {
       ? '<span class="req-wait">' + t('waitingOther') + '</span>'
       : '<button class="btn btn-small btn-gold" type="button" data-act="done" data-id="' + r.id + '">' + t('confirmDoneBtn') + '</button>';
   }
+  const noteLine = r.note ? '<p class="req-offer"><strong>' + t('offerLabel') + ':</strong> ' + esc(r.note) + '</p>' : '';
+  const reqPost = posts.find(function (p) { return p.id === r.postId; });
+  const fileLine = (mine && (r.status === 'accepted' || r.status === 'completed') && reqPost && reqPost.fileUrl)
+    ? '<p style="margin-top:8px"><a class="btn btn-small btn-gold btn-file" href="' + esc(reqPost.fileUrl) + '" target="_blank" rel="noopener">📄 ' + t('viewFile') + '</a></p>' : '';
   const contactLine = (r.status === 'accepted' || r.status === 'completed') && otherContact
     ? '<p class="req-contact">' + t('contactOf') + ': <strong>' + esc(otherContact) + '</strong></p>' : '';
   let ratingLine = '';
@@ -940,7 +1028,9 @@ function reqItemHTML(r, mine) {
     '<strong>' + esc(otherName) + '</strong> · ' + esc(r.postSubject) +
     '<span class="req-status st-' + r.status + '">' + t('status_' + r.status) + '</span></div>' +
     '<p class="req-detail"><span class="ex-label have">' + t('have') + '</span> ' + esc(r.postHave) + ' &nbsp;⇄&nbsp; <span class="ex-label want">' + t('want') + '</span> ' + esc(r.postWant) + '</p>' +
+    noteLine +
     contactLine +
+    fileLine +
     ratingLine +
     (actions ? '<div class="req-actions">' + actions + '</div>' : '') +
   '</div>';
@@ -974,6 +1064,74 @@ function deleteOwnPost(id) {
   renderMyExchanges();
 }
 
+
+// ---------- 17.5) Points & file unlocks (Phase H) ----------
+// Balance = 50 welcome points + the sum of the user's ledger entries.
+// The ledger lives in a 'points' collection so one user can credit another
+// (Firestore rules only allow writing your OWN user doc).
+function myBalance() { return POINTS_WELCOME + myPointsSum; }
+function loadLocalPoints() { return JSON.parse(localStorage.getItem('ex_points') || '[]'); }
+function loadLocalUnlocks() { return JSON.parse(localStorage.getItem('ex_unlocks') || '[]'); }
+function refreshMyPoints() {
+  if (!currentUser) { myPointsSum = 0; myUnlocks = []; return; }
+  if (!FB) {
+    const me = myUid();
+    myPointsSum = loadLocalPoints().filter(function (e) { return e.uid === me; }).reduce(function (sum, e) { return sum + e.amount; }, 0);
+    myUnlocks = loadLocalUnlocks().filter(function (u) { return u.uid === me; }).map(function (u) { return u.postId; });
+  }
+  const el = document.getElementById('pfPoints');
+  if (el) el.textContent = num(myBalance());
+}
+function addPointsEntry(uid, amount, reason) {
+  const entry = { uid: uid, amount: amount, reason: reason || '', by: myUid(), ts: Date.now() };
+  if (FB) {
+    fbDb.collection('points').add(entry).catch(function () {});
+    if (uid === myUid()) { myPointsSum += amount; refreshMyPoints(); }
+    return;
+  }
+  const all = loadLocalPoints(); all.push(entry); localStorage.setItem('ex_points', JSON.stringify(all));
+  if (uid === myUid()) refreshMyPoints();
+}
+function subscribePoints() {
+  if (pointsUnsub) { pointsUnsub(); pointsUnsub = null; }
+  if (unlocksUnsub) { unlocksUnsub(); unlocksUnsub = null; }
+  if (!FB || !currentUser) { refreshMyPoints(); return; }
+  pointsUnsub = fbDb.collection('points').where('uid', '==', myUid()).onSnapshot(function (snap) {
+    myPointsSum = snap.docs.reduce(function (sum, d) { return sum + (d.data().amount || 0); }, 0);
+    refreshMyPoints();
+  }, function () {});
+  unlocksUnsub = fbDb.collection('unlocks').where('uid', '==', myUid()).onSnapshot(function (snap) {
+    myUnlocks = snap.docs.map(function (d) { return d.data().postId; });
+    applyFilters();
+  }, function () {});
+}
+function isPinned(post) { return (post.pinnedUntil || 0) > Date.now(); }
+function unlockWithPoints(postId) {
+  const post = posts.find(function (x) { return x.id === postId; });
+  if (!post || !currentUser || !post.fileUrl || canViewFile(post)) return;
+  if (myBalance() < POINTS_UNLOCK) { showToast(t('ptsNeed')); return; }
+  addPointsEntry(myUid(), -POINTS_UNLOCK, 'unlock');
+  addPointsEntry(post.owner, POINTS_UNLOCK, 'unlock-income');
+  const rec = { uid: myUid(), postId: postId, ts: Date.now() };
+  if (FB) fbDb.collection('unlocks').add(rec).catch(function () {});
+  else { const all = loadLocalUnlocks(); all.push(rec); localStorage.setItem('ex_unlocks', JSON.stringify(all)); }
+  myUnlocks.push(postId);
+  showToast(t('ptsUnlocked'));
+  applyFilters();
+  if (!detailModal.hidden) openDetails(postId);
+}
+function pinPost(postId) {
+  const post = posts.find(function (x) { return x.id === postId; });
+  if (!post || !currentUser || post.owner !== myUid() || isPinned(post)) return;
+  if (myBalance() < POINTS_PIN) { showToast(t('ptsNeed')); return; }
+  addPointsEntry(myUid(), -POINTS_PIN, 'pin');
+  const until = Date.now() + 3 * 24 * 60 * 60 * 1000;
+  if (FB) fbDb.collection('posts').doc(postId).update({ pinnedUntil: until }).catch(function () {});
+  post.pinnedUntil = until;
+  applyFilters(); renderMyExchanges();
+  showToast(t('ptsPin'));
+}
+
 // ---------- 18) Ratings & reputation (Phase E) ----------
 function loadLocalRatings() { return JSON.parse(localStorage.getItem('ex_ratings') || '[]'); }
 function starsText(n) { return '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n); }
@@ -1001,13 +1159,14 @@ function rateUser(requestId, stars) {
   const other = r.fromUid === me ? r.toUid : r.fromUid;
   const entry = { requestId: requestId, fromUid: me, toUid: other, stars: stars, ts: Date.now() };
   if (FB) {
-    fbDb.collection('ratings').add(entry).then(function () { showToast(t('ratedToast')); })
+    fbDb.collection('ratings').add(entry).then(function () { if (stars === 5) addPointsEntry(other, POINTS_RATING5, 'rating5'); showToast(t('ratedToast')); })
       .catch(function () { showToast(t('requestError')); });
     return;
   }
   const all = loadLocalRatings();
   all.push(Object.assign({ id: 'rt' + Date.now() }, entry));
   localStorage.setItem('ex_ratings', JSON.stringify(all));
+  if (stars === 5) addPointsEntry(other, POINTS_RATING5, 'rating5');
   ratings = all;
   renderRequests();
   applyFilters();
@@ -1229,6 +1388,12 @@ const BOT_TOPICS = [
   { k: ['bye', 'বিদায়', 'allah hafez', 'আল্লাহ হাফেজ', 'goodbye'],
     en: 'Goodbye! Happy studying — come back whenever you need an exchange. 📚',
     bn: 'বিদায়! ভালো পড়াশোনা হোক — এক্সচেঞ্জ লাগলেই আবার এসো। 📚' },
+  { k: ['file attach', 'file kivabe', 'pdf kivabe dibo', 'link kivabe', 'drive link', 'file link', 'file dite', 'pdf dite', 'attach', 'ফাইল দেবো', 'লিংক', 'file upload', 'notes er link'],
+    en: 'To attach a file to your post: upload the notes to your own Google Drive, set sharing to "Anyone with the link", then paste the link in the "File / Drive link" field of the post form. Everyone can see that your post has a file — but the link itself opens only for a student whose exchange request you accept. Fair exchange first — or unlock it instantly with 15 points!',
+    bn: 'পোস্টে ফাইল যোগ করতে: নোটগুলো নিজের Google Drive-এ upload করে sharing "Anyone with the link" করে দাও, তারপর post form-এর "File / Drive link" ঘরে link-টা বসাও। সবাই দেখতে পাবে তোমার পোস্টে ফাইল আছে — কিন্তু link-টা খুলবে শুধু তার জন্য যার exchange request তুমি Accept করবে। আগে fair exchange!' },
+  { k: ['point', 'points', 'পয়েন্ট', 'point kivabe', 'points kivabe', 'earn point', 'point pabo'],
+    en: 'Points: you start with 50 free points. Earn more: +5 for every post, +10 when an exchange completes, +15 when someone unlocks your file with points, and +5 when you receive a 5-star rating. Spend points to unlock a file instantly (15 points) or pin your post at the top for 3 days (20 points). Exchanges themselves are always free.',
+    bn: 'পয়েন্ট: শুরুতে 50 পয়েন্ট ফ্রি। আরও earn করো: প্রতিটা পোস্টে +5, exchange complete হলে +10, কেউ তোমার ফাইল পয়েন্ট দিয়ে unlock করলে +15, আর 5-star rating পেলে +5। পয়েন্ট খরচ করে ফাইল সাথে সাথে unlock করা যায় (15 পয়েন্ট) বা নিজের পোস্ট 3 দিনের জন্য সবার উপরে pin করা যায় (20 পয়েন্ট)। Exchange সবসময়ই ফ্রি।' },
   { k: ['match', 'ম্যাচ', 'matching'], fn: 'matches' }
 ];
 BOT_TOPICS.forEach(function (t) { t.nk = t.k.map(function (key) { return botNorm(key); }); });
