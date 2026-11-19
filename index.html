@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXCHORA — Share Knowledge. Exchange Opportunities.</title>
+<meta name="description" content="EXCHORA — a student-to-student academic resource exchange platform for university students in Bangladesh. Share Knowledge. Exchange Opportunities.">
+<meta property="og:title" content="EXCHORA — Share Knowledge. Exchange Opportunities.">
+<meta property="og:description" content="Exchange notes, books, slides and question banks with fellow students — no money, just knowledge.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%232b4acb'/><stop offset='1' stop-color='%230B1B3A'/></linearGradient></defs><rect width='48' height='48' rx='11' fill='url(%23g)'/><g fill='none' stroke='%23D4A017' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'><polyline points='17,10 21,6 25,10'/><path d='M21,6 V26'/><polyline points='31,38 27,42 23,38'/><path d='M27,42 V22'/></g></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.dataset.theme = localStorage.getItem('sm_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');</script>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#" class="logo">
+      <span class="logo-badge"><svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="lgNavy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b4acb"/><stop offset="1" stop-color="#0b1b3a"/></linearGradient><linearGradient id="lgGold" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="48"><stop offset="0" stop-color="#f2d06b"/><stop offset="1" stop-color="#d4a017"/></linearGradient></defs><rect width="48" height="48" rx="12" fill="url(#lgNavy)"/><ellipse cx="24" cy="9" rx="20" ry="10" fill="#ffffff" opacity="0.10"/><g fill="none" stroke="url(#lgGold)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17,10.5 21,6.5 25,10.5"/><path d="M21,6.5 V25"/><polyline points="31,37.5 27,41.5 23,37.5"/><path d="M27,41.5 V23"/></g></svg></span>
+      <span class="logo-text">EXCH<strong>ORA</strong></span>
+    </a>
+    <nav class="main-nav">
+      <a href="#browse"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg><span data-i18n="navBrowse">Browse</span></a>
+      <a href="#post"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><span data-i18n="navPost">Post an Exchange</span></a>
+      <a href="#my"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span data-i18n="navMy">My Exchanges</span> <span class="count-badge" id="savedCount">0</span></a>
+      <button id="langToggle" class="lang-toggle" type="button">বাংলা</button>
+      <a href="#" id="navMatches"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg><span data-i18n="navMatches">Matches</span></a>
+      <a href="#" id="navAdmin" hidden><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="navAdmin">Admin</span></a>
+      <span class="auth-actions" id="authActions">
+        <button class="btn btn-outline btn-small" id="btnShowLogin" type="button" data-i18n="loginBtn">Log In</button>
+        <button class="btn btn-gold btn-small" id="btnShowSignup" type="button" data-i18n="signupBtn">Sign Up</button>
+      </span>
+      <span class="auth-actions" id="userActions" hidden>
+        <button class="user-chip" id="btnProfile" type="button"><span class="user-avatar" id="userAvatar">?</span><span id="userNameShort">User</span></button>
+        <button class="btn btn-outline btn-small" id="btnLogout" type="button" data-i18n="logout">Logout</button>
+      </span>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="icon ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div id="view-home">
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="container">
+    <h1 data-i18n="heroTitle">Swap notes, books &amp; slides<br>with fellow students</h1>
+    <p class="hero-sub" data-i18n="heroSub">Post what you have, find what you need. EXCHORA connects students who want to trade study materials — no money, just learning.</p>
+    <div class="hero-actions">
+      <a href="#browse" class="btn btn-primary" data-i18n="heroBrowse">Browse Posts</a>
+      <a href="#post" class="btn btn-outline" data-i18n="navPost">Post an Exchange</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong id="statPosts">6</strong><span data-i18n="statPosts">Active posts</span></div>
+      <div class="stat"><strong>4</strong><span data-i18n="statTypes">Material types</span></div>
+      <div class="stat"><strong>100%</strong><span data-i18n="statFree">Free to swap</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== How it works ===== -->
+<section id="how" class="section how-section">
+  <div class="container">
+    <h2 class="section-title" data-i18n="howTitle">How EXCHORA Works</h2>
+    <p class="section-sub" data-i18n="howSub">Why we built it: every semester, students finish a course with notes, books and slides that just sit unused — while juniors struggle for the same materials. EXCHORA turns that waste into exchange. No money, just knowledge.</p>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <span class="step-num">1</span>
+        <div class="step-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div>
+        <h3 data-i18n="step1T">Create your account</h3>
+        <p data-i18n="step1D">Sign up free with your email — it takes less than a minute. Your profile keeps your posts and saved exchanges in one place.</p>
+      </div>
+      <div class="step-card reveal">
+        <span class="step-num">2</span>
+        <div class="step-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+        <h3 data-i18n="step2T">Post HAVE ⇄ WANT</h3>
+        <p data-i18n="step2D">Share what you have — notes, a book, slides, a question bank — and write what you need in return. That pair is one exchange post.</p>
+      </div>
+      <div class="step-card reveal">
+        <span class="step-num">3</span>
+        <div class="step-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <h3 data-i18n="step3T">Find your match</h3>
+        <p data-i18n="step3D">Search and filter by subject, semester or type — or open Matches, where the engine pairs posts whose HAVE and WANT fit each other.</p>
+      </div>
+      <div class="step-card reveal">
+        <span class="step-num">4</span>
+        <div class="step-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
+        <h3 data-i18n="step4T">Exchange &amp; learn</h3>
+        <p data-i18n="step4D">Tap Interested on a post to save it, connect with the poster, and swap — meet on campus for books, or share files for PDFs. Knowledge passed on.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Browse ===== -->
+<main class="container">
+
+  <section id="browse" class="section">
+    <h2 class="section-title reveal" data-i18n="browseTitle">Browse Exchange Posts</h2>
+
+    <div class="toolbar reveal">
+      <div class="search-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="search" id="searchInput" class="search-input" placeholder="Search by subject, course or keyword…" data-i18n-ph="searchPh"></div>
+      <div class="filter-chips" id="typeFilters">
+        <button class="fchip active" data-type="all" data-i18n="chipAll">All</button>
+        <button class="fchip" data-type="Notes" data-i18n="type_Notes">Notes</button>
+        <button class="fchip" data-type="Book" data-i18n="type_Book">Book</button>
+        <button class="fchip" data-type="Slides" data-i18n="type_Slides">Slides</button>
+        <button class="fchip" data-type="Question Bank" data-i18n="type_Question Bank">Question Bank</button>
+      </div>
+      <select id="semesterFilter" class="semester-select">
+        <option value="all" data-i18n="allSem">All semesters</option>
+        <option value="8" data-i18n="sem8">Semester 8</option>
+        <option value="9" data-i18n="sem9">Semester 9</option>
+        <option value="10" data-i18n="sem10">Semester 10</option>
+        <option value="11" data-i18n="sem11">Semester 11</option>
+        <option value="12" data-i18n="sem12">Semester 12</option>
+      </select>
+    </div>
+
+    <div class="posts-grid" id="postsGrid"></div>
+    <p class="no-results" id="noResults" hidden data-i18n="noResults">No posts match your search. Try a different keyword or filter.</p>
+  </section>
+
+  <!-- ===== Post an Exchange ===== -->
+  <section id="post" class="section">
+    <h2 class="section-title reveal" data-i18n="postTitle">Post an Exchange</h2>
+    <form id="postForm" class="post-form reveal">
+      <div class="form-row">
+        <label><span data-i18n="fName">Your name</span>
+          <input type="text" id="fName" placeholder="e.g. Khairun Nessa Mim" data-i18n-ph="fNamePh" required>
+        </label>
+        <label><span data-i18n="fSubject">Subject / Course</span>
+          <input type="text" id="fSubject" placeholder="e.g. Data Mining" data-i18n-ph="fSubjectPh" required>
+        </label>
+      </div>
+      <div class="form-row">
+        <label><span data-i18n="fSemester">Semester</span>
+          <select id="fSemester">
+            <option value="8" data-i18n="sem8">Semester 8</option>
+            <option value="9" data-i18n="sem9">Semester 9</option>
+            <option value="10" data-i18n="sem10">Semester 10</option>
+            <option value="11" selected data-i18n="sem11">Semester 11</option>
+            <option value="12" data-i18n="sem12">Semester 12</option>
+          </select>
+        </label>
+        <label><span data-i18n="fType">Material type</span>
+          <select id="fType">
+            <option value="Notes" data-i18n="type_Notes">Notes</option>
+            <option value="Book" data-i18n="type_Book">Book</option>
+            <option value="Slides" data-i18n="type_Slides">Slides</option>
+            <option value="Question Bank" data-i18n="type_Question Bank">Question Bank</option>
+          </select>
+        </label>
+      </div>
+      <div class="form-row">
+        <label><span data-i18n="fHave">What I have</span>
+          <input type="text" id="fHave" placeholder="e.g. Complete lecture notes of Unit 1–3" data-i18n-ph="fHavePh" required>
+        </label>
+        <label><span data-i18n="fWant">What I want</span>
+          <input type="text" id="fWant" placeholder="e.g. Previous year question bank" data-i18n-ph="fWantPh" required>
+        </label>
+      </div>
+      <button type="submit" class="btn btn-primary btn-submit"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><span data-i18n="postBtn">Post My Exchange</span></button>
+      <p class="form-note" data-i18n="formNote">Your post will appear at the top of the list above.</p>
+    </form>
+  </section>
+
+  <!-- ===== My Exchanges ===== -->
+  <section id="my" class="section">
+    <h2 class="section-title reveal" data-i18n="myTitle">My Exchanges</h2>
+    <div class="empty-state" id="myEmpty">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <p data-i18n="emptyTitle">No saved exchanges yet.</p>
+      <p class="empty-sub" data-i18n="emptySub">Tap <strong>Interested</strong> on any post and it will be saved here.</p>
+    </div>
+    <div class="posts-grid" id="myGrid"></div>
+    <div id="requestsBlock" hidden>
+      <h3 class="sub-title" id="receivedTitle" data-i18n="requestsReceived">Requests for your posts</h3>
+      <div id="receivedList" class="req-list"></div>
+      <h3 class="sub-title" id="sentTitle" data-i18n="requestsSentTitle">Requests you sent</h3>
+      <div id="sentList" class="req-list"></div>
+      <p class="no-results" id="noRequests" hidden data-i18n="noRequests">No exchange requests yet.</p>
+    </div>
+  </section>
+
+</main>
+</div><!-- /view-home -->
+
+<!-- ===== Auth view ===== -->
+<section id="view-auth" class="view" hidden>
+  <div class="auth-wrap">
+    <div class="auth-card" id="loginCard">
+      <h2 data-i18n="welcomeBack">Welcome back</h2>
+      <p class="auth-hint" data-i18n="loginHint">Login to see your exchanges</p>
+      <form id="loginForm">
+        <label><span data-i18n="email">Email</span>
+          <input type="email" id="liEmail" required autocomplete="email"></label>
+        <label><span data-i18n="password">Password</span>
+          <input type="password" id="liPass" required autocomplete="current-password"></label>
+        <p class="auth-error" id="loginError" hidden></p>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="loginBtn">Log In</button>
+      </form>
+      <div class="auth-or" data-i18n="orText">— or —</div>
+      <button class="btn btn-google btn-block" id="btnGoogle" type="button"><b>G</b> <span data-i18n="googleBtn">Continue with Google</span></button>
+      <p class="auth-switch"><span data-i18n="noAccount">New to EXCHORA?</span> <a href="#" id="linkToSignup" data-i18n="createAccount">Create an account</a></p>
+    </div>
+
+    <div class="auth-card" id="signupCard" hidden>
+      <h2 data-i18n="signupTitle">Create your account</h2>
+      <p class="auth-hint" data-i18n="signupHint">Join free and start swapping</p>
+      <form id="signupForm">
+        <label><span data-i18n="fullName">Full name</span>
+          <input type="text" id="suName" required autocomplete="name"></label>
+        <label><span data-i18n="email">Email</span>
+          <input type="email" id="suEmail" required autocomplete="email"></label>
+        <div class="form-row">
+          <label><span data-i18n="university">University</span>
+            <input type="text" id="suUni" required></label>
+          <label><span data-i18n="department">Department</span>
+            <input type="text" id="suDept" value="CSE" required></label>
+        </div>
+        <div class="form-row">
+          <label><span data-i18n="fSemester">Semester</span>
+            <select id="suSem">
+              <option value="8" data-i18n="sem8">Semester 8</option>
+              <option value="9" data-i18n="sem9">Semester 9</option>
+              <option value="10" data-i18n="sem10">Semester 10</option>
+              <option value="11" selected data-i18n="sem11">Semester 11</option>
+              <option value="12" data-i18n="sem12">Semester 12</option>
+            </select></label>
+          <label><span data-i18n="password">Password</span>
+            <input type="password" id="suPass" required minlength="6" autocomplete="new-password"></label>
+        </div>
+        <p class="auth-error" id="signupError" hidden></p>
+        <button type="submit" class="btn btn-gold btn-block" data-i18n="createAccountBtn">Create Account</button>
+      </form>
+      <p class="auth-switch"><span data-i18n="haveAccount">Already have an account?</span> <a href="#" id="linkToLogin" data-i18n="loginBtn">Log In</a></p>
+    </div>
+    <p class="auth-note" data-i18n="authNote">Secure accounts powered by Firebase.</p>
+  </div>
+</section>
+
+<!-- ===== Profile view ===== -->
+<section id="view-profile" class="view" hidden>
+  <div class="container section">
+    <div class="profile-card">
+      <div class="avatar avatar-lg" id="pfAvatar">?</div>
+      <h2 class="pname" id="pfName">—</h2>
+      <p class="pmeta" id="pfMeta">—</p>
+      <div class="chips">
+        <span class="chip" id="pfSemChip">—</span>
+        <span class="chip gold" id="pfSinceChip">—</span>
+        <span class="chip" id="pfRatingChip" hidden>★ —</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><b id="pfPosts">0</b><span data-i18n="myPostsStat">My Posts</span></div>
+        <div class="stat"><b id="pfSaved">0</b><span data-i18n="savedStat">Saved</span></div>
+        <div class="stat"><b id="pfExch">0</b><span data-i18n="exchangesStat">Exchanges</span></div>
+      </div>
+      <p class="pbio" id="pfBio"></p>
+      <button class="btn btn-primary" id="btnEditProfile" type="button" data-i18n="editProfile">Edit Profile</button>
+      <form id="editProfileForm" class="edit-form" hidden>
+        <div class="photo-edit">
+          <div class="avatar avatar-md" id="epPhotoPreview">?</div>
+          <div class="photo-actions">
+            <span class="photo-label" data-i18n="profilePhoto">Profile photo</span>
+            <div class="photo-btns">
+              <label class="btn btn-small btn-primary" for="epPhotoInput" data-i18n="uploadPhoto">Upload photo</label>
+              <button class="btn btn-small btn-remove" id="epPhotoRemove" type="button" data-i18n="removePhoto">Remove</button>
+            </div>
+          </div>
+          <input type="file" id="epPhotoInput" accept="image/*" hidden>
+        </div>
+        <label><span data-i18n="fullName">Full name</span><input type="text" id="epName" required></label>
+        <label><span data-i18n="university">University</span><input type="text" id="epUni" required></label>
+        <div class="form-row">
+          <label><span data-i18n="department">Department</span><input type="text" id="epDept" required></label>
+          <label><span data-i18n="fSemester">Semester</span>
+            <select id="epSem">
+              <option value="8" data-i18n="sem8">Semester 8</option>
+              <option value="9" data-i18n="sem9">Semester 9</option>
+              <option value="10" data-i18n="sem10">Semester 10</option>
+              <option value="11" data-i18n="sem11">Semester 11</option>
+              <option value="12" data-i18n="sem12">Semester 12</option>
+            </select></label>
+        </div>
+        <label><span data-i18n="bio">Short bio</span><input type="text" id="epBio" maxlength="120"></label>
+        <label><span data-i18n="contactLabel">WhatsApp number (shared only after a request is accepted)</span><input type="text" id="epContact" maxlength="30" placeholder="01XXXXXXXXX"></label>
+        <button type="submit" class="btn btn-gold" data-i18n="saveChanges">Save Changes</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Matches view ===== -->
+<section id="view-matches" class="view" hidden>
+  <div class="container section">
+    <h2 class="section-title" data-i18n="matchesTitle">Your Matches</h2>
+    <p class="section-sub" data-i18n="matchesSub">Posts whose HAVE and WANT fit each other — found by the matching engine.</p>
+    <div id="matchList" class="match-list"></div>
+    <p class="no-results" id="noMatches" hidden data-i18n="noMatches">No matches yet. Post what you have and want — matches appear when two posts fit.</p>
+  </div>
+</section>
+
+<!-- ===== Admin view ===== -->
+<section id="view-admin" class="view" hidden>
+  <div class="container section">
+    <h2 class="section-title" data-i18n="adminTitle">Admin Dashboard</h2>
+    <div class="stats admin-stats">
+      <div class="stat"><b id="adPosts">0</b><span data-i18n="statPostsA">Posts</span></div>
+      <div class="stat"><b id="adUsers">0</b><span data-i18n="statUsers">Users</span></div>
+      <div class="stat"><b id="adRequests">0</b><span data-i18n="statRequests">Requests</span></div>
+    </div>
+    <h3 class="sub-title" data-i18n="adminPosts">All posts</h3>
+    <div id="adminPostList" class="req-list"></div>
+    <h3 class="sub-title" data-i18n="adminUsers">Registered users</h3>
+    <div id="adminUserList" class="req-list"></div>
+  </div>
+</section>
+
+<!-- ===== Details modal ===== -->
+<div id="detailModal" class="modal-backdrop" hidden>
+  <div class="modal">
+    <button class="modal-close" id="modalClose" type="button" aria-label="Close">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p data-i18n="footerTag"><strong>EXCHORA</strong> — Share Knowledge. Exchange Opportunities.</p>
+    <p class="footer-sub">Built by Khairun Nessa Mim · CSE, Southeast University</p>
+  </div>
+</footer>
+
+<!-- ===== StudyBot ===== -->
+<button id="botBtn" aria-label="StudyBot"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span>StudyBot</span></button>
+<div id="botPanel" hidden>
+  <div class="bot-head">
+    <div><strong>StudyBot</strong><small data-i18n="botTag">Your rule-based site guide</small></div>
+    <button id="botClose" type="button" aria-label="Close">✕</button>
+  </div>
+  <div id="botMsgs" class="bot-msgs"></div>
+  <div class="bot-chips">
+    <button type="button" data-bot-q="how to post" data-i18n="botChip1">How to post</button>
+    <button type="button" data-bot-q="how exchange works" data-i18n="botChip2">How exchanges work</button>
+    <button type="button" data-bot-q="is it free" data-i18n="botChip3">Is it free?</button>
+    <button type="button" data-bot-q="find my matches" data-i18n="botChip4">Find my matches</button>
+  </div>
+  <form id="botForm" class="bot-form">
+    <input id="botInput" data-i18n-ph="botPh" placeholder="Ask StudyBot…" autocomplete="off">
+    <button type="submit" class="btn btn-primary btn-small" data-i18n="botSend">Send</button>
+  </form>
+</div>
+
+<button id="backTop" aria-label="Back to top"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
