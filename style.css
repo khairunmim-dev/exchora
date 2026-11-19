@@ -502,3 +502,19 @@ body.is-guest .side-points{display:none}
 
 .about-emoji{font-size:24px;line-height:1}
 .about-by{text-align:center;color:var(--muted);margin-top:20px;font-size:14px}
+
+/* ===== Mobile header fix: the drawer holds the menu, so the phone header
+   keeps only hamburger, logo, language, points, avatar and theme ===== */
+@media (max-width:860px){
+  .main-nav a[href="#browse"],.main-nav a[href="#post"],.main-nav a[href="#my"],#navMatches,#navAdmin{display:none}
+  #btnLogout{display:none}
+  .main-nav{flex-wrap:nowrap;gap:8px;margin-left:auto}
+  .header-inner{flex-wrap:nowrap}
+}
+@media (max-width:560px){
+  #userNameShort{display:none}
+  .logo-text{display:none}
+  .points-chip{padding:4px 9px;font-size:12px;margin-right:4px}
+  .lang-toggle{padding:5px 10px;font-size:12.5px}
+  .user-chip{padding:3px}
+}
