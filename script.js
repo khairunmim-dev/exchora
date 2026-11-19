@@ -143,7 +143,7 @@ const STR = {
     rateLabel: 'Rate this exchange', youRated: 'You rated', ratedYou: 'rated you', ratingsWord: 'ratings', ratedToast: 'Thanks for the rating!',
     botTag: 'Your rule-based site guide', botPh: 'Ask StudyBot…', botSend: 'Send',
     botChip1: 'How to post', botChip2: 'How exchanges work', botChip3: 'Is it free?', botChip4: 'Find my matches',
-    botHello: 'Hi! I am StudyBot, your EXCHORA guide. Ask me how to post, how exchanges work, or type "find" plus a subject (e.g. "find algorithm") and I will look for posts for you.',
+    botHello: 'Hi! I\'m StudyBot, your EXCHORA guide. Ask me anything about the site — or type "find" + a subject (e.g. "find algorithm") and I\'ll look for posts.',
     myPostsStat: 'My Posts', savedStat: 'Saved', exchangesStat: 'Exchanges',
     matchesTitle: 'Your Matches', matchesSub: 'Posts whose HAVE and WANT fit each other — found by the matching engine.',
     noMatches: 'No matches yet. Post what you have and want — matches appear when two posts fit.',
@@ -241,7 +241,7 @@ const STR = {
     rateLabel: 'এই এক্সচেঞ্জটা রেট করো', youRated: 'তুমি রেট করেছো', ratedYou: 'তোমাকে রেট করেছে', ratingsWord: 'রেটিং', ratedToast: 'রেটিংয়ের জন্য ধন্যবাদ!',
     botTag: 'তোমার নিয়ম-ভিত্তিক সাইট গাইড', botPh: 'StudyBot-কে জিজ্ঞেস করো…', botSend: 'পাঠাও',
     botChip1: 'পোস্ট কীভাবে দেবো', botChip2: 'এক্সচেঞ্জ কীভাবে কাজ করে', botChip3: 'এটা কি ফ্রি?', botChip4: 'আমার ম্যাচ খুঁজে দাও',
-    botHello: 'হাই! আমি StudyBot, তোমার EXCHORA গাইড। আমাকে জিজ্ঞেস করো কীভাবে পোস্ট দিতে হয়, এক্সচেঞ্জ কীভাবে কাজ করে — অথবা "find" লিখে বিষয় লেখো (যেমন "find algorithm"), আমি পোস্ট খুঁজে দেবো।',
+    botHello: 'হাই! আমি StudyBot, তোমার EXCHORA গাইড। সাইট সম্পর্কে যেকোনো কিছু জিজ্ঞেস করো — অথবা "find" লিখে বিষয় লেখো (যেমন "find algorithm"), আমি পোস্ট খুঁজে দেবো।',
     myPostsStat: 'আমার পোস্ট', savedStat: 'সেভ করা', exchangesStat: 'এক্সচেঞ্জ',
     matchesTitle: 'তোমার ম্যাচগুলো', matchesSub: 'যেসব পোস্টের HAVE আর WANT একে অপরের সাথে মিলে যায় — ম্যাচিং ইঞ্জিন খুঁজে বের করে।',
     noMatches: 'এখনো কোনো ম্যাচ নেই। তোমার কাছে যা আছে আর যা চাও পোস্ট করো — দুটি পোস্ট মিললেই ম্যাচ দেখা যাবে।',
@@ -1789,8 +1789,8 @@ function botFindAnswer(q, toks) {
 function botReply(rawQ) {
   const raw = rawQ.trim();
   if (/^(hi|hello|hey|hola|salam|assalamu alaikum|আসসালাম|আসসালামু আলাইকুম|হ্যালো|হাই|good morning|good afternoon|good evening)\b/.test(raw) || raw === 'hi' || raw === 'hello')
-    return botText('Hello! Ask me how to post, how exchanges work, whether EXCHORA is free — or type "find" + a subject, like "find algorithm".',
-                   'হ্যালো! আমাকে জিজ্ঞেস করো কীভাবে পোস্ট দিতে হয়, এক্সচেঞ্জ কীভাবে কাজ করে, EXCHORA ফ্রি কিনা — অথবা "find" লিখে বিষয় লেখো, যেমন "find algorithm"।');
+    return botText('Hello! 👋 How can I help you today?',
+                   'হ্যালো! 👋 আজ কীভাবে সাহায্য করতে পারি?');
   const q = botNorm(rawQ);
   const toks = q.trim().split(' ');
   // Score every topic; the most specific (longest matching keys) wins.
@@ -1822,8 +1822,8 @@ function botReply(rawQ) {
     return botText(best.en, best.bn);
   }
   if (hasFindVerb || hasAche) { const ans2 = botFindAnswer(q, toks); if (ans2) return ans2; }
-  return botText('I can help with many things — tap a topic below, or ask me in your own words (English, বাংলা or Banglish all work):',
-                 'আমি অনেক বিষয়ে সাহায্য করতে পারি — নিচের যেকোনো topic-এ চাপ দাও, বা নিজের ভাষায় জিজ্ঞেস করো (English, বাংলা, Banglish — সবই চলবে):') + '<br>' +
+  return botText('Tap a topic below, or ask me in your own words:',
+                 'নিচের topic-এ চাপ দাও, বা নিজের ভাষায় জিজ্ঞেস করো:') + '<br>' +
     '<button type="button" class="bot-post" data-bot-q="how to post">How to post</button><br>' +
     '<button type="button" class="bot-post" data-bot-q="how exchange works">How exchanges work</button><br>' +
     '<button type="button" class="bot-post" data-bot-q="find my matches">Find my matches</button><br>' +
