@@ -20,12 +20,14 @@ body{font-family:'Poppins',system-ui,Arial,sans-serif;background:var(--bg);color
 
 /* Header */
 .site-header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
-.header-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
+.header-inner{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:14px 20px}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
 .logo-badge{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
 .logo-text{font-size:19px;font-weight:500}
 .logo-text strong{color:var(--teal-dark)}
-.main-nav{display:flex;gap:22px;align-items:center}
+.main-nav{display:flex;gap:22px;align-items:center;justify-self:end}
+.side-toggle{justify-self:start}
+.logo{justify-self:center}
 .main-nav a{text-decoration:none;color:var(--text);font-size:14.5px;font-weight:500}
 .main-nav a:hover{color:var(--teal-dark)}
 .count-badge{background:var(--teal);color:#fff;border-radius:999px;padding:1px 8px;font-size:12px;font-weight:600}
@@ -524,6 +526,7 @@ body.is-guest .side-points{display:none}
   .header-inner{flex-wrap:nowrap}
 }
 @media (max-width:560px){
+  #btnShowSignup{display:none}
   #userNameShort{display:none}
   .logo-text{display:none}
   .points-chip{padding:4px 9px;font-size:12px;margin-right:4px}
@@ -545,3 +548,8 @@ body.auth-loading .side-points, body.auth-loading #sideLogin { visibility: hidde
 .img-lightbox { position: fixed; inset: 0; background: rgba(2,6,20,.88); display: flex; align-items: center; justify-content: center; z-index: 300; cursor: zoom-out; }
 .img-lightbox[hidden] { display: none; }
 .img-lightbox img { max-width: 92vw; max-height: 92vh; border-radius: 10px; }
+
+/* Centered brand: on tablet widths the duplicate links live in the drawer too */
+@media (min-width:861px) and (max-width:1023px){
+  .main-nav a[href="#browse"],.main-nav a[href="#post"],.main-nav a[href="#my"],#navMatches,#navAdmin{display:none}
+}
