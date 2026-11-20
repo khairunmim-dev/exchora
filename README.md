@@ -26,6 +26,7 @@ so both sides benefit.
 - **Community wall** — a public space where all students post and discuss together
 - **Private messages** — 1-to-1 chats with any student, with unread badges
 - **Claimable rewards** — points from exchanges, ratings and file unlocks wait in your profile until you claim them; spending always asks first
+- **Help & Support** — a Help & Support page (sidebar + footer) with quick answers and a report form (problem / report a post or user / account / suggestion); reports go to the admin only, and every post card has a ⚠️ Report button; the admin reviews and resolves reports from the dashboard
 - **Bilingual UI** — full English / বাংলা toggle, plus dark & light mode
 
 ## Points system
@@ -44,7 +45,7 @@ so both sides benefit.
 - CSS3
 - JavaScript (vanilla, no frameworks — single-page app with view switching)
 - Firebase Authentication (email/password + Google)
-- Cloud Firestore (posts, users, requests, ratings, points, unlocks) with security rules that enforce ownership and privacy
+- Cloud Firestore (posts, users, requests, ratings, points, unlocks, support) with security rules that enforce ownership and privacy
 
 ## Project structure
 
@@ -52,7 +53,7 @@ so both sides benefit.
 ├── index.html              ← page structure (all views)
 ├── style.css               ← Navy + Gold theme, dark/light mode, responsive layout
 ├── script.js               ← app logic: posts, auth, matching, requests, points, ratings, StudyBot, admin
-├── firestore-rules-v4.txt  ← the Firestore security rules used by the live site
+├── firestore-rules-v7.txt  ← the Firestore security rules used by the live site
 └── README.md
 ```
 

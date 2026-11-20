@@ -54,7 +54,7 @@
   <div class="side-user">
     <span class="side-avatar" id="sideAvatar">?</span>
     <div class="side-user-text">
-      <strong id="sideName">Guest</strong>
+      <strong id="sideName">…</strong>
       <small id="sideEmail"></small>
     </div>
   </div>
@@ -71,6 +71,7 @@
     <button type="button" data-side="community">💬 <span data-i18n="navCommunity">Community</span></button>
     <button type="button" data-side="messages">✉️ <span data-i18n="navMessages">Messages</span> <span class="count-badge" id="msgBadge" hidden>0</span></button>
     <button type="button" data-side="about">ℹ️ <span data-i18n="navAbout">About</span></button>
+    <button type="button" data-side="support">🆘 <span data-i18n="navSupport">Help &amp; Support</span></button>
     <button type="button" data-side="profile">👤 <span data-i18n="profileNav">Profile</span></button>
     <button type="button" data-side="admin" id="sideAdmin" hidden>🛡️ <span data-i18n="navAdmin">Admin</span></button>
   </nav>
@@ -396,6 +397,9 @@
     <p class="section-sub" data-i18n="communitySub">A public wall for all EXCHORA students — ask, share and discuss together.</p>
     <form id="communityForm" class="community-form">
       <textarea id="communityInput" rows="2" data-i18n-ph="communityPh" placeholder="Share something with all students..."></textarea>
+      <span class="attach-preview" id="commPhotoPreview" hidden><img alt=""><button type="button" id="commPhotoRemove" aria-label="Remove photo">✕</button></span>
+      <button class="btn btn-outline" type="button" id="commPhotoBtn">📷 <span data-i18n="attachPhoto">Add photo</span></button>
+      <input type="file" id="commPhotoInput" accept="image/*" hidden>
       <button class="btn btn-primary" type="submit" data-i18n="communityPostBtn">Post</button>
     </form>
     <div id="communityList" class="community-list"></div>
@@ -412,12 +416,48 @@
       <div class="chat-box">
         <div id="chatHead" class="chat-head">Pick a conversation</div>
         <div id="chatMsgs" class="chat-msgs"></div>
+        <div class="attach-preview chat-attach" id="chatPhotoPreview" hidden><img alt=""><button type="button" id="chatPhotoRemove" aria-label="Remove photo">✕</button></div>
         <form id="chatForm" class="chat-form" hidden>
+          <button class="btn btn-outline" type="button" id="chatPhotoBtn" aria-label="Add photo">📷</button>
+          <input type="file" id="chatPhotoInput" accept="image/*" hidden>
           <input type="text" id="chatInput" data-i18n-ph="chatPh" placeholder="Write a message..." autocomplete="off">
           <button class="btn btn-primary" type="submit" data-i18n="chatSend">Send</button>
         </form>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ===== Help & Support view (Phase L) ===== -->
+<section id="view-support" class="view" hidden>
+  <div class="container section">
+    <h2 class="section-title" data-i18n="supportTitle">Help &amp; Support</h2>
+    <p class="section-sub" data-i18n="supportSub">Something not working, or someone behaving badly? Tell us here — only you and the site admin can see your report.</p>
+    <h3 class="sub-title" data-i18n="supFaqTitle">Quick answers</h3>
+    <div class="faq-item"><h3 data-i18n="supQ1">I cannot log in</h3><p data-i18n="supA1">Signed up with Google? Use “Continue with Google” — no password needed. Email account? There is no in-site password reset yet — send a report below (topic: Account problem) and the admin will help you recover access.</p></div>
+    <div class="faq-item"><h3 data-i18n="supQ2">How do I report a post or a user?</h3><p data-i18n="supA2">Press the ⚠️ button on the post, or choose “Report a post or user” in the form below and describe what happened. The admin reviews every report and can remove a post or close an account.</p></div>
+    <div class="faq-item"><h3 data-i18n="supQ3">My exchange request was accepted — now what?</h3><p data-i18n="supA3">Both sides can now see each other’s WhatsApp numbers in My Exchanges. Meet on campus for books, or share files for PDFs — then both press “Confirm exchanged”.</p></div>
+    <div class="faq-item"><h3 data-i18n="supQ4">Is my WhatsApp number public?</h3><p data-i18n="supA4">No — it is shown only to the other student, only after an exchange request is accepted. Never publicly.</p></div>
+    <h3 class="sub-title" data-i18n="supFormTitle">Send a report</h3>
+    <p class="section-sub" id="supLoginNote" data-i18n="supLoginNote" hidden>Please log in to send a report — guests can ask StudyBot (bottom right) instead.</p>
+    <form id="supportForm" class="post-form">
+      <label><span data-i18n="supTopic">What is it about?</span>
+        <select id="supTopic">
+          <option value="problem" data-i18n="supTopic1">Something is not working</option>
+          <option value="report" data-i18n="supTopic2">Report a post or user</option>
+          <option value="account" data-i18n="supTopic3">Account problem</option>
+          <option value="suggestion" data-i18n="supTopic4">Suggestion / feedback</option>
+        </select>
+      </label>
+      <label><span data-i18n="supDetails">What happened?</span>
+        <textarea id="supDetails" rows="4" data-i18n-ph="supDetailsPh" placeholder="Write what you clicked, what you saw, and which post or user it was about…"></textarea>
+      </label>
+      <p class="section-sub" id="supPostCtx" hidden></p>
+      <button class="btn btn-primary" type="submit" data-i18n="supSend">Send report</button>
+    </form>
+    <h3 class="sub-title" data-i18n="supMyReports">My reports</h3>
+    <div id="mySupportList" class="req-list"></div>
+    <p class="no-results" id="supNoReports" data-i18n="supNoReports" hidden>You have not sent any reports yet.</p>
   </div>
 </section>
 
@@ -434,6 +474,9 @@
     <div id="adminPostList" class="req-list"></div>
     <h3 class="sub-title" data-i18n="adminUsers">Registered users</h3>
     <div id="adminUserList" class="req-list"></div>
+    <h3 class="sub-title" data-i18n="adminSupport">Support reports</h3>
+    <div id="adminSupportList" class="req-list"></div>
+    <p class="no-results" id="adminSupEmpty" data-i18n="supNoAdmin" hidden>No support reports yet.</p>
   </div>
 </section>
 
@@ -464,6 +507,11 @@
   <div class="container">
     <p data-i18n="footerTag"><strong>EXCHORA</strong> — Share Knowledge. Exchange Opportunities.</p>
     <p class="footer-sub">Built by Khairun Nessa Mim · CSE, Southeast University</p>
+    <div class="foot-links">
+      <button type="button" class="foot-link" data-side="about" data-i18n="navAbout">About</button>
+      <button type="button" class="foot-link" data-side="community" data-i18n="navCommunity">Community</button>
+      <button type="button" class="foot-link" data-side="support" data-i18n="navSupport">Help &amp; Support</button>
+    </div>
   </div>
 </footer>
 
@@ -492,5 +540,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script src="script.js"></script>
+<div id="imgLightbox" class="img-lightbox" hidden><img alt=""></div>
 </body>
 </html>

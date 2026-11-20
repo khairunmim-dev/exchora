@@ -111,7 +111,7 @@ const STR = {
     fileInvalid: 'That link does not look right — paste a full link starting with https:// (or leave the field empty).',
     reqNoteTitle: 'What will you give in return?', reqNoteSub: 'This is an exchange — tell the poster what you can give back. They will see it before accepting.',
     reqNotePh: 'e.g. I will give my Data Mining handwritten notes', reqSendBtn: 'Send Request',
-    pointsStat: 'Points', guest: 'Guest', profileNav: 'Profile', sidePointsHint: 'Earn by posting & exchanging',
+    pointsStat: 'Points', guest: 'Guest', attachPhoto: 'Add photo', photoMsg: '📷 Photo', profileNav: 'Profile', sidePointsHint: 'Earn by posting & exchanging',
     navCommunity: 'Community', navMessages: 'Messages', messageBtn: 'Message', msgLogin: 'Please log in first to send a message.',
     communityTitle: 'Community', communitySub: 'A public wall for all EXCHORA students — ask, share and discuss together.',
     communityPh: 'Share something with all students...', communityPostBtn: 'Post', communityEmpty: 'No posts yet — be the first to say hello!',
@@ -123,6 +123,22 @@ const STR = {
     ab2T: 'Exchange, not buying', ab2D: 'No money changes hands. You give what you have, get what you need — and earn points and ratings that recognise your contribution.',
     ab3T: 'A real community', ab3D: 'Discuss together on the Community wall, message any student privately, and coordinate your exchange — all inside EXCHORA.',
     aboutBy: 'Created by Khairun Nessa Mim — BSc in CSE, Southeast University, Dhaka, Bangladesh.',
+    navSupport: 'Help & Support', supportTitle: 'Help & Support',
+    supportSub: 'Something not working, or someone behaving badly? Tell us here — only you and the site admin can see your report.',
+    supFaqTitle: 'Quick answers',
+    supQ1: 'I cannot log in', supA1: 'Signed up with Google? Use “Continue with Google” — no password needed. Email account? There is no in-site password reset yet — send a report below (topic: Account problem) and the admin will help you recover access.',
+    supQ2: 'How do I report a post or a user?', supA2: 'Press the ⚠️ button on the post, or choose “Report a post or user” in the form below and describe what happened. The admin reviews every report and can remove a post or close an account.',
+    supQ3: 'My exchange request was accepted — now what?', supA3: 'Both sides can now see each other’s WhatsApp numbers in My Exchanges. Meet on campus for books, or share files for PDFs — then both press “Confirm exchanged”.',
+    supQ4: 'Is my WhatsApp number public?', supA4: 'No — it is shown only to the other student, only after an exchange request is accepted. Never publicly.',
+    supFormTitle: 'Send a report', supTopic: 'What is it about?',
+    supTopic1: 'Something is not working', supTopic2: 'Report a post or user', supTopic3: 'Account problem', supTopic4: 'Suggestion / feedback',
+    supDetails: 'What happened?', supDetailsPh: 'Write what you clicked, what you saw, and which post or user it was about…',
+    supSend: 'Send report', supSent: 'Report sent — thank you! The admin will look into it.',
+    supLoginNote: 'Please log in to send a report — guests can ask StudyBot (bottom right) instead.',
+    supMyReports: 'My reports', supNoReports: 'You have not sent any reports yet.',
+    supReportBtn: 'Report', supStatusOpen: 'Open', supStatusDone: 'Resolved', supResolve: 'Mark resolved',
+    adminSupport: 'Support reports', supNoAdmin: 'No support reports yet.',
+    supError: 'Could not send the report. Please try again.',
     pointsPanelTitle: 'My Points', rewardsWaiting: 'Rewards waiting to claim', claimBtn: 'Claim', claimAllBtn: 'Claim all', historyTitle: 'History',
     noRewards: 'No rewards waiting. Complete an exchange, receive a 5-star rating or have your file unlocked to earn one!', noHistory: 'No points activity yet.',
     pointsGuide: 'Welcome: 50 free. Post: +5 instantly. Rewards from exchanges (+10), 5-star ratings (+5) and file unlocks (+15) wait here — claim them when you want. Spending is your choice too: unlocking a file costs 15, pinning a post costs 20, and the site always asks before spending.',
@@ -209,7 +225,7 @@ const STR = {
     fileInvalid: 'Link-টা ঠিক মনে হচ্ছে না — https:// দিয়ে শুরু পুরো link দাও (অথবা ঘরটা খালি রাখো)।',
     reqNoteTitle: 'বদলে তুমি কী দেবে?', reqNoteSub: 'এটা একটা exchange — পোস্টদাতাকে বলো বদলে তুমি কী দিতে পারবে। Accept করার আগেই সে এটা দেখতে পাবে।',
     reqNotePh: 'যেমন: আমি আমার Data Mining হাতে লেখা নোট দেবো', reqSendBtn: 'রিকোয়েস্ট পাঠাও',
-    pointsStat: 'পয়েন্ট', guest: 'অতিথি', profileNav: 'প্রোফাইল', sidePointsHint: 'পোস্ট আর exchange করে earn করো',
+    pointsStat: 'পয়েন্ট', guest: 'অতিথি', attachPhoto: 'ছবি যোগ করো', photoMsg: '📷 ছবি', profileNav: 'প্রোফাইল', sidePointsHint: 'পোস্ট আর exchange করে earn করো',
     navCommunity: 'কমিউনিটি', navMessages: 'মেসেজ', messageBtn: 'মেসেজ', msgLogin: 'মেসেজ পাঠাতে আগে লগ ইন করো।',
     communityTitle: 'কমিউনিটি', communitySub: 'সব EXCHORA শিক্ষার্থীর জন্য public wall — জিজ্ঞেস করো, শেয়ার করো, আলোচনা করো।',
     communityPh: 'সব শিক্ষার্থীর সাথে কিছু শেয়ার করো...', communityPostBtn: 'পোস্ট', communityEmpty: 'এখনো কোনো পোস্ট নেই — প্রথমে hello বলো!',
@@ -221,6 +237,22 @@ const STR = {
     ab2T: 'কেনাকাটা না, exchange', ab2D: 'কোনো টাকার লেনদেন নেই। তোমার যা আছে দাও, যা দরকার নাও — সাথে points আর ratings-এ তোমার অবদানের স্বীকৃতি।',
     ab3T: 'আসল community', ab3D: 'Community wall-এ সবাই মিলে আলোচনা, যেকোনো শিক্ষার্থীকে private message, আর exchange-এর coordination — সবই EXCHORA-র ভিতরে।',
     aboutBy: 'তৈরি করেছেন Khairun Nessa Mim — BSc in CSE, Southeast University, ঢাকা, বাংলাদেশ।',
+    navSupport: 'সাহায্য ও সাপোর্ট', supportTitle: 'সাহায্য ও সাপোর্ট',
+    supportSub: 'কিছু কাজ করছে না, বা কেউ খারাপ আচরণ করছে? এখানে জানাও — তোমার রিপোর্ট শুধু তুমি আর সাইট অ্যাডমিন দেখতে পাবে।',
+    supFaqTitle: 'দ্রুত উত্তর',
+    supQ1: 'লগ ইন করতে পারছি না', supA1: 'Google দিয়ে সাইন আপ করে থাকলে “Continue with Google” চাপলেই হবে — পাসওয়ার্ড লাগে না। ইমেইল অ্যাকাউন্ট হলে সাইটের ভিতরে পাসওয়ার্ড reset এখনো নেই — নিচে রিপোর্ট পাঠাও (বিষয়: অ্যাকাউন্ট সমস্যা), অ্যাডমিন অ্যাক্সেস ফিরে পেতে সাহায্য করবে।',
+    supQ2: 'পোস্ট বা ব্যবহারকারীকে কীভাবে রিপোর্ট করব?', supA2: 'পোস্টের ⚠️ বাটন চাপো, অথবা নিচের ফর্মে “পোস্ট বা ব্যবহারকারী রিপোর্ট” বেছে কী হয়েছে লেখো। অ্যাডমিন প্রতিটা রিপোর্ট দেখে, প্রয়োজনে পোস্ট মুছে দিতে বা অ্যাকাউন্ট বন্ধ করতে পারে।',
+    supQ3: 'এক্সচেঞ্জ রিকোয়েস্ট Accept হয়েছে — এখন কী?', supA3: 'দুই পক্ষই এখন My Exchanges-এ একে অপরের WhatsApp নম্বর দেখতে পাবে। বই হলে campus-এ দেখা করে, PDF হলে ফাইল শেয়ার করে নাও — তারপর দুজনেই “Confirm exchanged” চাপো।',
+    supQ4: 'আমার WhatsApp নম্বর কি সবার সামনে থাকে?', supA4: 'না — রিকোয়েস্ট Accept হওয়ার পর শুধু অপর শিক্ষার্থীই দেখতে পায়। কখনোই সবার সামনে নয়।',
+    supFormTitle: 'রিপোর্ট পাঠাও', supTopic: 'কী বিষয়ে?',
+    supTopic1: 'কিছু কাজ করছে না', supTopic2: 'পোস্ট বা ব্যবহারকারী রিপোর্ট', supTopic3: 'অ্যাকাউন্ট সমস্যা', supTopic4: 'পরামর্শ / মতামত',
+    supDetails: 'কী হয়েছে?', supDetailsPh: 'কী চেপেছিলে, কী দেখলে, কোন পোস্ট বা ব্যবহারকারীর বিষয়ে — লেখো…',
+    supSend: 'রিপোর্ট পাঠাও', supSent: 'রিপোর্ট পাঠানো হয়েছে — ধন্যবাদ! অ্যাডমিন দেখে নেবে।',
+    supLoginNote: 'রিপোর্ট পাঠাতে লগ ইন করো — অতিথিরা নিচে ডানদিকে StudyBot-কে জিজ্ঞেস করতে পারবে।',
+    supMyReports: 'আমার রিপোর্ট', supNoReports: 'তুমি এখনো কোনো রিপোর্ট পাঠাওনি।',
+    supReportBtn: 'রিপোর্ট', supStatusOpen: 'খোলা', supStatusDone: 'সমাধান হয়েছে', supResolve: 'সমাধান হয়েছে চিহ্নিত করো',
+    adminSupport: 'সাপোর্ট রিপোর্ট', supNoAdmin: 'এখনো কোনো সাপোর্ট রিপোর্ট নেই।',
+    supError: 'রিপোর্ট পাঠানো যায়নি। আবার চেষ্টা করো।',
     pointsPanelTitle: 'আমার পয়েন্ট', rewardsWaiting: 'Claim করার মতো reward', claimBtn: 'Claim', claimAllBtn: 'সব Claim করো', historyTitle: 'হিস্ট্রি',
     noRewards: 'কোনো reward অপেক্ষা করছে না। Exchange complete করো, 5-star rating পাও বা তোমার ফাইল unlock হলেই reward আসবে!', noHistory: 'এখনো কোনো পয়েন্ট activity নেই।',
     pointsGuide: 'Welcome: 50 ফ্রি। পোস্ট: সাথে সাথে +5। Exchange (+10), 5-star rating (+5) আর ফাইল unlock (+15) থেকে reward এখানে অপেক্ষা করে — যখন চাও Claim করো। খরচও তোমার সিদ্ধান্ত: ফাইল unlock 15, পোস্ট pin 20 — খরচের আগে সাইট সবসময় জিজ্ঞেস করে।',
@@ -335,6 +367,7 @@ function buildCard(post, index) {
         '</button>' +
         requestBtnHTML(post) +
         (post.owner && post.owner !== myUid() ? '<button class="btn-msg" type="button" data-msg="' + post.owner + '" data-msg-name="' + esc(post.name) + '" title="' + t('messageBtn') + '">💬</button>' : '') +
+        (post.owner && post.owner !== myUid() ? '<button class="btn-msg" type="button" data-report="' + post.id + '" data-report-name="' + esc(post.name) + '" data-report-subject="' + esc(post.subject) + '" title="' + t('supReportBtn') + '">⚠️</button>' : '') +
         ((post.owner || null) !== null && post.owner === myUid()
           ? (isPinned(post)
             ? '<span class="pin-on">📌 ' + t('featuredTag') + '</span>'
@@ -431,6 +464,10 @@ document.addEventListener('click', function (event) {
   if (pinBtn) { pinPost(pinBtn.dataset.pin); return; }
   const msgBtn = event.target.closest('[data-msg]');
   if (msgBtn) { openChatWith(msgBtn.dataset.msg, msgBtn.dataset.msgName); return; }
+  const repBtn = event.target.closest('[data-report]');
+  if (repBtn) { openReport(repBtn.dataset.report, repBtn.dataset.reportName, repBtn.dataset.reportSubject); return; }
+  const resBtn = event.target.closest('[data-resolve]');
+  if (resBtn) { resolveSupport(resBtn.dataset.resolve); return; }
   const convBtn = event.target.closest('[data-conv]');
   if (convBtn) { openThread(convBtn.dataset.conv, convBtn.dataset.convName); return; }
   const cdelBtn = event.target.closest('[data-cdel]');
@@ -538,7 +575,7 @@ function showToast(message) {
 }
 
 // ---------- 11) Views (single-page routing) ----------
-const viewIds = ['view-home', 'view-auth', 'view-profile', 'view-matches', 'view-admin', 'view-community', 'view-messages'];
+const viewIds = ['view-home', 'view-auth', 'view-profile', 'view-matches', 'view-admin', 'view-community', 'view-messages', 'view-support'];
 function showView(name) {
   viewIds.forEach(function (id) {
     document.getElementById(id).hidden = id !== 'view-' + name;
@@ -549,6 +586,7 @@ function showView(name) {
   if (name === 'admin') renderAdmin();
   if (name === 'community') renderCommunity();
   if (name === 'messages') { renderInbox(); renderThread(); }
+  if (name === 'support') renderSupport();
 }
 document.querySelectorAll('.main-nav a[href^="#"], .logo').forEach(function (link) {
   link.addEventListener('click', function () { showView('home'); });
@@ -585,6 +623,7 @@ document.querySelectorAll('[data-side]').forEach(function (btn) {
     else if (go === 'community') showView('community');
     else if (go === 'messages') showView('messages');
     else if (go === 'about') { showView('home'); setTimeout(function () { document.getElementById('about').scrollIntoView({ behavior: 'smooth' }); }, 60); }
+    else if (go === 'support') showView('support');
     else if (go === 'profile') showView('profile');
     else if (go === 'admin' && isAdmin()) showView('admin');
     closeSidebar();
@@ -626,7 +665,23 @@ function setAvatar(el, name, photo) {
 function miniAvatar(post) {
   return '<span class="mini-avatar">' + (post.photo ? '<img src="' + esc(post.photo) + '" alt="">' : esc(initials(post.name || '?'))) + '</span>';
 }
+// While Firebase is still restoring the session after a refresh, the sidebar
+// must not flash "Guest": keep the last known identity (cached at login) on
+// screen, or a neutral "…" for first-time visitors, until auth resolves.
+let authPending = typeof firebase !== 'undefined';
+if (authPending) document.body.classList.add('auth-loading');
+try {
+  const lastUser = JSON.parse(localStorage.getItem('ex_lastuser') || 'null');
+  if (lastUser && lastUser.name) {
+    const sn = document.getElementById('sideName'); if (sn) sn.textContent = lastUser.name;
+    const se = document.getElementById('sideEmail'); if (se) se.textContent = lastUser.email || '';
+    const un = document.getElementById('userNameShort'); if (un) un.textContent = lastUser.name.split(' ')[0];
+  }
+} catch (e) {}
 function renderAuthArea() {
+  if (authPending) return;   // session still restoring — keep cached identity visible
+  if (currentUser) { try { localStorage.setItem('ex_lastuser', JSON.stringify({ name: currentUser.name, email: currentUser.email || '', photo: currentUser.photo || '' })); } catch (e) {} }
+  else { try { localStorage.removeItem('ex_lastuser'); } catch (e) {} }
   refreshMyPoints();
   const loggedIn = !!currentUser;
   document.body.classList.toggle('is-guest', !loggedIn);
@@ -953,6 +1008,7 @@ document.addEventListener('click', function (event) {
   if (event.target.closest('.btn-del-post')) return;        // delete button has its own handler
   if (event.target.closest('[data-pin]')) return;           // pin button has its own handler
   if (event.target.closest('[data-msg]')) return;           // message button has its own handler
+  if (event.target.closest('[data-report]')) return;        // report button has its own handler
   const card = event.target.closest('.post-card');
   if (card && card.dataset.id) openDetails(card.dataset.id);
 });
@@ -1202,7 +1258,8 @@ function renderCommunity() {
       '<span class="mini-avatar">' + (m.fromPhoto ? '<img src="' + esc(m.fromPhoto) + '" alt="">' : esc(initials(m.fromName || '?'))) + '</span>' +
       '<div class="comm-body"><div class="comm-head"><strong>' + esc(m.fromName) + '</strong><small>' + timeAgo(m.ts) + '</small>' +
       ((mine || isAdmin()) ? '<button class="comm-del" type="button" data-cdel="' + m.id + '" aria-label="Delete">✕</button>' : '') + '</div>' +
-      '<p>' + esc(m.text) + '</p>' +
+      (m.text ? '<p>' + esc(m.text) + '</p>' : '') +
+      (isImg(m.img) ? '<img class="comm-img zoomable-img" src="' + m.img + '" alt="">' : '') +
       (!mine && currentUser ? '<button class="btn-msg-link" type="button" data-msg="' + m.fromUid + '" data-msg-name="' + esc(m.fromName) + '">💬 ' + t('messageBtn') + '</button>' : '') +
       '</div></div>';
   }).join('');
@@ -1212,8 +1269,8 @@ document.getElementById('communityForm').addEventListener('submit', function (ev
   if (!currentUser) { showToast(t('msgLogin')); showAuth('login'); return; }
   const input = document.getElementById('communityInput');
   const text = input.value.trim();
-  if (!text) return;
-  const entry = { fromUid: myUid(), fromName: currentUser.name, fromPhoto: currentUser.photo || '', text: text, ts: Date.now() };
+  if (!text && !pendingCommImg) return;
+  const entry = { fromUid: myUid(), fromName: currentUser.name, fromPhoto: currentUser.photo || '', text: text, img: pendingCommImg || '', ts: Date.now() };
   if (FB) { fbDb.collection('community').add(entry).catch(function () { showToast(t('requestError')); }); }
   else {
     const all = loadLocalCommunity();
@@ -1223,6 +1280,7 @@ document.getElementById('communityForm').addEventListener('submit', function (ev
     renderCommunity();
   }
   input.value = '';
+  clearPhotoPicker('commPhotoPreview', function (v) { pendingCommImg = v; });
 });
 function deleteCommunityMsg(id) {
   if (FB) { fbDb.collection('community').doc(id).delete().catch(function () {}); return; }
@@ -1231,6 +1289,59 @@ function deleteCommunityMsg(id) {
   communityMsgs = all;
   renderCommunity();
 }
+// --- Photo attachments for community posts and chats (Phase M) ---
+// Photos are shrunk in the browser and stored inside the Firestore document
+// (same approach as profile photos) — no Firebase Storage needed.
+let pendingCommImg = '', pendingChatImg = '';
+function shrinkPhotoFile(file, cb) {
+  const reader = new FileReader();
+  reader.onload = function () {
+    const img = new Image();
+    img.onload = function () {
+      function render(maxDim, q) {
+        const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale); canvas.height = Math.round(img.height * scale);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        return canvas.toDataURL('image/jpeg', q);
+      }
+      let url = render(720, 0.75);
+      if (url.length > 800000) url = render(480, 0.6);
+      cb(url);
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+function wirePhotoPicker(btnId, inputId, previewId, setPending) {
+  const btn = document.getElementById(btnId), input = document.getElementById(inputId), prev = document.getElementById(previewId);
+  if (!btn || !input || !prev) return;
+  btn.addEventListener('click', function () { input.click(); });
+  input.addEventListener('change', function () {
+    const file = input.files[0]; input.value = '';
+    if (!file) return;
+    shrinkPhotoFile(file, function (url) {
+      setPending(url);
+      prev.querySelector('img').src = url;
+      prev.hidden = false;
+    });
+  });
+  prev.querySelector('button').addEventListener('click', function () { setPending(''); prev.hidden = true; });
+}
+function clearPhotoPicker(previewId, setPending) {
+  setPending('');
+  const prev = document.getElementById(previewId);
+  if (prev) prev.hidden = true;
+}
+function isImg(url) { return !!url && typeof url === 'string' && url.indexOf('data:image/') === 0; }
+// Lightbox: tap any chat/community photo to see it big.
+document.addEventListener('click', function (e) {
+  const lb = document.getElementById('imgLightbox');
+  if (!lb) return;
+  if (e.target === lb) { lb.hidden = true; return; }
+  if (e.target.classList && e.target.classList.contains('zoomable-img')) { lb.querySelector('img').src = e.target.src; lb.hidden = false; }
+});
+
 // --- Private messages (1-to-1) ---
 function loadLocalMessages() { return JSON.parse(localStorage.getItem('ex_messages') || '[]'); }
 function subscribeMessages() {
@@ -1279,7 +1390,7 @@ function renderInbox() {
   el.innerHTML = convs.map(function (c) {
     return '<button type="button" class="conv-item' + (c.uid === activeChatUid ? ' active' : '') + '" data-conv="' + c.uid + '" data-conv-name="' + esc(c.name) + '">' +
       '<span class="mini-avatar">' + (c.photo ? '<img src="' + esc(c.photo) + '" alt="">' : esc(initials(c.name || '?'))) + '</span>' +
-      '<span class="conv-text"><strong>' + esc(c.name) + '</strong><small>' + esc(c.last.text) + '</small></span>' +
+      '<span class="conv-text"><strong>' + esc(c.name) + '</strong><small>' + (c.last.text ? esc(c.last.text) : (isImg(c.last.img) ? t('photoMsg') : '')) + '</small></span>' +
       (c.unread ? '<span class="count-badge">' + num(c.unread) + '</span>' : '') + '</button>';
   }).join('');
 }
@@ -1294,7 +1405,7 @@ function renderThread() {
   const me = myUid();
   const msgs = chatMsgs.filter(function (m) { return (m.fromUid === me && m.toUid === activeChatUid) || (m.fromUid === activeChatUid && m.toUid === me); });
   box.innerHTML = msgs.map(function (m) {
-    return '<div class="chat-msg ' + (m.fromUid === me ? 'mine' : 'theirs') + '"><p>' + esc(m.text) + '</p></div>';
+    return '<div class="chat-msg ' + (m.fromUid === me ? 'mine' : 'theirs') + '">' + (isImg(m.img) ? '<img class="zoomable-img" src="' + m.img + '" alt="">' : '') + (m.text ? '<p>' + esc(m.text) + '</p>' : '') + '</div>';
   }).join('');
   box.scrollTop = box.scrollHeight;
 }
@@ -1330,8 +1441,8 @@ document.getElementById('chatForm').addEventListener('submit', function (event) 
   if (!currentUser || !activeChatUid) return;
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
-  if (!text) return;
-  const entry = { fromUid: myUid(), fromName: currentUser.name, fromPhoto: currentUser.photo || '', toUid: activeChatUid, toName: activeChatName, text: text, ts: Date.now(), read: false };
+  if (!text && !pendingChatImg) return;
+  const entry = { fromUid: myUid(), fromName: currentUser.name, fromPhoto: currentUser.photo || '', toUid: activeChatUid, toName: activeChatName, text: text, img: pendingChatImg || '', ts: Date.now(), read: false };
   if (FB) { fbDb.collection('messages').add(entry).catch(function () { showToast(t('requestError')); }); }
   else {
     const all = loadLocalMessages();
@@ -1340,7 +1451,11 @@ document.getElementById('chatForm').addEventListener('submit', function (event) 
     subscribeMessages();
   }
   input.value = '';
+  clearPhotoPicker('chatPhotoPreview', function (v) { pendingChatImg = v; });
 });
+
+wirePhotoPicker('commPhotoBtn', 'commPhotoInput', 'commPhotoPreview', function (v) { pendingCommImg = v; });
+wirePhotoPicker('chatPhotoBtn', 'chatPhotoInput', 'chatPhotoPreview', function (v) { pendingChatImg = v; });
 
 // ---------- 17.5) Points & file unlocks (Phase H) ----------
 // Balance = 50 welcome points + the sum of the user's ledger entries.
@@ -1567,6 +1682,7 @@ function renderAdmin() {
   } else {
     drawUsers(loadUsers());
   }
+  renderAdminSupport();
 }
 function adminDeletePost(id) {
   if (!isAdmin()) return;
@@ -1577,6 +1693,119 @@ function adminDeletePost(id) {
   posts = posts.filter(function (p) { return p.id !== id; });
   applyFilters();
   renderAdmin();
+}
+
+// ---------- 20) Help & Support (Phase L) ----------
+// Reports live in a Firestore 'support' collection (live mode) or in
+// localStorage (local mode). Only the reporter and the admin can read
+// a report — enforced by the Firestore rules (firestore-rules-v7.txt).
+var reportPostId = '';
+function supportTopicLabel(topic) {
+  return { problem: t('supTopic1'), report: t('supTopic2'), account: t('supTopic3'), suggestion: t('supTopic4') }[topic] || topic;
+}
+function supportTime(ts) {
+  if (!ts) return '';
+  var d = ts && ts.toDate ? ts.toDate() : new Date(ts);
+  return isNaN(d.getTime()) ? '' : d.toLocaleDateString();
+}
+function loadSupport() { try { return JSON.parse(localStorage.getItem('ex_support') || '[]'); } catch (e) { return []; } }
+function saveSupport(list) { try { localStorage.setItem('ex_support', JSON.stringify(list)); } catch (e) {} }
+function openReport(postId, name, subject) {
+  if (!currentUser) { showToast(t('loginRequired')); showAuth('login'); return; }
+  reportPostId = postId || '';
+  document.getElementById('supTopic').value = 'report';
+  var ctx = document.getElementById('supPostCtx');
+  ctx.hidden = false;
+  ctx.textContent = subject + ' — ' + name;
+  showView('support');
+  document.getElementById('supDetails').focus();
+}
+function supportItemHTML(r) {
+  return '<div class="req-item"><div class="req-head"><strong>' + esc(supportTopicLabel(r.topic)) + '</strong> · ' + esc(r.fromName || '') +
+    ' <span class="sup-status' + (r.status === 'resolved' ? ' done' : '') + '">' + (r.status === 'resolved' ? t('supStatusDone') : t('supStatusOpen')) + '</span>' +
+    (r.status !== 'resolved' && isAdmin() && r.id ? ' <span class="req-actions"><button class="btn btn-small btn-outline" type="button" data-resolve="' + r.id + '">' + t('supResolve') + '</button></span>' : '') +
+    '</div><p class="req-detail">' + esc(r.details || '') + '</p>' +
+    (r.postSubject ? '<p class="req-detail">📌 ' + esc(r.postSubject) + '</p>' : '') +
+    '<p class="req-detail">' + esc(supportTime(r.createdAt)) + '</p></div>';
+}
+function renderSupport() {
+  var form = document.getElementById('supportForm');
+  var note = document.getElementById('supLoginNote');
+  form.hidden = !currentUser;
+  note.hidden = !!currentUser;
+  var listEl = document.getElementById('mySupportList');
+  var emptyEl = document.getElementById('supNoReports');
+  function draw(list) {
+    list.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+    listEl.innerHTML = list.map(supportItemHTML).join('');
+    emptyEl.hidden = list.length > 0;
+  }
+  if (!currentUser) { listEl.innerHTML = ''; emptyEl.hidden = true; return; }
+  if (FB) {
+    fbDb.collection('support').where('fromUid', '==', myUid()).get()
+      .then(function (s) { draw(s.docs.map(function (d) { var r = d.data(); r.id = d.id; return r; })); })
+      .catch(function () { draw([]); });
+  } else {
+    draw(loadSupport().filter(function (r) { return r.fromUid === myUid(); }));
+  }
+}
+document.getElementById('supportForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+  if (!currentUser) { showToast(t('loginRequired')); showAuth('login'); return; }
+  var details = document.getElementById('supDetails').value.trim();
+  if (!details) { document.getElementById('supDetails').focus(); return; }
+  var topic = document.getElementById('supTopic').value;
+  var post = posts.filter(function (p) { return p.id === reportPostId; })[0];
+  var data = {
+    fromUid: myUid(), fromName: currentUser.name, fromEmail: currentUser.email || '',
+    topic: topic, details: details, postId: reportPostId || '',
+    postSubject: post ? post.subject + ' — ' + post.name : '',
+    status: 'open', createdAt: Date.now()
+  };
+  function done() {
+    reportPostId = '';
+    document.getElementById('supPostCtx').hidden = true;
+    document.getElementById('supportForm').reset();
+    showToast(t('supSent'));
+    renderSupport();
+  }
+  if (FB) {
+    fbDb.collection('support').add(data).then(done).catch(function () { showToast(t('supError')); });
+  } else {
+    var list = loadSupport();
+    data.id = 'local-' + Date.now();
+    list.push(data);
+    saveSupport(list);
+    done();
+  }
+});
+function resolveSupport(id) {
+  if (!isAdmin()) return;
+  if (FB) {
+    fbDb.collection('support').doc(id).update({ status: 'resolved' }).then(function () { renderAdmin(); }).catch(function () { showToast(t('requestError')); });
+  } else {
+    var list = loadSupport();
+    list.forEach(function (r) { if (r.id === id) r.status = 'resolved'; });
+    saveSupport(list);
+    renderAdmin();
+  }
+}
+function renderAdminSupport() {
+  var listEl = document.getElementById('adminSupportList');
+  var emptyEl = document.getElementById('adminSupEmpty');
+  if (!listEl) return;
+  function draw(list) {
+    list.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+    listEl.innerHTML = list.map(supportItemHTML).join('');
+    emptyEl.hidden = list.length > 0;
+  }
+  if (FB) {
+    fbDb.collection('support').get()
+      .then(function (s) { draw(s.docs.map(function (d) { var r = d.data(); r.id = d.id; return r; })); })
+      .catch(function () { draw([]); });
+  } else {
+    draw(loadSupport());
+  }
 }
 
 // ---------- 20) StudyBot (Phase E): a rule-based guide — honest, not real AI ----------
@@ -1656,8 +1885,8 @@ const BOT_TOPICS = [
     en: 'Tap the "Log Out" button at the top right (next to your name). Your posts and exchanges stay saved — just log back in any time.',
     bn: 'উপরে ডানদিকে তোমার নামের পাশের "Log Out" বাটন চাপো। তোমার পোস্ট আর এক্সচেঞ্জ সেভ-ই থাকবে — যেকোনো সময় আবার লগ ইন করলেই হবে।' },
   { k: ['forgot', 'password bhule', 'পাসওয়ার্ড ভুলে', 'reset password', 'bhule gechi', 'ভুলে গেছি', 'password mone nai', 'password hariye', 'password reset', 'পাসওয়ার্ড'],
-    en: 'If you signed up with Google, just use "Continue with Google" — no password needed. For email accounts, an in-site password reset is not available yet; contact the site owner and she can help you recover access.',
-    bn: 'Google দিয়ে সাইন আপ করে থাকলে শুধু "Continue with Google" চাপলেই হবে — পাসওয়ার্ড লাগে না। ইমেইল অ্যাকাউন্টের জন্য সাইটের ভিতরে পাসওয়ার্ড reset এখনো নেই; সাইটের মালিকের সাথে যোগাযোগ করো, সে অ্যাক্সেস ফিরে পেতে সাহায্য করতে পারবে।' },
+    en: 'If you signed up with Google, just use "Continue with Google" — no password needed. For email accounts, an in-site password reset is not available yet; send a report from Help & Support in the sidebar and the admin will help you recover access.',
+    bn: 'Google দিয়ে সাইন আপ করে থাকলে শুধু "Continue with Google" চাপলেই হবে — পাসওয়ার্ড লাগে না। ইমেইল অ্যাকাউন্টের জন্য সাইটের ভিতরে পাসওয়ার্ড reset এখনো নেই; sidebar-এর Help & Support থেকে রিপোর্ট পাঠাও, অ্যাডমিন অ্যাক্সেস ফিরে পেতে সাহায্য করবে।' },
   { k: ['login hocche na', 'login hoy na', 'login problem', 'login error', 'google login', 'unauthorized', 'login korte parchi na', 'dhukte parchi na', 'লগইন হচ্ছে না', 'সাইন ইন হচ্ছে না'],
     en: 'Login trouble? Try these: 1) Check your internet and try again. 2) Refresh the page (Ctrl+F5). 3) If you are opening the site from your own computer files, use the live link or localhost — Google sign-in is blocked on 127.0.0.1 addresses. 4) Still stuck? Log out of other Google accounts in the browser, or tell the site owner.',
     bn: 'লগইনে সমস্যা? এগুলো দেখো: ১) ইন্টারনেট check করে আবার চেষ্টা করো। ২) Ctrl+F5 দিয়ে পেজ refresh করো। ৩) নিজের কম্পিউটার থেকে খুললে live link বা localhost ব্যবহার করো — 127.0.0.1 ঠিকানায় Google সাইন-ইন বন্ধ থাকে। ৪) তাও হলে browser-এর অন্য Google অ্যাকাউন্ট থেকে log out করে দেখো, বা সাইটের মালিককে বলো।' },
@@ -1743,9 +1972,12 @@ const BOT_TOPICS = [
     en: 'EXCHORA has no push notifications yet. To see new requests, open My Exchanges — the menu also shows a count badge for your saved items. Checking in once a day keeps you updated.',
     bn: 'EXCHORA-তে এখনো push notification নেই। নতুন রিকোয়েস্ট দেখতে My Exchanges খোলো — মেনুতে সেভ করা আইটেমের count badge-ও দেখায়। দিনে একবার check করলেই update থাকবে।' },
   { k: ['problem', 'report', 'সমস্যা', 'kaj kore na', 'কাজ করে না', 'error', 'bug', 'kaj hocche na', 'problem hocche'],
-    en: 'Sorry something is not working. Quick checks: 1) Refresh with Ctrl+F5. 2) If you are testing locally, open the site as localhost (not 127.0.0.1). 3) Try logging out and back in. Still stuck? Tell the site owner (Khairun Nessa Mim) what you clicked and what happened — a screenshot helps a lot.',
-    bn: 'কিছু কাজ না করলে দুঃখিত। দ্রুত check করো: ১) Ctrl+F5 দিয়ে refresh। ২) নিজের কম্পিউটারে test করলে localhost দিয়ে খোলো (127.0.0.1 না)। ৩) Log out করে আবার log in করে দেখো। তাও হলে সাইটের মালিককে (Khairun Nessa Mim) বলো কী click করেছিলে আর কী হলো — screenshot দিলে অনেক সুবিধা হয়।' },
-  { k: ['contact owner', 'owner er sathe', 'manusher help', 'admin er sathe', 'owner ke bolbo', 'help chai', 'সাহায্য চাই', 'যোগাযোগ'],
+    en: 'Sorry something is not working. Quick checks: 1) Refresh with Ctrl+F5. 2) If you are testing locally, open the site as localhost (not 127.0.0.1). 3) Try logging out and back in. Still stuck? Open Help & Support from the sidebar and send a report — say what you clicked and what happened, and the admin will look into it.',
+    bn: 'কিছু কাজ না করলে দুঃখিত। দ্রুত check করো: ১) Ctrl+F5 দিয়ে refresh। ২) নিজের কম্পিউটারে test করলে localhost দিয়ে খোলো (127.0.0.1 না)। ৩) Log out করে আবার log in করে দেখো। তাও হলে sidebar থেকে Help & Support খুলে রিপোর্ট পাঠাও — কী click করেছিলে আর কী হলো লেখো, অ্যাডমিন দেখে নেবে।' },
+  { k: ['support', 'help', 'সাপোর্ট', 'সাহায্য', 'help chai', 'সাহায্য চাই', 'help centre', 'help center', 'contact', 'যোগাযোগ'],
+    en: 'For help, open Help & Support from the sidebar (or the footer). It has quick answers to common questions, and a form to report a problem, report a post or user, or send a suggestion — only you and the admin can see your report. You can also report a post directly with its ⚠️ button.',
+    bn: 'সাহায্যের জন্য sidebar (বা footer) থেকে Help & Support খোলো। ওখানে সাধারণ প্রশ্নের দ্রুত উত্তর আছে, আর সমস্যা জানানো, পোস্ট বা ব্যবহারকারী রিপোর্ট করা বা পরামর্শ পাঠানোর ফর্ম আছে — তোমার রিপোর্ট শুধু তুমি আর অ্যাডমিন দেখতে পাবে। কোনো পোস্টের ⚠️ বাটন চেপেও সরাসরি রিপোর্ট করা যায়।' },
+  { k: ['contact owner', 'owner er sathe', 'manusher help', 'admin er sathe', 'owner ke bolbo'],
     en: 'The site owner is Khairun Nessa Mim (CSE, Southeast University). For anything the bot cannot answer — account problems, a bad experience, suggestions — reach her through the contact options on her portfolio site: khairunmim-dev.github.io.',
     bn: 'সাইটের মালিক Khairun Nessa Mim (CSE, Southeast University)। Bot যেটা পারল না — অ্যাকাউন্টের সমস্যা, খারাপ অভিজ্ঞতা, পরামর্শ — তার portfolio সাইটের contact থেকে যোগাযোগ করো: khairunmim-dev.github.io।' },
   { k: ['kemon acho', 'কেমন আছো', 'how are you', 'joke', 'মজা', 'tumi ki paro', 'ki ki paro', 'ki korte paro', 'help me', 'সাহায্য করো', 'ki help'],
@@ -1861,6 +2093,7 @@ if (FB) {
 
   // Auth state: Firebase tells us who is logged in; the profile comes from Firestore.
   fbAuth.onAuthStateChanged(function (user) {
+    authPending = false; document.body.classList.remove('auth-loading');
     if (!user) { currentUser = null; renderAuthArea(); subscribeRequests(); return; }
     fbDb.collection('users').doc(user.uid).get().then(function (snap) {
       let data;
